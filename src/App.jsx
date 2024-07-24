@@ -1,7 +1,15 @@
 import "./App.css";
 
+import Detail from "./pages/Detail";
+import Main from "./pages/Main";
+
 function App() {
-  return <div>FIRST</div>;
+  return (
+    <>
+      <Main />
+      <Detail />
+    </>
+  );
 }
 
 export default App;
