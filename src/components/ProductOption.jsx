@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import { StarIcon } from "@heroicons/react/20/solid";
 import Alert from "../components/Alert";
-import classNames from "./classNames";
+import ClassNames from "./ClassNames";
 
-const ProductOptions = ({ product, reviews }) => {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
+const ProductOptions = ({ MockProduct, Reviews }) => {
+  const [selectedColor, setSelectedColor] = useState(MockProduct.colors[0]);
+  const [selectedSize, setSelectedSize] = useState(MockProduct.sizes[2]);
   const [showAlert, setShowAlert] = useState(false);
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <h2 className="sr-only">Product information</h2>
-      <p className="text-3xl tracking-tight text-gray-900">{product.price}</p>
+      <p className="text-3xl tracking-tight text-gray-900">
+        {MockProduct.price}
+      </p>
 
       <div className="mt-6">
         <h3 className="sr-only">Reviews</h3>
@@ -21,20 +23,20 @@ const ProductOptions = ({ product, reviews }) => {
             {[0, 1, 2, 3, 4].map((rating) => (
               <StarIcon
                 key={rating}
-                className={classNames(
-                  reviews.average > rating ? "text-gray-900" : "text-gray-200",
+                className={ClassNames(
+                  Reviews.average > rating ? "text-gray-900" : "text-gray-200",
                   "h-5 w-5 flex-shrink-0"
                 )}
                 aria-hidden="true"
               />
             ))}
           </div>
-          <p className="sr-only">{reviews.average} out of 5 stars</p>
+          <p className="sr-only">{Reviews.average} out of 5 stars</p>
           <a
-            href={reviews.href}
+            href={Reviews.href}
             className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
           >
-            {reviews.totalCount} reviews
+            {Reviews.totalCount} reviews
           </a>
         </div>
       </div>
@@ -42,7 +44,6 @@ const ProductOptions = ({ product, reviews }) => {
       <form className="mt-10">
         <div className="mt-10">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-medium text-gray-900">Size</h3>
             <a
               href="#"
               className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
@@ -57,12 +58,12 @@ const ProductOptions = ({ product, reviews }) => {
               onChange={setSelectedSize}
               className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
             >
-              {product.sizes.map((size) => (
+              {MockProduct.sizes.map((size) => (
                 <Radio
                   key={size.name}
                   value={size}
                   disabled={!size.inStock}
-                  className={classNames(
+                  className={ClassNames(
                     size.inStock
                       ? "cursor-pointer bg-white text-gray-900 shadow-sm"
                       : "cursor-not-allowed bg-gray-50 text-gray-200",

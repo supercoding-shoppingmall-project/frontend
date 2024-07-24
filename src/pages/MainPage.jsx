@@ -1,5 +1,6 @@
 import Category from "../components/Category";
 import Pagination from "../components/Pagination";
+import { Link } from "react-router-dom";
 
 const products = [
   {
@@ -84,10 +85,17 @@ const products = [
   },
 ];
 
-export default function Main() {
+export default function MainPage() {
   return (
     <>
-      {/* <Category /> */}
+      <Link to="/">
+        <button>Home</button>
+      </Link>
+      <Link to="/detail">
+        <button>Detail</button>
+      </Link>
+
+      <Category />
 
       <div className="bg-white">
         <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">

@@ -26,13 +26,13 @@ const ImageGallery = ({ images }) => {
           />
         </div>
       </div>
-      <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
+      {/* <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
         <img
           src={images[3].src}
           alt={images[3].alt}
           className="h-full w-full object-cover object-center"
         />
-      </div>
+      </div> */}
     </div>
   );
 };

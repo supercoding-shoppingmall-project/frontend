@@ -1,13 +1,16 @@
 import "./App.css";
+import { Routes, Route, Link } from "react-router-dom";
 
-import Detail from "./pages/Detail";
-import Main from "./pages/Main";
+import MainPage from "./pages/MainPage";
+import DetailPage from "./pages/DetailPage";
 
 function App() {
   return (
     <>
-      <Main />
-      <Detail />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/detail" element={<DetailPage />} />
+      </Routes>
     </>
   );
 }
