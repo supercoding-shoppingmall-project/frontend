@@ -1,7 +1,13 @@
 import "./App.css";
+import Header from "./components/Header";
+import Cart from "./components/Cart";
 
 function App() {
-  return <div>FIRST</div>;
+  return <div>
+    <Header />
+    <Cart />
+    
+    </div>;
 }
 
 export default App;
