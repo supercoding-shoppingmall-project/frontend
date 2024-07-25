@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "../components/Alert";
 import ClassNames from "./ClassNames";
+import FormatToKRW from "../utils/FormatToKRW";
 
 const ProductOptions = ({ SizeOption, MockData }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[2]);
@@ -9,7 +10,10 @@ const ProductOptions = ({ SizeOption, MockData }) => {
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
-      <p className="text-3xl tracking-tight text-gray-900">{MockData.price}</p>
+      <p className="text-3xl tracking-tight text-gray-900">
+        {" "}
+        {FormatToKRW(MockData.price)}
+      </p>
 
       <form className="mt-10">
         <div className="mt-10">

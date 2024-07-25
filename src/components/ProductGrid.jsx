@@ -1,4 +1,6 @@
 import React from "react";
+import FormatToKRW from "../utils/FormatToKRW";
+
 import { Link } from "react-router-dom";
 
 const ProductGrid = ({ MockDatas }) => {
@@ -21,7 +23,7 @@ const ProductGrid = ({ MockDatas }) => {
               </Link>
               <h3 className="mt-4 text-sm text-gray-700">{MockData.name}</h3>
               <p className="mt-1 text-lg font-medium text-gray-900">
-                {MockData.price}
+                {FormatToKRW(MockData.price)}
               </p>
             </div>
           ))}
