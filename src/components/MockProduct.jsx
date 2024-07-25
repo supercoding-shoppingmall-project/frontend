@@ -1,7 +1,17 @@
 // mockData.js
+
+// 원화로 변환하는 함수
+function formatToKRW(amount) {
+  return new Intl.NumberFormat("ko-KR", {
+    style: "currency",
+    currency: "KRW",
+  }).format(amount);
+}
+
+// 목업데이터
 export const MockProduct = {
   name: "Basic Tee 6-Pack",
-  price: "$192",
+  price: formatToKRW(192000),
   href: "#",
   breadcrumbs: [
     { id: 1, name: "Men", href: "#" },
