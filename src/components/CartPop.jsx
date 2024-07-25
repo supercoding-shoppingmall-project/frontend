@@ -14,7 +14,7 @@ const products = [
     id: 1,
     name: "Throwback Hip Bag",
     href: "#",
-    color: "Salmon",
+    size: "Salmon",
     price: "$90.00",
     quantity: 1,
     imageSrc:
@@ -26,7 +26,7 @@ const products = [
     id: 2,
     name: "Medium Stuff Satchel",
     href: "#",
-    color: "Blue",
+    size: "Blue",
     price: "$32.00",
     quantity: 1,
     imageSrc:
@@ -57,7 +57,7 @@ export default function Example() {
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                 <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                   <div className="flex items-start justify-between">
-                    <DialogTitle className="text-lg font-medium text-gray-900">
+                    <DialogTitle className="text-lg font-semibold text-gray-900">
                       장바구니
                     </DialogTitle>
                     <div className="ml-3 flex h-7 items-center">
@@ -98,7 +98,7 @@ export default function Example() {
                                   <p className="ml-4">{product.price}</p>
                                 </div>
                                 <p className="mt-1 text-sm text-gray-500">
-                                  {product.color}
+                                  {product.size}
                                 </p>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
@@ -128,15 +128,12 @@ export default function Example() {
                     <p>총 가격</p>
                     <p>$262.00</p>
                   </div>
-                  <p className="mt-0.5 text-sm text-gray-500">
-                    Shipping and taxes calculated at checkout.
-                  </p>
                   <div className="mt-6">
                     <a
                       href="#"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                      className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
                     >
-                      Checkout
+                      구매하기
                     </a>
                   </div>
                   <div className="mt-6 flex justify-center text-center text-sm text-gray-500">

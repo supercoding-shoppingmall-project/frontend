@@ -1,17 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Dialog,
-  DialogPanel,
-  Disclosure,
-  DisclosureButton,
-  DisclosurePanel,
-  Popover,
-  PopoverButton,
-  PopoverGroup,
-  PopoverPanel,
-} from "@headlessui/react";
+import { Link } from "react-router-dom";
+import { PopoverGroup } from "@headlessui/react";
 
 export default function Example() {
   return (
