@@ -7,9 +7,9 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { XMarkIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
-const products = [
+const initialProducts = [
   {
     id: 1,
     name: "Throwback Hip Bag",
@@ -37,23 +37,48 @@ const products = [
   // More products...
 ];
 
-export default function Example() {
+export default function CartPop({ showPurchaseButton = true }) {
   const [open, setOpen] = useState(true);
+  const [products, setProducts] = useState(initialProducts);
+
+  const handleRemove = (productId) => {
+    setProducts(products.filter((product) => product.id !== productId));
+  };
+
+  const handleQuantityChange = (productId, delta) => {
+    setProducts(
+      products.map((product) =>
+        product.id === productId
+          ? { ...product, quantity: Math.max(1, product.quantity + delta) }
+          : product
+      )
+    );
+  };
+
+  const calculateTotalPrice = () => {
+    return products.reduce(
+      (total, product) =>
+        total + parseFloat(product.price.slice(1)) * product.quantity,
+      0
+    );
+  };
+
+  const formatPrice = (price) => {
+    return `$${Math.round(price)}`;
+  };
 
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
-      <DialogBackdrop
-        transition
-        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
-      />
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      className="relative z-10"
+    >
+      <DialogBackdrop className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
 
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-            <DialogPanel
-              transition
-              className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
-            >
+            <DialogPanel className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out sm:duration-700">
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                 <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                   <div className="flex items-start justify-between">
@@ -102,13 +127,37 @@ export default function Example() {
                                 </p>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
-                                <p className="text-gray-500">
-                                  {product.quantity} 개
-                                </p>
+                                <div className="flex items-center">
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleQuantityChange(product.id, -1);
+                                    }}
+                                    className="text-gray-500 hover:text-gray-700"
+                                  >
+                                    <MinusIcon className="h-5 w-5" />
+                                  </button>
+                                  <p className="mx-2 text-gray-500">
+                                    {product.quantity} 개
+                                  </p>
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleQuantityChange(product.id, 1);
+                                    }}
+                                    className="text-gray-500 hover:text-gray-700"
+                                  >
+                                    <PlusIcon className="h-5 w-5" />
+                                  </button>
+                                </div>
 
                                 <div className="flex">
                                   <button
                                     type="button"
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      handleRemove(product.id);
+                                    }}
                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                   >
                                     Remove
@@ -123,32 +172,22 @@ export default function Example() {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                {/* 총 가격 */}
+                <div className="border-t border-gray-200 py-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
-                    <p>총 가격</p>
-                    <p>$262.00</p>
+                    <p className="ml-4">총 가격</p>
+                    <p className="mr-4">{formatPrice(calculateTotalPrice())}</p>
                   </div>
-                  <div className="mt-6">
-                    <a
-                      href="#"
-                      className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
-                    >
-                      구매하기
-                    </a>
-                  </div>
-                  <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                    <p>
-                      or{" "}
+                  {showPurchaseButton && (
+                    <div className="mt-6 flex justify-center">
                       <button
                         type="button"
-                        onClick={() => setOpen(false)}
-                        className="font-medium text-indigo-600 hover:text-indigo-500"
+                        className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
                       >
-                        Continue Shopping
-                        <span aria-hidden="true"> &rarr;</span>
+                        구매하기
                       </button>
-                    </p>
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </DialogPanel>
