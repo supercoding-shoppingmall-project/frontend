@@ -1,45 +1,15 @@
 import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
-import { StarIcon } from "@heroicons/react/20/solid";
 import Alert from "../components/Alert";
 import ClassNames from "./ClassNames";
 
-const ProductOptions = ({ MockProduct, Reviews }) => {
-  const [selectedColor, setSelectedColor] = useState(MockProduct.colors[0]);
-  const [selectedSize, setSelectedSize] = useState(MockProduct.sizes[2]);
+const ProductOptions = ({ SizeOption, MockData }) => {
+  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[2]);
   const [showAlert, setShowAlert] = useState(false);
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
-      <h2 className="sr-only">Product information</h2>
-      <p className="text-3xl tracking-tight text-gray-900">
-        {MockProduct.price}
-      </p>
-
-      <div className="mt-6">
-        <h3 className="sr-only">Reviews</h3>
-        <div className="flex items-center">
-          <div className="flex items-center">
-            {[0, 1, 2, 3, 4].map((rating) => (
-              <StarIcon
-                key={rating}
-                className={ClassNames(
-                  Reviews.average > rating ? "text-gray-900" : "text-gray-200",
-                  "h-5 w-5 flex-shrink-0"
-                )}
-                aria-hidden="true"
-              />
-            ))}
-          </div>
-          <p className="sr-only">{Reviews.average} out of 5 stars</p>
-          <a
-            href={Reviews.href}
-            className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            {Reviews.totalCount} reviews
-          </a>
-        </div>
-      </div>
+      <p className="text-3xl tracking-tight text-gray-900">{MockData.price}</p>
 
       <form className="mt-10">
         <div className="mt-10">
@@ -58,7 +28,7 @@ const ProductOptions = ({ MockProduct, Reviews }) => {
               onChange={setSelectedSize}
               className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4"
             >
-              {MockProduct.sizes.map((size) => (
+              {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
                   value={size}
