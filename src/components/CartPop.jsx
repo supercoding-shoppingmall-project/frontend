@@ -1,5 +1,6 @@
 "use client";
 
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
   Dialog,
@@ -180,12 +181,14 @@ export default function CartPop({ showPurchaseButton = true }) {
                   </div>
                   {showPurchaseButton && (
                     <div className="mt-6 flex justify-center">
-                      <button
-                        type="button"
-                        className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
-                      >
-                        구매하기
-                      </button>
+                      <Link to={"/PayPage"}>
+                        <button
+                          type="button"
+                          className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
+                        >
+                          구매하기
+                        </button>
+                      </Link>
                     </div>
                   )}
                 </div>
