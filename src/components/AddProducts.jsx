@@ -1,4 +1,6 @@
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import AddImages from "./AddImages";
+import ProductDescription from "./ProductDescription";
+import SizeQuantity from "./SizeQuantity";
 
 export default function AddProducts() {
   return (
@@ -10,96 +12,7 @@ export default function AddProducts() {
           </h2>
 
           {/* 이미지 등록 */}
-          <div className="mt-10">
-            <label
-              htmlFor="photo"
-              className="block font-bold leading-6 text-gray-900"
-            >
-              이미지 등록
-            </label>
-            <div>
-              <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 col-span-2">
-                  <div className="text-center">
-                    <PhotoIcon
-                      aria-hidden="true"
-                      className="mx-auto h-12 w-12 text-gray-300"
-                    />
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                      >
-                        <span>이미지 등록하기</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                        />
-                      </label>
-                      <p className="pl-1">또는 드래그 앤 드롭</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">
-                      10MB 이하 PNG, JPG, GIF
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 col-span-2">
-                  <div className="text-center">
-                    <PhotoIcon
-                      aria-hidden="true"
-                      className="mx-auto h-12 w-12 text-gray-300"
-                    />
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                      >
-                        <span>이미지 등록하기</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                        />
-                      </label>
-                      <p className="pl-1">또는 드래그 앤 드롭</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">
-                      10MB 이하 PNG, JPG, GIF
-                    </p>
-                  </div>
-                </div>
-                <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 col-span-2">
-                  <div className="text-center">
-                    <PhotoIcon
-                      aria-hidden="true"
-                      className="mx-auto h-12 w-12 text-gray-300"
-                    />
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label
-                        htmlFor="file-upload"
-                        className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
-                      >
-                        <span>이미지 등록하기</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          className="sr-only"
-                        />
-                      </label>
-                      <p className="pl-1">또는 드래그 앤 드롭</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">
-                      10MB 이하 PNG, JPG, GIF
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <AddImages />
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
             {/* 카테고리 선택 */}
@@ -115,7 +28,7 @@ export default function AddProducts() {
                   id="category"
                   name="category"
                   autoComplete="category-name"
-                  className="block w-full rounded-md border-0 px-2 py-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6 focus-visible:outline-none"
+                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                 >
                   <option>샌들 & 슬리퍼</option>
                   <option>러닝</option>
@@ -144,7 +57,7 @@ export default function AddProducts() {
                     name="productName"
                     type="text"
                     autoComplete="productName"
-                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
+                    className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                   />
                 </div>
               </div>
@@ -152,163 +65,12 @@ export default function AddProducts() {
           </div>
 
           <div className="mt-10">
-            {/* 사이즈 선택 */}
             <div className="block font-bold leading-6 text-gray-900 sm:col-span-1">
               사이즈 및 개수
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-6">
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    240
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="250"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    250
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="250"
-                      name="250"
-                      type="number"
-                      autoComplete="250"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    260
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    270
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    280
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    290
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    300
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2 col-span-1">
-                <div>
-                  <label
-                    htmlFor="240"
-                    className="block font-bold leading-6 text-gray-900"
-                  >
-                    310
-                  </label>
-                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                    <input
-                      id="240"
-                      name="240"
-                      type="number"
-                      autoComplete="240"
-                      className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-4 lg:grid-cols-8">
+              {/* 사이즈 선택 */}
+              <SizeQuantity />
             </div>
           </div>
 
@@ -328,7 +90,7 @@ export default function AddProducts() {
                     name="price"
                     type="number"
                     autoComplete="price"
-                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
+                    className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                   />
                 </div>
               </div>
@@ -349,7 +111,7 @@ export default function AddProducts() {
                     name="closingDate"
                     type="date"
                     autoComplete="closingDate"
-                    className="block flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
+                    className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                   />
                 </div>
               </div>
@@ -357,24 +119,7 @@ export default function AddProducts() {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div className="col-span-full">
-              <label
-                htmlFor="desc"
-                className="block font-semibold leading-7 text-gray-900"
-              >
-                상품 설명
-              </label>
-              <div className="mt-2">
-                <textarea
-                  id="desc"
-                  name="desc"
-                  placeholder="상품 설명을 최대한 자세하게 적어주세요"
-                  rows={3}
-                  className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                  defaultValue={""}
-                />
-              </div>
-            </div>
+            <ProductDescription />
           </div>
         </div>
       </div>
