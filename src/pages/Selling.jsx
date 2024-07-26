@@ -1,7 +1,7 @@
 import React from "react";
 import MyProducts from "../components/MyProducts";
-import AddProducts from "../components/AddProducts";
 import { Link } from "react-router-dom";
+import SortMyProducts from "../components/SortMyProducts";
 
 const Selling = () => {
   return (
@@ -11,6 +11,7 @@ const Selling = () => {
           상품 등록하기
         </button>
       </Link>
+      <SortMyProducts />
       <MyProducts />
     </div>
   );
