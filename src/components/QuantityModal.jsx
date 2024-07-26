@@ -6,44 +6,12 @@ import {
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
-  Radio,
-  RadioGroup,
 } from "@headlessui/react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-
-const product = {
-  name: "Basic Tee 6-Pack ",
-  price: "$192",
-  rating: 3.9,
-  reviewCount: 117,
-  href: "#",
-  imageSrc:
-    "https://tailwindui.com/img/ecommerce-images/product-quick-preview-02-detail.jpg",
-  imageAlt: "Two each of gray, white, and black shirts arranged on table.",
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "XXS", inStock: true },
-    { name: "XS", inStock: true },
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-    { name: "XXL", inStock: true },
-    { name: "XXXL", inStock: false },
-  ],
-};
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import SizeQuantity from "./SizeQuantity";
 
 export default function QuantityModal({ isClicked, setIsClicked }) {
   const [open, setOpen] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2]);
 
   useEffect(() => {
     if (isClicked) {
@@ -94,158 +62,7 @@ export default function QuantityModal({ isClicked, setIsClicked }) {
                 {/* 사이즈별 재고 변경 */}
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="240"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          240
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="240"
-                            name="240"
-                            type="number"
-                            autoComplete="240"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="250"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          250
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="250"
-                            name="250"
-                            type="number"
-                            autoComplete="250"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="260"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          260
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="260"
-                            name="260"
-                            type="number"
-                            autoComplete="260"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="270"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          270
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="270"
-                            name="270"
-                            type="number"
-                            autoComplete="270"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="280"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          280
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="280"
-                            name="280"
-                            type="number"
-                            autoComplete="280"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="290"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          290
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="290"
-                            name="290"
-                            type="number"
-                            autoComplete="290"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="300"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          300
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="300"
-                            name="300"
-                            type="number"
-                            autoComplete="300"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-2 col-span-1">
-                      <div>
-                        <label
-                          htmlFor="310"
-                          className="block font-bold leading-6 text-gray-900"
-                        >
-                          310
-                        </label>
-                        <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-xs">
-                          <input
-                            id="310"
-                            name="310"
-                            type="number"
-                            autoComplete="310"
-                            className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    <SizeQuantity />
                   </div>
                 </fieldset>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row sm:justify-end sm:px-6">
