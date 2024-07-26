@@ -15,12 +15,12 @@ const ProductInfo = ({ MockData }) => {
           </ul>
         </div>
       </div>
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <h2 className="text-sm font-medium text-gray-900">상품 상세 정보</h2>
         <div className="mt-4 space-y-6">
           <p className="text-sm text-gray-600">{MockData.details}</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
