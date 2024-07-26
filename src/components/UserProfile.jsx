@@ -1,4 +1,4 @@
-import React from "react";
+import React, { link } from "react";
 import User from "./User";
 
 const UserProfile = () => {
@@ -114,6 +114,7 @@ const UserProfile = () => {
               </div>
             </div>
           </div>
+          {/* <link to={<Modal />}> */}
           <div className="text-right mt-10">
             <button
               type="submit"
@@ -122,6 +123,7 @@ const UserProfile = () => {
               회원탈퇴
             </button>
           </div>
+          {/* </link> */}
         </div>
       </div>
     </>
