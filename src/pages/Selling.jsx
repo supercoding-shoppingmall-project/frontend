@@ -1,7 +1,7 @@
 import React from "react";
-import MyProducts from "../components/MyProducts";
 import { Link } from "react-router-dom";
-import SortMyProducts from "../components/SortMyProducts";
+import SortMyProducts from "../components/myproducts/SortMyProducts";
+import MyProducts from "../components/myproducts/MyProducts";
 
 const Selling = () => {
   return (

@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { PencilIcon } from "@heroicons/react/24/outline";
-import SizeQuantity from "./SizeQuantity";
+import SizeQuantity from "../addproduct/SizeQuantity";
 
 export default function QuantityModal({ isClicked, setIsClicked }) {
   const [open, setOpen] = useState(false);

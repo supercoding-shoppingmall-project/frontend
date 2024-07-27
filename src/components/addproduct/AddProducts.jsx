@@ -1,8 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import AddImages from "./AddImages";
-import ProductDescription from "./ProductDescription";
-import SizeQuantity from "./SizeQuantity";
 import { useState } from "react";
+import AddImages from "./AddImages";
+import SizeQuantity from "./SizeQuantity";
+import ProductDescription from "./ProductDescription";
 import AddProductsModal from "./AddProductsModal";
 
 export default function AddProducts() {
