@@ -3,6 +3,7 @@ import AddImages from "./AddImages";
 import SizeQuantity from "./SizeQuantity";
 import ProductDescription from "./ProductDescription";
 import AddProductsModal from "./AddProductsModal";
+import { CATEGORIES } from "./AddData";
 
 export default function AddProducts() {
   const [cancelClicked, setCancelClicked] = useState(false);
@@ -17,16 +18,7 @@ export default function AddProducts() {
     setAddClicked(true);
   };
 
-  const categories = [
-    { id: "category1", value: "샌들 & 슬리퍼" },
-    { id: "category2", value: "러닝" },
-    { id: "category3", value: "축구" },
-    { id: "category4", value: "농구" },
-    { id: "category5", value: "트레이닝 & 짐" },
-    { id: "category6", value: "골프" },
-    { id: "category7", value: "테니스" },
-    { id: "category8", value: "기타" },
-  ];
+  
   return (
     <>
       <form
@@ -58,7 +50,7 @@ export default function AddProducts() {
                     name="category"
                     className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                   >
-                    {categories.map((category) => (
+                    {CATEGORIES.map((category) => (
                       <option key={category.id} value={category.value}>
                         {category.value}
                       </option>

@@ -1,20 +1,10 @@
 import React from "react";
-
-const sizes = [
-  { id: "size240", size: "240" },
-  { id: "size250", size: "250" },
-  { id: "size260", size: "260" },
-  { id: "size270", size: "270" },
-  { id: "size280", size: "280" },
-  { id: "size290", size: "290" },
-  { id: "size300", size: "300" },
-  { id: "size310", size: "310" },
-];
+import { SIZES } from "./AddData";
 
 const SizeQuantity = () => {
   return (
     <>
-      {sizes.map((size) => (
+      {SIZES.map((size) => (
         <div className="mt-2 col-span-1" key={size.id}>
           <label htmlFor={size.size} className="block leading-6 text-gray-900">
             {size.size}
