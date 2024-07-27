@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import { Link } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -95,10 +95,11 @@ export default function Login() {
               </button>
             </div>
           </form>
-
-          <p className="mt-10 text-center text-sm text-gray-500">
-            회원가입이 필요하신가요?
-          </p>
+          <Link to="/signup">
+            <p className="mt-10 text-center text-sm text-gray-500">
+              회원가입이 필요하신가요?
+            </p>
+          </Link>
         </div>
       </div>
     </>
