@@ -32,8 +32,11 @@ const ProductDescription = () => {
       <ul className="mt-2 grid grid-cols-8 gap-x-6 gap-y-6">
         {/* 동적으로 li 추가하기 */}
         {inputs.map((input, index) => (
-          <li className="col-span-5 flex align-center" key={index}>
-            <div className="rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 block w-2/3">
+          <li
+            className="col-span-8 sm:col-span-7 lg:col-span-5 flex align-center"
+            key={index}
+          >
+            <div className="rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 block w-full lg:w-2/3">
               <input
                 id="price"
                 name="price"
@@ -56,20 +59,19 @@ const ProductDescription = () => {
                   className="h-8 w-8 text-indigo-500"
                 />
               </button>
-              {/* li가 1개일때를 제외하고 - 버튼 보이게 */}
-              {index > 0 && (
-                // - 버튼 클릭시 li 삭제
-                <button
-                  type="button"
-                  className="ml-3"
-                  onClick={() => removeInputHandle(index)}
-                >
-                  <MinusCircleIcon
-                    aria-hidden="true"
-                    className="h-8 w-8 text-indigo-500"
-                  />
-                </button>
-              )}
+              {/* - 버튼 클릭시 li 삭제 */}
+              <button
+                type="button"
+                className={`ml-3 ${
+                  index === 0 ? `opacity-0 pointer-events-none` : ""
+                } `}
+                onClick={() => removeInputHandle(index)}
+              >
+                <MinusCircleIcon
+                  aria-hidden="true"
+                  className="h-8 w-8 text-indigo-500"
+                />
+              </button>
             </div>
           </li>
         ))}
