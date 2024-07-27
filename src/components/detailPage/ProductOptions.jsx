@@ -1,4 +1,3 @@
-// src/components/detailPage/ProductOptions.jsx
 import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
@@ -22,6 +21,8 @@ const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
       imageAlt: MockData.imageAlt,
     });
     setShowAlert(true);
+    // 2초 후에 showAlert를 false로 설정
+    setTimeout(() => setShowAlert(false), 2000);
   };
 
   return (
