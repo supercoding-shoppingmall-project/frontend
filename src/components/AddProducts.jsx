@@ -8,7 +8,6 @@ import AddProductsModal from "./AddProductsModal";
 export default function AddProducts() {
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
-  // const [productData, setProductData] = useState({});
 
   const cancelHandle = () => {
     setCancelClicked(true);
@@ -19,6 +18,16 @@ export default function AddProducts() {
     setAddClicked(true);
   };
 
+  const categories = [
+    { id: "category1", value: "샌들 & 슬리퍼" },
+    { id: "category2", value: "러닝" },
+    { id: "category3", value: "축구" },
+    { id: "category4", value: "농구" },
+    { id: "category5", value: "트레이닝 & 짐" },
+    { id: "category6", value: "골프" },
+    { id: "category7", value: "테니스" },
+    { id: "category8", value: "기타" },
+  ];
   return (
     <>
       <form
@@ -39,7 +48,7 @@ export default function AddProducts() {
               {/* 카테고리 선택 */}
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="size"
+                  htmlFor="category"
                   className="block font-bold leading-6 text-gray-900"
                 >
                   카테고리
@@ -48,17 +57,13 @@ export default function AddProducts() {
                   <select
                     id="category"
                     name="category"
-                    autoComplete="category-name"
                     className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                   >
-                    <option>샌들 & 슬리퍼</option>
-                    <option>러닝</option>
-                    <option>축구</option>
-                    <option>농구</option>
-                    <option>트레이닝 & 짐</option>
-                    <option>골프</option>
-                    <option>테니스</option>
-                    <option>기타</option>
+                    {categories.map((category) => (
+                      <option key={category.id} value={category.value}>
+                        {category.value}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>
@@ -139,12 +144,14 @@ export default function AddProducts() {
               </div>
             </div>
 
+            {/* 상품 상세 설명 */}
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               <ProductDescription />
             </div>
           </div>
         </div>
 
+        {/* 버튼 */}
         <div className="mt-6 flex items-center justify-end gap-x-6">
           <button
             type="button"
@@ -162,6 +169,7 @@ export default function AddProducts() {
         </div>
       </form>
 
+      {/* 버튼 클릭 모달 */}
       <AddProductsModal
         cancelClicked={cancelClicked}
         setCancelClicked={setCancelClicked}
