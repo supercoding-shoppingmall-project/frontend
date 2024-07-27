@@ -11,20 +11,22 @@ import UserProfile from "./components/userprofile/UserProfile";
 // import CartPage from "./pages/CartPage";
 import Selling from "./pages/Selling";
 import AddProducts from "./components/addproduct/AddProducts";
+import CartPage from "./components/CartPage";
 
 function App() {
   return (
     <BrowserRouter>
       <Header />
-      {/* <CartPage /> */}
+
       <Routes>
-        <Route path="/Cart" element={<CartPop />} />
-        <Route path="/sell" element={<Selling />} />
-        <Route path="/sell/add" element={<AddProducts />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/cart" element={<CartPop />} />
+        <Route path="/cartpage" element={<CartPage />} />
+        <Route path="/sell" element={<Selling />} />
+        <Route path="/sell/add" element={<AddProducts />} />
         <Route path="/userprofile" element={<UserProfile />} />
       </Routes>
       <Footer />
