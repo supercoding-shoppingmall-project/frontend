@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
-import Alert from "../components/Alert";
+import Alert from "./Alert";
 import ClassNames from "./ClassNames";
-import FormatToKRW from "../utils/FormatToKRW";
+import FormatToKRW from "../../utils/FormatToKRW";
 
 const ProductOptions = ({ SizeOption, MockData }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[2]);
   const [showAlert, setShowAlert] = useState(false);
+  const [quantity, setQuantity] = useState(1);
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
-        {" "}
         {FormatToKRW(MockData.price)}
       </p>
 
@@ -75,6 +75,24 @@ const ProductOptions = ({ SizeOption, MockData }) => {
               ))}
             </RadioGroup>
           </fieldset>
+        </div>
+
+        <div className="flex items-center justify-between mt-6">
+          <a
+            href="#"
+            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+          >
+            구매 수량
+          </a>
+        </div>
+        <div className="mt-2">
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+            className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            min="1"
+          />
         </div>
 
         <button

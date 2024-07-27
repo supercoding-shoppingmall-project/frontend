@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Pagination from "../components/Pagination";
-import ProductGrid from "../components/ProductGrid";
-import MockDatas from "../components/MockDatas";
+import Pagination from "../components/tools/Pagination";
+import ProductGrid from "../components/mainPage/ProductGrid";
+import MockDatas from "../components/mockData/MockDatas";
 
 const itemPerPage = 4;
 

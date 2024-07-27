@@ -1,10 +1,11 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ImageGallery from "../components/ImageGallery";
-import ProductInfo from "../components/ProductInfo";
-import ProductOptions from "../components/ProductOption";
-import MockDatas from "../components/MockDatas";
-import SizeOption from "../components/SizeOption";
+import ImageGallery from "../components/mockData/ImageGallery";
+import ProductInfo from "../components/detailPage/ProductInfo";
+import ProductOptions from "../components/detailPage/ProductOptions";
+import MockDatas from "../components/mockData/MockDatas";
+import SizeOption from "../components/detailPage/SizeOption";
+import DetailDescription from "../components/detailPage/DetailDescription";
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -26,6 +27,7 @@ export default function DetailPage() {
           </div>
           <ProductOptions SizeOption={SizeOption} MockData={product} />
           <ProductInfo MockData={product} />
+          <DetailDescription />
         </div>
       </div>
     </div>

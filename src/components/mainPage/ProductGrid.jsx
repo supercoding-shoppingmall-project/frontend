@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import FormatToKRW from "../utils/FormatToKRW";
+import FormatToKRW from "../../utils/FormatToKRW";
 import { Link } from "react-router-dom";
 
 const ProductGrid = ({ MockDatas, currentPage, itemsPerPage }) => {

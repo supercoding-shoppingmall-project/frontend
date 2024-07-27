@@ -1,7 +1,6 @@
 // 목업데이터
 const SizeOption = {
   sizes: [
-    { name: "230", inStock: true },
     { name: "240", inStock: true },
     { name: "250", inStock: true },
     { name: "260", inStock: true },
