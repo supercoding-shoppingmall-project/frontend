@@ -85,9 +85,11 @@ export default function Example() {
             </svg>
           </Link>
 
-          <button className="mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6">
-            판매하기
-          </button>
+          <Link to="/sell">
+            <button className="mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6">
+              판매하기
+            </button>
+          </Link>
           <Link
             to="/login"
             className="ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
