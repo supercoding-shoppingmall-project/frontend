@@ -1,13 +1,13 @@
+// src/pages/DetailPage.jsx
 import React from "react";
 import { useParams } from "react-router-dom";
 import ImageGallery from "../components/mockData/ImageGallery";
 import ProductInfo from "../components/detailPage/ProductInfo";
 import ProductOptions from "../components/detailPage/ProductOptions";
-import MockDatas from "../components/mockData/MockDatas";
-import SizeOption from "../components/detailPage/SizeOption";
 import DetailDescription from "../components/detailPage/DetailDescription";
+import SizeOption from "../components/detailPage/SizeOption";
 
-export default function DetailPage() {
+export default function DetailPage({ MockDatas, addToCart }) {
   const { id } = useParams();
   const product = MockDatas.find((product) => product.id.toString() === id);
 
@@ -25,7 +25,11 @@ export default function DetailPage() {
               {product.name}
             </h1>
           </div>
-          <ProductOptions SizeOption={SizeOption} MockData={product} />
+          <ProductOptions
+            SizeOption={SizeOption}
+            MockData={product}
+            addToCart={addToCart}
+          />
           <ProductInfo MockData={product} />
           <DetailDescription />
         </div>
