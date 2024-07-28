@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
 
-const ProductDescription = () => {
+const ProductDescription = ({ onDescriptionsChange }) => {
   const [inputs, setInputs] = useState(["", ""]);
 
   const inputHandleChange = (index, value) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   const addInputHandle = (index) => {
     const newInputs = [...inputs];
     newInputs.splice(index + 1, 0, "");
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   const removeInputHandle = (index) => {
     const newInputs = inputs.filter((_, i) => i !== index);
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   return (
@@ -38,10 +41,10 @@ const ProductDescription = () => {
           >
             <div className="rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 block w-full lg:w-2/3">
               <input
-                id="price"
-                name="price"
+                id="description"
+                name="description"
                 type="text"
-                autoComplete="price"
+                autoComplete="description"
                 className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                 value={input}
                 onChange={(e) => inputHandleChange(index, e.target.value)}
