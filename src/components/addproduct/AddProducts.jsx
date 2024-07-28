@@ -3,22 +3,59 @@ import AddImages from "./AddImages";
 import SizeQuantity from "./SizeQuantity";
 import ProductDescription from "./ProductDescription";
 import AddProductsModal from "./AddProductsModal";
-import { CATEGORIES } from "./AddData";
+import { CATEGORIES, SIZES } from "./AddData";
+import { useInputValue } from "../../hooks/useInputValue";
 
 export default function AddProducts() {
+  const [category, setCategory] = useInputValue("");
+  const [productName, setProductName] = useInputValue("");
+  const [price, setPrice] = useInputValue("");
+  const [saledate, setSaledate] = useInputValue("");
+  const [descriptions, setDescriptions] = useState([]);
+
+  // 취소 버튼 클릭여부
   const [cancelClicked, setCancelClicked] = useState(false);
+  // 상품등록 버튼 클릭여부
   const [addClicked, setAddClicked] = useState(false);
+
+  // 판매 등록 날짜 (오늘)
+  const today = new Date().toISOString().split("T")[0];
 
   const cancelHandle = () => {
     setCancelClicked(true);
   };
 
-  const addHandle = (event) => {
+  const addHandle = async (event) => {
     event.preventDefault();
     setAddClicked(true);
+
+    const addProductsFormData = new FormData(event.target);
+
+    const data = {
+      productImage: addProductsFormData.get("productImage"),
+      categorygory: addProductsFormData.get("category"),
+      productName: addProductsFormData.get("productName"),
+      sizes: [],
+      quantity2: [],
+      price: addProductsFormData.get("price"),
+      saledate: addProductsFormData.get("saledate"),
+      registrattiondate: addProductsFormData.get("registrattiondate"),
+      description: [],
+    };
+
+    SIZES.forEach((size) => {
+      const quantity = addProductsFormData.get(`${size.size}_quantity`);
+      if (quantity) {
+        data.sizes.push(size.size);
+        data.quantity2.push(quantity);
+      }
+    });
+
+    data.description = descriptions;
+
+    console.log(data);
   };
 
-  
   return (
     <>
       <form
@@ -49,6 +86,8 @@ export default function AddProducts() {
                     id="category"
                     name="category"
                     className="block w-full rounded-md border-0 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
+                    value={category}
+                    onChange={setCategory}
                   >
                     {CATEGORIES.map((category) => (
                       <option key={category.id} value={category.value}>
@@ -75,6 +114,8 @@ export default function AddProducts() {
                       type="text"
                       autoComplete="productName"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
+                      value={productName}
+                      onChange={setProductName}
                     />
                   </div>
                 </div>
@@ -87,7 +128,7 @@ export default function AddProducts() {
               </div>
               <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-4 lg:grid-cols-8">
                 {/* 사이즈 선택 */}
-                <SizeQuantity />
+                <SizeQuantity sizes={SIZES} />
               </div>
             </div>
 
@@ -108,15 +149,17 @@ export default function AddProducts() {
                       type="number"
                       autoComplete="price"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
+                      value={price}
+                      onChange={setPrice}
                     />
                   </div>
                 </div>
               </div>
 
-              {/* 날짜 */}
+              {/* 판매 마감 날짜 */}
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="closingDate"
+                  htmlFor="saledate"
                   className="block font-bold leading-6 text-gray-900"
                 >
                   판매 마감
@@ -124,11 +167,36 @@ export default function AddProducts() {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
-                      id="closingDate"
-                      name="closingDate"
+                      id="saledate"
+                      name="saledate"
                       type="date"
-                      autoComplete="closingDate"
+                      min={today}
+                      autoComplete="saledate"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
+                      value={saledate}
+                      onChange={setSaledate}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* 등록 날짜 */}
+              <div className="sm:col-span-2 hidden">
+                <label
+                  htmlFor="registrattiondate"
+                  className="block font-bold leading-6 text-gray-900"
+                >
+                  판매 등록일
+                </label>
+                <div className="mt-2">
+                  <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md">
+                    <input
+                      id="registrattiondate"
+                      type="text"
+                      name="registrattiondate"
+                      className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 sm:text-sm sm:leading-6 h-10"
+                      value={today}
+                      readOnly
                     />
                   </div>
                 </div>
@@ -137,7 +205,7 @@ export default function AddProducts() {
 
             {/* 상품 상세 설명 */}
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-              <ProductDescription />
+              <ProductDescription onDescriptionsChange={setDescriptions} />
             </div>
           </div>
         </div>
