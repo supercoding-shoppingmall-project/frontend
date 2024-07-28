@@ -7,11 +7,13 @@ import {
 } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
-export default function Madal() {
-  const [open, setOpen] = useState(true);
-
+export default function Modal({ open, setOpen }) {
   return (
-    <Dialog open={open} onClose={setOpen} className="relative z-10">
+    <Dialog
+      open={open}
+      onClose={() => setOpen(false)}
+      className="relative z-10"
+    >
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -43,7 +45,7 @@ export default function Madal() {
                     <br />
                     비밀번호를 입력해 주세요.
                   </p>
-                  <div className="rounded-md shadow-sm ring-1  ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
+                  <div className="rounded-md ring-1 ring-gray-300  ">
                     <input
                       id="password"
                       name="password"
