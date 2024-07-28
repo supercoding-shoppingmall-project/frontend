@@ -1,5 +1,6 @@
 import React from "react";
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
 
 const User = () => {
   return (
@@ -52,15 +53,21 @@ const User = () => {
           </div>
         </div>
       </div>
-      <div className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 ">
-        내 프로필
-      </div>
-      <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
-        장바구니 상품 조회
-      </div>
-      <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
-        구매 목록 조회
-      </div>
+      <Link to="/userprofile">
+        <div className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 ">
+          내 프로필
+        </div>
+      </Link>
+      <Link to="/cartlist">
+        <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+          장바구니 상품 조회
+        </div>
+      </Link>
+      <Link to="/purchaselist">
+        <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+          구매 목록 조회
+        </div>
+      </Link>
     </div>
   );
 };
