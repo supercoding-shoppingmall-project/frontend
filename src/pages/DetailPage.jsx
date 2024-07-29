@@ -24,6 +24,7 @@ export default function DetailPage({ MockDatas, addToCart }) {
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {product.name}
             </h1>
+            +
           </div>
           <ProductOptions
             SizeOption={SizeOption}
