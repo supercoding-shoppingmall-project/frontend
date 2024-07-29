@@ -11,24 +11,26 @@ const ProductGrid = ({ MockDatas, currentPage, itemsPerPage }) => {
   };
 
   const sortedMockDatas = [...MockDatas].sort((a, b) => {
-    if (sortOption === "price-asc") {
-      return a.price - b.price;
-    } else if (sortOption === "price-desc") {
-      return b.price - a.price;
-    } else if (sortOption === "name-asc") {
-      return a.name.localeCompare(b.name);
-    } else if (sortOption === "name-desc") {
-      return b.name.localeCompare(a.name);
-    } else {
-      return 0;
+    switch (sortOption) {
+      case "price-asc":
+        return a.price - b.price;
+      case "price-desc":
+        return b.price - a.price;
+      case "name-asc":
+        return a.name.localeCompare(b.name);
+      case "name-desc":
+        return b.name.localeCompare(a.name);
+      default:
+        return 0;
     }
   });
 
-  // 선택한 페이지의 1번째 인덱스. 예) 현재 페이지 2, 페이지당 아이템 4 -> 4번 인덱스가 1번째 인덱스
+  // 선택한 페이지의 1번째 인덱스. 예) 현재 페이지 넘버 * 페이지당 아이템 4개 -> 4번 인덱스가 1번째 인덱스
   const startIndex = (currentPage - 1) * itemsPerPage;
-  // 마지막 인덱스
+  // 다음 페이지 1번째 인덱스
   const endIndex = startIndex + itemsPerPage;
   // 선택한 페이지에 펼쳐질 인덱스들
+  // 1번째 인덱스 ~ 다음 페이지 1번째 인덱스 바로 전까지.
   const currentProducts = sortedMockDatas.slice(startIndex, endIndex);
 
   return (
