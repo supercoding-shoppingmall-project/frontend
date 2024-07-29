@@ -7,14 +7,14 @@ const UserProfile = () => {
 
   return (
     <>
-      <div className="flex justify-center bg-white text-base py-40 px-80 border border-gray-300">
+      <div className="flex flex-col sm:flex-row justify-center bg-white text-base py-40 px-10 sm:px-80 border border-gray-300">
         <User />
-        <div className="w-2/3 ml-10 h-full flex flex-col border border-solid border-gray-200 p-6">
+        <div className="sm:w-2/3 sm:ml-10 w-full h-full flex flex-col border border-solid border-gray-200 p-6">
           <h2 className="text-base font-semibold leading-7 text-gray-900">
             개인 정보
           </h2>
           <div className="mt-10 grid grid-cols-1 gap-x-5 gap-y-5 sm:grid-cols-4">
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-4 col-span-4">
               <label
                 htmlFor="first-name"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -32,7 +32,7 @@ const UserProfile = () => {
               </div>
             </div>
 
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-4 col-span-4">
               <label
                 htmlFor="about"
                 className="block text-sm font-medium leading-6 text-gray-900"
@@ -63,7 +63,7 @@ const UserProfile = () => {
                 />
               </div>
             </div>
-            <div className="sm:col-span-4">
+            <div className="sm:col-span-4 col-span-4">
               <label className="block text-sm font-medium leading-6 text-gray-900">
                 성별
               </label>
