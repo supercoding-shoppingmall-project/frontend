@@ -8,11 +8,13 @@ const CartPage = ({
   updateQuantity,
   showPurchaseButton = true,
 }) => {
-  const handleQuantityChange = (productId, delta) => {
-    const product = cart.find((item) => item.id === productId);
+  const handleQuantityChange = (productId, size, delta) => {
+    const product = cart.find(
+      (item) => item.id === productId && item.size === size
+    );
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
-      updateQuantity(productId, newQuantity);
+      updateQuantity(productId, size, newQuantity);
     }
   };
 
@@ -31,7 +33,7 @@ const CartPage = ({
       <div className="mb-6">
         <ul role="list" className="-my-6 divide-y divide-gray-200">
           {cart.map((product) => (
-            <li key={product.id} className="flex py-6">
+            <li key={`${product.id}-${product.size}`} className="flex py-6">
               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                 <img
                   alt={product.imageAlt}
@@ -53,20 +55,18 @@ const CartPage = ({
                 <div className="flex flex-1 items-end justify-between text-sm">
                   <div className="flex items-center">
                     <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleQuantityChange(product.id, -1);
-                      }}
+                      onClick={() =>
+                        handleQuantityChange(product.id, product.size, -1)
+                      }
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <MinusIcon className="h-5 w-5" />
                     </button>
                     <p className="mx-2 text-gray-500">{product.quantity} 개</p>
                     <button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleQuantityChange(product.id, 1);
-                      }}
+                      onClick={() =>
+                        handleQuantityChange(product.id, product.size, 1)
+                      }
                       className="text-gray-500 hover:text-gray-700"
                     >
                       <PlusIcon className="h-5 w-5" />
@@ -76,10 +76,7 @@ const CartPage = ({
                   <div className="flex">
                     <button
                       type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        removeFromCart(product.id);
-                      }}
+                      onClick={() => removeFromCart(product.id, product.size)}
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
                       Remove

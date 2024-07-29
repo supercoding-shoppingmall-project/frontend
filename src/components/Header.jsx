@@ -68,7 +68,7 @@ export default function Example() {
           </Link>
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 lg:justify-end">
-          <Link to={"/CartPop"}>
+          <Link to={"/CartPage"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

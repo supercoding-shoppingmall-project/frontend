@@ -15,24 +15,39 @@ import Selling from "./pages/Selling";
 import AddProducts from "./components/addproduct/AddProducts";
 import CartList from "./components/userprofile/CartList";
 import PurchaseList from "./components/userprofile/PurchaseList";
-import CartPop from "./components/CartPop";
 import CartPage from "./components/CartPage";
 
 function App() {
   const [cart, setCart] = useState([]);
 
   const addToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
+    setCart((prevCart) => {
+      const existingProductIndex = prevCart.findIndex(
+        (item) => item.id === product.id && item.size === product.size
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedCart = [...prevCart];
+        updatedCart[existingProductIndex].quantity += product.quantity;
+        return updatedCart;
+      }
+
+      return [...prevCart, product];
+    });
   };
 
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+  const removeFromCart = (productId, size) => {
+    setCart((prevCart) =>
+      prevCart.filter((item) => !(item.id === productId && item.size === size))
+    );
   };
 
-  const updateQuantity = (productId, quantity) => {
+  const updateQuantity = (productId, size, newQuantity) => {
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
+        item.id === productId && item.size === size
+          ? { ...item, quantity: newQuantity }
+          : item
       )
     );
   };
