@@ -3,10 +3,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { SORT_OPTIONS } from "./MyData";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
+import ClassNames from "../detailPage/ClassNames";
 
 export default function SortMyProducts() {
   return (
@@ -34,7 +31,7 @@ export default function SortMyProducts() {
                     <MenuItem key={option.name}>
                       <a
                         href={option.href}
-                        className={classNames(
+                        className={ClassNames(
                           option.current
                             ? "font-medium text-gray-900"
                             : "text-gray-500",
