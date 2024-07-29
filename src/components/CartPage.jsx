@@ -1,61 +1,26 @@
-import { useState } from "react";
+import React from "react";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
+import FormatToKRW from "../utils/FormatToKRW";
 
-const initialProducts = [
-  {
-    id: 1,
-    name: "Throwback Hip Bag",
-    href: "#",
-    size: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Medium Stuff Satchel",
-    href: "#",
-    size: "Blue",
-    price: "$32.00",
-    quantity: 1,
-    imageSrc:
-      "https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
-    imageAlt:
-      "Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
-  },
-  // More products...
-];
-
-export default function CartPage({ showPurchaseButton = true }) {
-  const [products, setProducts] = useState(initialProducts);
-
-  const handleRemove = (productId) => {
-    setProducts(products.filter((product) => product.id !== productId));
-  };
-
+const CartPage = ({
+  cart,
+  removeFromCart,
+  updateQuantity,
+  showPurchaseButton = true,
+}) => {
   const handleQuantityChange = (productId, delta) => {
-    setProducts(
-      products.map((product) =>
-        product.id === productId
-          ? { ...product, quantity: Math.max(1, product.quantity + delta) }
-          : product
-      )
-    );
+    const product = cart.find((item) => item.id === productId);
+    if (product) {
+      const newQuantity = Math.max(1, product.quantity + delta);
+      updateQuantity(productId, newQuantity);
+    }
   };
 
   const calculateTotalPrice = () => {
-    return products.reduce(
-      (total, product) =>
-        total + parseFloat(product.price.slice(1)) * product.quantity,
+    return cart.reduce(
+      (total, product) => total + parseFloat(product.price) * product.quantity,
       0
     );
-  };
-
-  const formatPrice = (price) => {
-    return `$${Math.round(price)}`;
   };
 
   return (
@@ -65,7 +30,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       {/* 장바구니 요약 */}
       <div className="mb-6">
         <ul role="list" className="-my-6 divide-y divide-gray-200">
-          {products.map((product) => (
+          {cart.map((product) => (
             <li key={product.id} className="flex py-6">
               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                 <img
@@ -81,7 +46,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <h3>
                       <a href={product.href}>{product.name}</a>
                     </h3>
-                    <p className="ml-4">{product.price}</p>
+                    <p className="ml-4">{FormatToKRW(product.price)}</p>
                   </div>
                   <p className="mt-1 text-sm text-gray-500">{product.size}</p>
                 </div>
@@ -107,12 +72,13 @@ export default function CartPage({ showPurchaseButton = true }) {
                       <PlusIcon className="h-5 w-5" />
                     </button>
                   </div>
+
                   <div className="flex">
                     <button
                       type="button"
                       onClick={(e) => {
                         e.preventDefault();
-                        handleRemove(product.id);
+                        removeFromCart(product.id);
                       }}
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
@@ -130,7 +96,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       <div className="border-t border-gray-200 py-6">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>총 가격</p>
-          <p>{formatPrice(calculateTotalPrice())}</p>
+          <p>{FormatToKRW(calculateTotalPrice())}</p>
         </div>
         {showPurchaseButton && (
           <div className="mt-6 flex justify-center">
@@ -145,4 +111,6 @@ export default function CartPage({ showPurchaseButton = true }) {
       </div>
     </div>
   );
-}
+};
+
+export default CartPage;

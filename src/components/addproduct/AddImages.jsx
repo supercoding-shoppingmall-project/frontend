@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { PhotoIcon } from "@heroicons/react/24/solid";
 
-const AddImages = () => {
+const AddImages = ({ onImagesChange }) => {
   const imageSlots = ["productImage1", "productImage2", "productImage3"];
   const [imagePreviews, setImagePreviews] = useState({});
+  const [images, setImages] = useState({});
 
   const fileChangeHandle = (id, event) => {
     const file = event.target.files[0];
@@ -14,6 +15,11 @@ const AddImages = () => {
           ...prev,
           [id]: reader.result,
         }));
+        setImages((prev) => ({
+          ...prev,
+          [id]: file,
+        }));
+        onImagesChange({ ...images, [id]: file });
       };
       reader.readAsDataURL(file);
     }
@@ -47,7 +53,7 @@ const AddImages = () => {
                     <span>이미지 등록하기</span>
                     <input
                       id={id}
-                      name={id}
+                      name="productImage"
                       type="file"
                       className="sr-only"
                       onChange={(event) => fileChangeHandle(id, event)}
