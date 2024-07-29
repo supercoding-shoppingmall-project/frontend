@@ -1,18 +1,20 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Header from "./components/Header";
-import Cart from "./components/CartPop";
-import CartPage from "./pages/CartPage";
+import Footer from "./components/Footer";
+import PayPage from "./pages/PayPage";
+import CartPop from "./components/CartPop";
 
 function App() {
   return (
-    <div>
-      {/* <Header /> */}
-      <CartPage />
-      {/* <Routes>
-        <Route path="/Cart" element={<CartPop />} />
-      </Routes> */}
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/CartPop" element={<CartPop />} />
+        <Route path="/PayPage" element={<PayPage />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 
