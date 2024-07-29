@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Pagination from "../components/tools/Pagination";
+import Pagination from "../utils/Pagination";
 import ProductGrid from "../components/mainPage/ProductGrid";
 import MockDatas from "../components/mockData/MockDatas";
 

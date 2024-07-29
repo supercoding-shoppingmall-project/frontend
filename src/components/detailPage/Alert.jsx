@@ -7,7 +7,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router-dom";
 
 export default function Alert() {
   const [open, setOpen] = useState(true);
@@ -60,13 +60,15 @@ export default function Alert() {
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-              >
-                장바구니로 이동
-              </button>
+              <Link to="/cartpage">
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                >
+                  장바구니로 이동
+                </button>
+              </Link>
               <button
                 type="button"
                 data-autofocus

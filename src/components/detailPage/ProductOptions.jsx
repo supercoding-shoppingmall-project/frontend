@@ -4,10 +4,26 @@ import Alert from "./Alert";
 import ClassNames from "./ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 
-const ProductOptions = ({ SizeOption, MockData }) => {
-  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[2]);
+const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
+  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = () => {
+    addToCart({
+      id: MockData.id,
+      name: MockData.name,
+      href: MockData.href,
+      size: selectedSize.name,
+      price: MockData.price,
+      quantity,
+      imageSrc: MockData.imageSrc,
+      imageAlt: MockData.imageAlt,
+    });
+    setShowAlert(true);
+    // 2초 후에 showAlert를 false로 설정
+    setTimeout(() => setShowAlert(false), 2000);
+  };
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
@@ -37,12 +53,15 @@ const ProductOptions = ({ SizeOption, MockData }) => {
                   key={size.name}
                   value={size}
                   disabled={!size.inStock}
-                  className={ClassNames(
-                    size.inStock
-                      ? "cursor-pointer bg-white text-gray-900 shadow-sm"
-                      : "cursor-not-allowed bg-gray-50 text-gray-200",
-                    "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none data-[focus]:ring-2 data-[focus]:ring-indigo-500 sm:flex-1 sm:py-6"
-                  )}
+                  className={({ checked }) =>
+                    ClassNames(
+                      size.inStock
+                        ? "cursor-pointer bg-white text-gray-900 shadow-sm"
+                        : "cursor-not-allowed bg-gray-50 text-gray-200",
+                      checked ? "ring-2 ring-indigo-500 border-indigo-500" : "",
+                      "group relative flex items-center justify-center rounded-md border px-4 py-3 text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6"
+                    )
+                  }
                 >
                   <span>{size.name}</span>
                   {size.inStock ? (
@@ -89,7 +108,7 @@ const ProductOptions = ({ SizeOption, MockData }) => {
           <input
             type="number"
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
             className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             min="1"
           />
@@ -97,7 +116,7 @@ const ProductOptions = ({ SizeOption, MockData }) => {
 
         <button
           type="button"
-          onClick={() => setShowAlert(true)}
+          onClick={handleAddToCart}
           className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           장바구니에 담기
