@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
+import PayPage from "./pages/PayPage";
 import MainPage from "./pages/MainPage";
 import DetailPage from "./pages/DetailPage";
 import MockDatas from "./components/mockData/MockDatas";
@@ -50,8 +51,8 @@ function App() {
         <Route path="/userprofile" element={<UserProfile />} />
         <Route path="/cartlist" element={<CartList />} />
         <Route path="/purchaselist" element={<PurchaseList />} />
+        <Route path="/paypage" element={<PayPage />} />
 
-        <Route path="/cart" element={<CartPop />} />
         <Route
           path="/cartpage"
           element={
