@@ -2,13 +2,7 @@
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-
-const sortOptions = [
-  { name: "추천순", href: "#", current: true },
-  { name: "최신순", href: "#", current: false },
-  { name: "높은 가격순", href: "#", current: false },
-  { name: "낮은 가격순", href: "#", current: false },
-];
+import { SORT_OPTIONS } from "./MyData";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -36,7 +30,7 @@ export default function SortMyProducts() {
                 className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
               >
                 <div className="py-1">
-                  {sortOptions.map((option) => (
+                  {SORT_OPTIONS.map((option) => (
                     <MenuItem key={option.name}>
                       <a
                         href={option.href}
