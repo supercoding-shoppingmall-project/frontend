@@ -7,15 +7,16 @@ import { CATEGORIES, SIZES } from "./AddData";
 import { useInputValue } from "../../hooks/useInputValue";
 
 export default function AddProducts() {
+  // 상품 정보 state
+  const [images, setImages] = useState({});
   const [category, setCategory] = useInputValue("");
   const [productName, setProductName] = useInputValue("");
   const [price, setPrice] = useInputValue("");
   const [saledate, setSaledate] = useInputValue("");
   const [descriptions, setDescriptions] = useState([]);
 
-  // 취소 버튼 클릭여부
+  // 버튼 클릭여부
   const [cancelClicked, setCancelClicked] = useState(false);
-  // 상품등록 버튼 클릭여부
   const [addClicked, setAddClicked] = useState(false);
 
   // 판매 등록 날짜 (오늘)
@@ -30,6 +31,14 @@ export default function AddProducts() {
     setAddClicked(true);
 
     const addProductsFormData = new FormData(event.target);
+
+    const imageSlots = ["productImage1", "productImage2", "productImage3"];
+    imageSlots.forEach((slot) => {
+      const file = addProductsFormData.get(slot);
+      if (file) {
+        addProductsFormData.append("images[]", file);
+      }
+    });
 
     const data = {
       productImage: addProductsFormData.get("productImage"),
@@ -70,7 +79,7 @@ export default function AddProducts() {
             </h2>
 
             {/* 이미지 등록 */}
-            <AddImages />
+            <AddImages onImagesChange={setImages} />
 
             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
               {/* 카테고리 선택 */}
@@ -122,12 +131,12 @@ export default function AddProducts() {
               </div>
             </div>
 
+            {/* 사이즈 선택 */}
             <div className="mt-10">
               <div className="block font-bold leading-6 text-gray-900 sm:col-span-1">
                 사이즈 및 개수
               </div>
               <div className="mt-2 grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-4 lg:grid-cols-8">
-                {/* 사이즈 선택 */}
                 <SizeQuantity sizes={SIZES} />
               </div>
             </div>
