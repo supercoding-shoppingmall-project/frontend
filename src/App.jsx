@@ -12,6 +12,8 @@ import SignUp from "./components/signup/SignUp";
 import UserProfile from "./components/userprofile/UserProfile";
 import Selling from "./pages/Selling";
 import AddProducts from "./components/addproduct/AddProducts";
+import CartList from "./components/userprofile/CartList";
+import PurchaseList from "./components/userprofile/PurchaseList";
 import CartPop from "./components/CartPop";
 import CartPage from "./components/CartPage";
 
@@ -46,6 +48,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/userprofile" element={<UserProfile />} />
+        <Route path="/cartlist" element={<CartList />} />
+        <Route path="/purchaselist" element={<PurchaseList />} />
 
         <Route path="/cart" element={<CartPop />} />
         <Route
