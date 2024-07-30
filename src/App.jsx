@@ -19,24 +19,6 @@ import PurchaseList from "./components/user-profile/PurchaseList";
 import CartPage from "./components/cart/CartPage";
 
 function App() {
-  const [cart, setCart] = useState([]);
-
-  const addToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-  };
-
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-  };
-
-  const updateQuantity = (productId, quantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
   return (
     <CartProvider>
       <BrowserRouter>
@@ -54,6 +36,8 @@ function App() {
           <Route path="/sell" element={<SellingPage />} />
           <Route path="/sell/add" element={<AddProducts />} />
           <Route path="/pay" element={<PayPage />} />
+          <Route path="/cartlist" element={<CartList />} />
+          <Route path="/purchaselist" element={<PurchaseList />} />
         </Routes>
         <Footer />
       </BrowserRouter>
