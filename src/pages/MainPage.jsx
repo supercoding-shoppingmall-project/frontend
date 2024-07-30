@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import Pagination from "../utils/Pagination";
 import ProductGrid from "../components/mainPage/ProductGrid";
 import MockDatas from "../components/mockData/MockDatas";
-
-const itemPerPage = 4;
+import { ItemsPerPage } from "../components/Constants/ItemsPerPage";
 
 export default function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(MockDatas.length / itemPerPage);
+  const totalPages = Math.ceil(MockDatas.length / ItemsPerPage);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -23,11 +22,10 @@ export default function MainPage() {
         </div>
       </main>
 
-      {/* <Category MockDatas={MockDatas} /> */}
       <ProductGrid
         MockDatas={MockDatas}
         currentPage={currentPage}
-        itemsPerPage={itemPerPage}
+        itemsPerPage={ItemsPerPage}
       />
       <div className="flex justify-center items-center my-4">
         <Pagination

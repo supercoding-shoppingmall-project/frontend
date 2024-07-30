@@ -1,15 +1,19 @@
-// src/pages/DetailPage.jsx
 import React from "react";
-import { useParams } from "react-router-dom";
+
 import ImageGallery from "../components/mockData/ImageGallery";
 import ProductInfo from "../components/detailPage/ProductInfo";
 import ProductOptions from "../components/detailPage/ProductOptions";
+import MockDatas from "../components/mockData/MockDatas";
 import DetailDescription from "../components/detailPage/DetailDescription";
-import SizeOption from "../components/detailPage/SizeOption";
+import { SizeOption } from "../components/Constants/SizeOption";
 
-export default function DetailPage({ MockDatas, addToCart }) {
+import { useParams } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
+
+export default function DetailPage() {
   const { id } = useParams();
   const product = MockDatas.find((product) => product.id.toString() === id);
+  const { addToCart } = useCart();
 
   if (!product) {
     return <div>Product not found</div>;
@@ -24,7 +28,6 @@ export default function DetailPage({ MockDatas, addToCart }) {
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
               {product.name}
             </h1>
-            +
           </div>
           <ProductOptions
             SizeOption={SizeOption}
