@@ -51,7 +51,7 @@ export default function SingUp() {
       onSubmit={submitHandle}
       className="space-y-12 p-10 flex justify-center w-full"
     >
-      <div className="border-b border-gray-900/10 pb-12">
+      <div className="border-b border-gray-900/10 pb-12 w-full">
         <h1 className="text-base font-semibold leading-7 text-gray-900">
           사용하실 email 과 password를 입력해주세요
         </h1>

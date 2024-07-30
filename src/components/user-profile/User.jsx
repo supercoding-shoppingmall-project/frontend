@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const User = () => {
   return (
-    <div className="w-60  py-3">
+    <div className="sm:w-60 w-full py-3">
       <div className="bg-white text-center border border-gray-300 p-7 block">
         <div className="mt-2 flex items-center gap-x-3 ">
           <UserCircleIcon
