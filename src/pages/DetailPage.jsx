@@ -4,8 +4,8 @@ import ImageGallery from "../components/mockData/ImageGallery";
 import ProductInfo from "../components/detailPage/ProductInfo";
 import ProductOptions from "../components/detailPage/ProductOptions";
 import MockDatas from "../components/mockData/MockDatas";
-import SizeOption from "../components/detailPage/SizeOption";
 import DetailDescription from "../components/detailPage/DetailDescription";
+import { SizeOption } from "../components/Constants/SizeOption";
 
 import { useParams } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";

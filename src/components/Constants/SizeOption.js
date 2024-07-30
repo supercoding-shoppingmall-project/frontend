@@ -1,5 +1,5 @@
 // 목업데이터
-const SizeOption = {
+export const SizeOption = {
   sizes: [
     { name: "240", inStock: true },
     { name: "250", inStock: true },
@@ -11,5 +11,3 @@ const SizeOption = {
     { name: "310", inStock: true },
   ],
 };
-
-export default SizeOption;
