@@ -3,16 +3,16 @@ import AddImages from "./AddImages";
 import SizeQuantity from "./SizeQuantity";
 import ProductDescription from "./ProductDescription";
 import AddProductsModal from "./AddProductsModal";
-import { CATEGORIES, SIZES } from "./AddData";
+import { CATEGORIES, SIZES } from "../../constants/AddProducts";
 import { useInputValue } from "../../hooks/useInputValue";
 
 export default function AddProducts() {
   // 상품 정보 state
-  const [images, setImages] = useState({});
+  const [images, setImages] = useState([]);
   const [category, setCategory] = useInputValue("");
   const [productName, setProductName] = useInputValue("");
-  const [price, setPrice] = useInputValue("");
-  const [saledate, setSaledate] = useInputValue("");
+  const [productPrice, setProductPrice] = useInputValue("");
+  const [endtime, setendtime] = useInputValue("");
   const [descriptions, setDescriptions] = useState([]);
 
   // 버튼 클릭여부
@@ -32,35 +32,36 @@ export default function AddProducts() {
 
     const addProductsFormData = new FormData(event.target);
 
-    const imageSlots = ["productImage1", "productImage2", "productImage3"];
-    imageSlots.forEach((slot) => {
-      const file = addProductsFormData.get(slot);
-      if (file) {
-        addProductsFormData.append("images[]", file);
-      }
-    });
+    const imageUrls = images.filter(
+      (url) => typeof url === "string" && url.trim() !== ""
+    );
+    const filteredDescriptions = descriptions.filter(
+      (desc) => desc && desc.trim() !== ""
+    );
 
     const data = {
-      productImage: addProductsFormData.get("productImage"),
-      categorygory: addProductsFormData.get("category"),
+      seller: "abcdefg@gmail.com",
+      category: {
+        categoryName: addProductsFormData.get("category"),
+      },
       productName: addProductsFormData.get("productName"),
-      sizes: [],
-      quantity2: [],
-      price: addProductsFormData.get("price"),
-      saledate: addProductsFormData.get("saledate"),
-      registrattiondate: addProductsFormData.get("registrattiondate"),
-      description: [],
+      productPrice: Number(addProductsFormData.get("productPrice")),
+      productDescription: filteredDescriptions,
+      productImage: imageUrls,
+      endtime: addProductsFormData.get("endtime"),
+      createdAt: addProductsFormData.get("createdAt"),
+      stockDtos: [],
     };
 
     SIZES.forEach((size) => {
       const quantity = addProductsFormData.get(`${size.size}_quantity`);
       if (quantity) {
-        data.sizes.push(size.size);
-        data.quantity2.push(quantity);
+        data.stockDtos.push({
+          size: size.size,
+          sizeStock: Number(quantity),
+        });
       }
     });
-
-    data.description = descriptions;
 
     console.log(data);
   };
@@ -123,6 +124,7 @@ export default function AddProducts() {
                       type="text"
                       autoComplete="productName"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
+                      required
                       value={productName}
                       onChange={setProductName}
                     />
@@ -145,7 +147,7 @@ export default function AddProducts() {
               {/* 가격 */}
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="price"
+                  htmlFor="productPrice"
                   className="block font-bold leading-6 text-gray-900"
                 >
                   가격
@@ -153,13 +155,14 @@ export default function AddProducts() {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
-                      id="price"
-                      name="price"
+                      id="productPrice"
+                      name="productPrice"
                       type="number"
-                      autoComplete="price"
+                      autoComplete="productPrice"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
-                      value={price}
-                      onChange={setPrice}
+                      required
+                      value={productPrice}
+                      onChange={setProductPrice}
                     />
                   </div>
                 </div>
@@ -168,7 +171,7 @@ export default function AddProducts() {
               {/* 판매 마감 날짜 */}
               <div className="sm:col-span-2">
                 <label
-                  htmlFor="saledate"
+                  htmlFor="endtime"
                   className="block font-bold leading-6 text-gray-900"
                 >
                   판매 마감
@@ -176,14 +179,15 @@ export default function AddProducts() {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                     <input
-                      id="saledate"
-                      name="saledate"
+                      id="endtime"
+                      name="endtime"
                       type="date"
                       min={today}
-                      autoComplete="saledate"
+                      autoComplete="endtime"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
-                      value={saledate}
-                      onChange={setSaledate}
+                      required
+                      value={endtime}
+                      onChange={setendtime}
                     />
                   </div>
                 </div>
@@ -192,7 +196,7 @@ export default function AddProducts() {
               {/* 등록 날짜 */}
               <div className="sm:col-span-2 hidden">
                 <label
-                  htmlFor="registrattiondate"
+                  htmlFor="createdAt"
                   className="block font-bold leading-6 text-gray-900"
                 >
                   판매 등록일
@@ -200,9 +204,9 @@ export default function AddProducts() {
                 <div className="mt-2">
                   <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-md">
                     <input
-                      id="registrattiondate"
+                      id="createdAt"
                       type="text"
-                      name="registrattiondate"
+                      name="createdAt"
                       className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 sm:text-sm sm:leading-6 h-10"
                       value={today}
                       readOnly

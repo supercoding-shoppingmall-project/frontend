@@ -11,7 +11,7 @@ export default function SingUp() {
   });
   const [errors, setErrors] = useState({});
 
-  const handleChange = (e) => {
+  const changeHandle = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
@@ -35,7 +35,7 @@ export default function SingUp() {
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const submitHandle = (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
@@ -48,8 +48,8 @@ export default function SingUp() {
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="space-y-12 p-10 flex justify-center w-1/3 mx-auto"
+      onSubmit={submitHandle}
+      className="space-y-12 p-10 flex justify-center w-full"
     >
       <div className="border-b border-gray-900/10 pb-12 w-full">
         <h1 className="text-base font-semibold leading-7 text-gray-900">
@@ -73,7 +73,7 @@ export default function SingUp() {
                   autoComplete="email"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   value={formData.email}
-                  onChange={handleChange}
+                  onChange={changeHandle}
                 />
               </div>
               {errors.email && (
@@ -96,7 +96,7 @@ export default function SingUp() {
                   autoComplete="password"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   value={formData.password}
-                  onChange={handleChange}
+                  onChange={changeHandle}
                 />
               </div>
               {errors.password && (
@@ -127,7 +127,7 @@ export default function SingUp() {
                 autoComplete="name"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
                 value={formData.name}
-                onChange={handleChange}
+                onChange={changeHandle}
               />
             </div>
             {errors.name && (
@@ -149,7 +149,7 @@ export default function SingUp() {
                 autoComplete="phone"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
                 value={formData.phone}
-                onChange={handleChange}
+                onChange={changeHandle}
               />
             </div>
             {errors.phone && (
@@ -168,7 +168,7 @@ export default function SingUp() {
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   value="남성"
-                  onChange={handleChange}
+                  onChange={changeHandle}
                 />
                 <label
                   htmlFor="male"
@@ -184,7 +184,7 @@ export default function SingUp() {
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   value="여성"
-                  onChange={handleChange}
+                  onChange={changeHandle}
                 />
                 <label
                   htmlFor="female"
@@ -213,7 +213,7 @@ export default function SingUp() {
                 autoComplete="street-address"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
                 value={formData.address}
-                onChange={handleChange}
+                onChange={changeHandle}
               />
             </div>
             {errors.address && (

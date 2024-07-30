@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SortMyProducts from "../components/myproducts/SortMyProducts";
-import MyProducts from "../components/myproducts/MyProducts";
+import MyProducts from "../components/my-products/MyProducts";
 
-const Selling = () => {
+const SellingPage = () => {
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <Link to="/sell/add">
@@ -11,10 +10,9 @@ const Selling = () => {
           상품 등록하기
         </button>
       </Link>
-      <SortMyProducts />
       <MyProducts />
     </div>
   );
 };
 
-export default Selling;
+export default SellingPage;

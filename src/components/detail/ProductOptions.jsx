@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
-import ClassNames from "./ClassNames";
+import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 
 const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
@@ -9,7 +9,7 @@ const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  const handleAddToCart = () => {
+  const addToCartHandle = () => {
     addToCart({
       id: MockData.id,
       name: MockData.name,
@@ -116,7 +116,7 @@ const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
 
         <button
           type="button"
-          onClick={handleAddToCart}
+          onClick={addToCartHandle}
           className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           장바구니에 담기

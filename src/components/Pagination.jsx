@@ -12,7 +12,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             aria-label="Pagination"
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
           >
-            {/* 이전 페이지 버튼 */}
             <button
               onClick={() => onPageChange(currentPage - 1)}
               disabled={currentPage === 1}
@@ -22,7 +21,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               <ChevronLeftIcon aria-hidden="true" className="h-5 w-5" />
             </button>
 
-            {/* 페이지 넘버 버튼 */}
             {pages.map((page) => (
               <button
                 key={page}
@@ -38,7 +36,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
               </button>
             ))}
 
-            {/* 다음 페이지 버튼 */}
             <button
               onClick={() => onPageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
