@@ -1,24 +1,27 @@
 import React, { useState } from "react";
 import { PlusCircleIcon, MinusCircleIcon } from "@heroicons/react/24/outline";
 
-const ProductDescription = () => {
+const ProductDescription = ({ onDescriptionsChange }) => {
   const [inputs, setInputs] = useState(["", ""]);
 
   const inputHandleChange = (index, value) => {
     const newInputs = [...inputs];
     newInputs[index] = value;
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   const addInputHandle = (index) => {
     const newInputs = [...inputs];
     newInputs.splice(index + 1, 0, "");
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   const removeInputHandle = (index) => {
     const newInputs = inputs.filter((_, i) => i !== index);
     setInputs(newInputs);
+    onDescriptionsChange(newInputs);
   };
 
   return (
@@ -32,13 +35,16 @@ const ProductDescription = () => {
       <ul className="mt-2 grid grid-cols-8 gap-x-6 gap-y-6">
         {/* 동적으로 li 추가하기 */}
         {inputs.map((input, index) => (
-          <li className="col-span-5 flex align-center" key={index}>
-            <div className="rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 block w-2/3">
+          <li
+            className="col-span-8 sm:col-span-7 lg:col-span-5 flex align-center"
+            key={index}
+          >
+            <div className="rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 block w-full lg:w-2/3">
               <input
-                id="price"
-                name="price"
+                id="description"
+                name="description"
                 type="text"
-                autoComplete="price"
+                autoComplete="description"
                 className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                 value={input}
                 onChange={(e) => inputHandleChange(index, e.target.value)}
@@ -56,20 +62,19 @@ const ProductDescription = () => {
                   className="h-8 w-8 text-indigo-500"
                 />
               </button>
-              {/* li가 1개일때를 제외하고 - 버튼 보이게 */}
-              {index > 0 && (
-                // - 버튼 클릭시 li 삭제
-                <button
-                  type="button"
-                  className="ml-3"
-                  onClick={() => removeInputHandle(index)}
-                >
-                  <MinusCircleIcon
-                    aria-hidden="true"
-                    className="h-8 w-8 text-indigo-500"
-                  />
-                </button>
-              )}
+              {/* - 버튼 클릭시 li 삭제 */}
+              <button
+                type="button"
+                className={`ml-3 ${
+                  index === 0 ? `opacity-0 pointer-events-none` : ""
+                } `}
+                onClick={() => removeInputHandle(index)}
+              >
+                <MinusCircleIcon
+                  aria-hidden="true"
+                  className="h-8 w-8 text-indigo-500"
+                />
+              </button>
             </div>
           </li>
         ))}

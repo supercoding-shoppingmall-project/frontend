@@ -10,7 +10,7 @@ import {
 import { PencilIcon } from "@heroicons/react/24/outline";
 import SizeQuantity from "../addproduct/SizeQuantity";
 
-export default function QuantityModal({ isClicked, setIsClicked }) {
+export default function QuantityModal({ isClicked, setIsClicked, sizes }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export default function QuantityModal({ isClicked, setIsClicked }) {
                 {/* 사이즈별 재고 변경 */}
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
-                    <SizeQuantity />
+                    <SizeQuantity sizes={sizes} />
                   </div>
                 </fieldset>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row sm:justify-end sm:px-6">

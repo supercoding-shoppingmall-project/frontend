@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { CartProvider } from "./contexts/CartContext";
 import "./App.css";
-
 import MainPage from "./pages/MainPage";
 import DetailPage from "./pages/DetailPage";
 import MockDatas from "./components/mockData/MockDatas";
