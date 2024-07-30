@@ -1,4 +1,5 @@
 import { useState } from "react";
+import CartPage from "../components/cart/CartPage";
 
 export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -8,7 +9,7 @@ export default function PayPage() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
-  const handleSubmit = (e) => {
+  const submitHandle = (e) => {
     e.preventDefault();
     // Handle form submission logic, e.g., sending data to a server
     console.log("Form submitted with:", {
@@ -27,7 +28,7 @@ export default function PayPage() {
     setAccountNumber("");
   };
 
-  const handlePaymentMethodChange = (method) => {
+  const paymentMethodChangeHandle = (method) => {
     setPaymentMethod(method);
   };
 
@@ -38,7 +39,7 @@ export default function PayPage() {
           주문 / 결제
         </h2>
       </div>
-      <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-xl sm:mt-20">
+      <form onSubmit={submitHandle} className="mx-auto mt-10 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label
@@ -98,6 +99,7 @@ export default function PayPage() {
             </div>
           </div>
         </div>
+        <CartPage showPurchaseButton={false} />
         <div className="mt-10">
           <h2 className="text-xl font-bold mb-4">
             결제 정보 (Payment Information)
@@ -109,7 +111,7 @@ export default function PayPage() {
             <div className="flex space-x-4">
               <button
                 type="button"
-                onClick={() => handlePaymentMethodChange("card")}
+                onClick={() => paymentMethodChangeHandle("card")}
                 className={`py-2 px-4 border rounded-md ${
                   paymentMethod === "card"
                     ? "bg-blue-500 text-white"
@@ -120,7 +122,7 @@ export default function PayPage() {
               </button>
               <button
                 type="button"
-                onClick={() => handlePaymentMethodChange("bank")}
+                onClick={() => paymentMethodChangeHandle("bank")}
                 className={`py-2 px-4 border rounded-md ${
                   paymentMethod === "bank"
                     ? "bg-blue-500 text-white"

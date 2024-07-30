@@ -6,7 +6,7 @@ const ProductGrid = ({ MockDatas, currentPage, itemsPerPage }) => {
   const [sortOption, setSortOption] = useState("default");
 
   // 정렬 기능
-  const handleSortChange = (event) => {
+  const sortChangeHandle = (event) => {
     setSortOption(event.target.value);
   };
 
@@ -40,7 +40,7 @@ const ProductGrid = ({ MockDatas, currentPage, itemsPerPage }) => {
           <select
             className="border rounded p-2"
             value={sortOption}
-            onChange={handleSortChange}
+            onChange={sortChangeHandle}
           >
             <option value="default">상품 정렬</option>
             <option value="price-asc">낮은 가격순</option>
