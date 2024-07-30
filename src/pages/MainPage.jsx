@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import Pagination from "../utils/Pagination";
-import ProductGrid from "../components/mainPage/ProductGrid";
-import MockDatas from "../components/mockData/MockDatas";
-import { ItemsPerPage } from "../components/Constants/ItemsPerPage";
+import Pagination from "../components/Pagination";
+import ProductGrid from "../components/main/ProductGrid";
+import MockDatas from "../components/mock-data/MockDatas";
+import { ItemsPerPage } from "../constants/ItemsPerPage";
 
 export default function MainPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(MockDatas.length / ItemsPerPage);
 
-  const handlePageChange = (page) => {
+  const pageChangeHandle = (page) => {
     setCurrentPage(page);
   };
 
@@ -31,7 +31,7 @@ export default function MainPage() {
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={handlePageChange}
+          onPageChange={pageChangeHandle}
         />
       </div>
     </>

@@ -4,7 +4,7 @@
 import { Link } from "react-router-dom";
 import { PopoverGroup } from "@headlessui/react";
 
-export default function Example() {
+export default function Header() {
   return (
     <header className="bg-white">
       <nav

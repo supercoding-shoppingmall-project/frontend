@@ -42,11 +42,11 @@ export default function CartPop({ showPurchaseButton = true }) {
   const [open, setOpen] = useState(true);
   const [products, setProducts] = useState(initialProducts);
 
-  const handleRemove = (productId) => {
+  const removeHandle = (productId) => {
     setProducts(products.filter((product) => product.id !== productId));
   };
 
-  const handleQuantityChange = (productId, delta) => {
+  const quantityChangeHandle = (productId, delta) => {
     setProducts(
       products.map((product) =>
         product.id === productId
@@ -132,7 +132,7 @@ export default function CartPop({ showPurchaseButton = true }) {
                                   <button
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      handleQuantityChange(product.id, -1);
+                                      quantityChangeHandle(product.id, -1);
                                     }}
                                     className="text-gray-500 hover:text-gray-700"
                                   >
@@ -144,7 +144,7 @@ export default function CartPop({ showPurchaseButton = true }) {
                                   <button
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      handleQuantityChange(product.id, 1);
+                                      quantityChangeHandle(product.id, 1);
                                     }}
                                     className="text-gray-500 hover:text-gray-700"
                                   >
@@ -157,7 +157,7 @@ export default function CartPop({ showPurchaseButton = true }) {
                                     type="button"
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      handleRemove(product.id);
+                                      removeHandle(product.id);
                                     }}
                                     className="font-medium text-indigo-600 hover:text-indigo-500"
                                   >

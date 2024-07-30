@@ -4,7 +4,6 @@ import { PhotoIcon } from "@heroicons/react/24/solid";
 const AddImages = ({ onImagesChange }) => {
   const imageSlots = ["productImage1", "productImage2", "productImage3"];
   const [imagePreviews, setImagePreviews] = useState({});
-  const [images, setImages] = useState({});
 
   const fileChangeHandle = (id, event) => {
     const file = event.target.files[0];
@@ -15,11 +14,9 @@ const AddImages = ({ onImagesChange }) => {
           ...prev,
           [id]: reader.result,
         }));
-        setImages((prev) => ({
-          ...prev,
-          [id]: file,
-        }));
-        onImagesChange({ ...images, [id]: file });
+
+        const imageUrl = URL.createObjectURL(file);
+        onImagesChange((prev) => [...prev, imageUrl]);
       };
       reader.readAsDataURL(file);
     }
@@ -35,7 +32,7 @@ const AddImages = ({ onImagesChange }) => {
       </label>
       <div>
         <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-          {imageSlots.map((id) => (
+          {imageSlots.map((id, index) => (
             <div
               className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10 col-span-2 relative overflow-hidden"
               key={id}
@@ -56,6 +53,8 @@ const AddImages = ({ onImagesChange }) => {
                       name="productImage"
                       type="file"
                       className="sr-only"
+                      accept="image/png, image/jpeg, image/gif"
+                      required={index === 0}
                       onChange={(event) => fileChangeHandle(id, event)}
                     />
                   </label>
