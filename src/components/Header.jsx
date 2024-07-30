@@ -12,12 +12,12 @@ export default function Example() {
         className="mx-auto flex items-center justify-between p-6 lg:px-5"
       >
         <div className="flex lg:flex-1">
-          <Link to="/" className="-m-1.5 p-1.5 w-2/5 ml-6">
+          <Link to="/" className="relative -m-1.5 p-1.5 w-2/5 ml-6">
             <span className="sr-only">Your Company</span>
             <img src="/assets/shoes.jpg" alt="shoes" />
           </Link>
         </div>
-        <PopoverGroup className="lg:flex lg:gap-x-12">
+        <PopoverGroup className="lg:flex relative lg:gap-x-12">
           <Link
             to="/sandals-slippers"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
@@ -67,7 +67,7 @@ export default function Example() {
             기타
           </Link>
         </PopoverGroup>
-        <div className="lg:flex lg:flex-1 lg:justify-end">
+        <div className="lg:flex lg:flex-1 relative lg:justify-end">
           <Link to={"/CartPage"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -86,13 +86,13 @@ export default function Example() {
           </Link>
 
           <Link to="/sell">
-            <button className="mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6">
+            <button className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6">
               판매하기
             </button>
           </Link>
           <Link
             to="/login"
-            className="ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
+            className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
           >
             Log in <span aria-hidden="true">&rarr;</span>
           </Link>

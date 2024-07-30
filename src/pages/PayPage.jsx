@@ -1,9 +1,6 @@
-"use client";
-
 import { useState } from "react";
-import CartPage from "../components/CartPage";
 
-export default function Example() {
+export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -13,7 +10,14 @@ export default function Example() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the form submission logic here, e.g., sending data to server
+    // Handle form submission logic, e.g., sending data to a server
+    console.log("Form submitted with:", {
+      cardNumber,
+      expiryDate,
+      cvv,
+      bankName,
+      accountNumber,
+    });
 
     // Reset input fields
     setCardNumber("");
@@ -94,8 +98,6 @@ export default function Example() {
             </div>
           </div>
         </div>
-        <CartPage showPurchaseButton={false} />
-
         <div className="mt-10">
           <h2 className="text-xl font-bold mb-4">
             결제 정보 (Payment Information)
@@ -140,7 +142,7 @@ export default function Example() {
                   type="text"
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
-                  className="w-full p-2 border rounded-md border-red-500"
+                  className="w-full p-2 border rounded-md border-gray-300"
                   placeholder="1234 5678 9012 3456"
                   required
                 />
@@ -153,7 +155,7 @@ export default function Example() {
                   type="text"
                   value={expiryDate}
                   onChange={(e) => setExpiryDate(e.target.value)}
-                  className="w-full p-2 border rounded-md border-red-500"
+                  className="w-full p-2 border rounded-md border-gray-300"
                   placeholder="MM/YY"
                   required
                 />
@@ -166,7 +168,7 @@ export default function Example() {
                   type="text"
                   value={cvv}
                   onChange={(e) => setCvv(e.target.value)}
-                  className="w-full p-2 border rounded-md border-red-500"
+                  className="w-full p-2 border rounded-md border-gray-300"
                   placeholder="123"
                   required
                 />
@@ -184,7 +186,7 @@ export default function Example() {
                   type="text"
                   value={bankName}
                   onChange={(e) => setBankName(e.target.value)}
-                  className="w-full p-2 border rounded-md border-red-500"
+                  className="w-full p-2 border rounded-md border-gray-300"
                   placeholder="은행 이름"
                   required
                 />
@@ -197,7 +199,7 @@ export default function Example() {
                   type="text"
                   value={accountNumber}
                   onChange={(e) => setAccountNumber(e.target.value)}
-                  className="w-full p-2 border rounded-md border-red-500"
+                  className="w-full p-2 border rounded-md border-gray-300"
                   placeholder="계좌 번호"
                   required
                 />
