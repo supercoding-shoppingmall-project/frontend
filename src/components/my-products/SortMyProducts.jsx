@@ -3,7 +3,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { SORT_OPTIONS } from "./MyData";
-import ClassNames from "../detailPage/ClassNames";
+import ClassNames from "../../utils/ClassNames";
 
 export default function SortMyProducts() {
   return (

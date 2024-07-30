@@ -3,7 +3,7 @@ import AddImages from "./AddImages";
 import SizeQuantity from "./SizeQuantity";
 import ProductDescription from "./ProductDescription";
 import AddProductsModal from "./AddProductsModal";
-import { CATEGORIES, SIZES } from "./AddData";
+import { CATEGORIES, SIZES } from "../../constants/AddProducts";
 import { useInputValue } from "../../hooks/useInputValue";
 
 export default function AddProducts() {

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import CartPage from "../components/CartPage";
+import CartPage from "../components/cart/CartPage";
 
-export default function Example() {
+export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -11,7 +11,7 @@ export default function Example() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
 
-  const handleSubmit = (e) => {
+  const submitHandle = (e) => {
     e.preventDefault();
     // Handle the form submission logic here, e.g., sending data to server
 
@@ -23,7 +23,7 @@ export default function Example() {
     setAccountNumber("");
   };
 
-  const handlePaymentMethodChange = (method) => {
+  const paymentMethodChangeHandle = (method) => {
     setPaymentMethod(method);
   };
 
@@ -34,7 +34,7 @@ export default function Example() {
           주문 / 결제
         </h2>
       </div>
-      <form onSubmit={handleSubmit} className="mx-auto mt-10 max-w-xl sm:mt-20">
+      <form onSubmit={submitHandle} className="mx-auto mt-10 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
             <label
@@ -107,7 +107,7 @@ export default function Example() {
             <div className="flex space-x-4">
               <button
                 type="button"
-                onClick={() => handlePaymentMethodChange("card")}
+                onClick={() => paymentMethodChangeHandle("card")}
                 className={`py-2 px-4 border rounded-md ${
                   paymentMethod === "card"
                     ? "bg-blue-500 text-white"
@@ -118,7 +118,7 @@ export default function Example() {
               </button>
               <button
                 type="button"
-                onClick={() => handlePaymentMethodChange("bank")}
+                onClick={() => paymentMethodChangeHandle("bank")}
                 className={`py-2 px-4 border rounded-md ${
                   paymentMethod === "bank"
                     ? "bg-blue-500 text-white"

@@ -4,16 +4,17 @@ import { CartProvider } from "./contexts/CartContext";
 import "./App.css";
 import MainPage from "./pages/MainPage";
 import DetailPage from "./pages/DetailPage";
-import MockDatas from "./components/mockData/MockDatas";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
+import SellingPage from "./pages/SellingPage";
+import MockDatas from "./components/mock-data/MockDatas";
+import Header from "./components/header-footer/Header";
+import Footer from "./components/header-footer/Footer";
 import Login from "./components/login/Login";
 import SignUp from "./components/signup/SignUp";
-import UserProfile from "./components/userprofile/UserProfile";
-import Selling from "./pages/Selling";
-import AddProducts from "./components/addproduct/AddProducts";
-import CartPop from "./components/CartPop";
-import CartPage from "./components/CartPage";
+import UserProfile from "./components/user-profile/UserProfile";
+import AddProducts from "./components/add-product/AddProducts";
+import CartPop from "./components/cart/CartPop";
+import CartPage from "./components/cart/CartPage";
+import PayPage from "./pages/PayPage";
 
 function App() {
   return (
@@ -31,8 +32,9 @@ function App() {
           <Route path="/userprofile" element={<UserProfile />} />
           <Route path="/cart" element={<CartPop />} />
           <Route path="/cartpage" element={<CartPage />} />
-          <Route path="/sell" element={<Selling />} />
+          <Route path="/sell" element={<SellingPage />} />
           <Route path="/sell/add" element={<AddProducts />} />
+          <Route path="/pay" element={<PayPage />} />
         </Routes>
         <Footer />
       </BrowserRouter>

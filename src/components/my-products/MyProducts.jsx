@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import QuantityModal from "./QuantityModal";
-import { PRODUCTS } from "./MyData";
-import { SIZES } from "../addproduct/AddData";
+import { PRODUCTS } from "../../constants/MyProducts";
+import { SIZES } from "../../constants/AddProducts";
 
 export default function MyProducts() {
   const [isClicked, setIsClicked] = useState(false);

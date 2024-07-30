@@ -1,11 +1,11 @@
 import React from "react";
 
-import ImageGallery from "../components/mockData/ImageGallery";
-import ProductInfo from "../components/detailPage/ProductInfo";
-import ProductOptions from "../components/detailPage/ProductOptions";
-import MockDatas from "../components/mockData/MockDatas";
-import DetailDescription from "../components/detailPage/DetailDescription";
-import { SizeOption } from "../components/Constants/SizeOption";
+import ImageGallery from "../components/mock-data/ImageGallery";
+import ProductInfo from "../components/detail/ProductInfo";
+import ProductOptions from "../components/detail/ProductOptions";
+import MockDatas from "../components/mock-data/MockDatas";
+import DetailDescription from "../components/detail/DetailDescription";
+import { SizeOption } from "../constants/SizeOption";
 
 import { useParams } from "react-router-dom";
 import { useCart } from "../contexts/CartContext";

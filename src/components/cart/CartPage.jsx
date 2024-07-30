@@ -1,5 +1,5 @@
 import React from "react";
-import { useCart } from "../contexts/CartContext";
+import { useCart } from "../../contexts/CartContext";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 
 export default function CartPage() {
