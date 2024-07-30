@@ -49,7 +49,7 @@ export default function SingUp() {
   return (
     <form
       onSubmit={submitHandle}
-      className="space-y-12 p-10 flex justify-center w-full"
+      className="space-y-12 p-10 flex justify-center w-1/3 mx-auto"
     >
       <div className="border-b border-gray-900/10 pb-12 w-full">
         <h1 className="text-base font-semibold leading-7 text-gray-900">
@@ -91,7 +91,7 @@ export default function SingUp() {
                 <input
                   id="password"
                   name="password"
-                  type="text"
+                  type="password"
                   placeholder="password를 적어주세요"
                   autoComplete="password"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
