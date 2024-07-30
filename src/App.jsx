@@ -1,7 +1,8 @@
-// src/App.jsx
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CartProvider } from "./contexts/CartContext";
 import "./App.css";
+
 import MainPage from "./pages/MainPage";
 import DetailPage from "./pages/DetailPage";
 import MockDatas from "./components/mockData/MockDatas";
@@ -16,54 +17,27 @@ import CartPop from "./components/CartPop";
 import CartPage from "./components/CartPage";
 
 function App() {
-  const [cart, setCart] = useState([]);
-
-  const addToCart = (product) => {
-    setCart((prevCart) => [...prevCart, product]);
-  };
-
-  const removeFromCart = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
-  };
-
-  const updateQuantity = (productId, quantity) => {
-    setCart((prevCart) =>
-      prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
   return (
-    <BrowserRouter>
-      <Header />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route
-          path="/detail/:id"
-          element={<DetailPage MockDatas={MockDatas} addToCart={addToCart} />}
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/userprofile" element={<UserProfile />} />
-
-        <Route path="/cart" element={<CartPop />} />
-        <Route
-          path="/cartpage"
-          element={
-            <CartPage
-              cart={cart}
-              removeFromCart={removeFromCart}
-              updateQuantity={updateQuantity}
-            />
-          }
-        />
-
-        <Route path="/sell" element={<Selling />} />
-        <Route path="/sell/add" element={<AddProducts />} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route
+            path="/detail/:id"
+            element={<DetailPage MockDatas={MockDatas} />}
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/userprofile" element={<UserProfile />} />
+          <Route path="/cart" element={<CartPop />} />
+          <Route path="/cartpage" element={<CartPage />} />
+          <Route path="/sell" element={<Selling />} />
+          <Route path="/sell/add" element={<AddProducts />} />
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 
