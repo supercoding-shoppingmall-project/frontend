@@ -19,15 +19,15 @@ export default function SingUp() {
   const validate = () => {
     const newErrors = {};
     if (!formData.email) newErrors.email = "이메일을 입력해주세요";
-    if (!formData.password) {
-      newErrors.password = "비밀번호를 입력해주세요";
-    } else if (
-      !/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ||
-      !/[A-Za-z]/.test(formData.password) ||
-      !/\d/.test(formData.password)
-    ) {
-      newErrors.password = "비밀번호는 특수기호, 영어, 숫자를 포함해야 합니다";
-    }
+    // if (!formData.password) {
+    //   newErrors.password = "비밀번호를 입력해주세요";
+    // } else if (
+    //   !/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ||
+    //   !/[A-Za-z]/.test(formData.password) ||
+    //   !/\d/.test(formData.password)
+    // ) {
+    //   newErrors.password = "비밀번호는 특수기호, 영어, 숫자를 포함해야 합니다";
+    // }
     if (!formData.name) newErrors.name = "이름을 입력해주세요";
     if (!formData.phone) newErrors.phone = "전화번호를 입력해주세요";
     if (!formData.gender) newErrors.gender = "성별을 선택해주세요";
@@ -35,14 +35,37 @@ export default function SingUp() {
     return newErrors;
   };
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
       // submit form logic
-      console.log("Form submitted successfully");
+      // console.log("Form submitted successfully");
+
+      // API 요청
+      try {
+        const response = await fetch("http:/3.37.165.67:8080/api/user/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+          throw new Error("회원가입에 실패했습니다.");
+        }
+
+        const data = await response.json();
+        console.log("회원가입 성공:", data);
+        // 회원가입 성공 후의 처리 (예: 리디렉션, 사용자 정보 저장 등)
+      } catch (error) {
+        console.error("회원가입 오류:", error);
+        // 오류 메시지를 사용자의 인터페이스에 표시할 수 있습니다.
+        setErrors({ api: "회원가입 중 오류가 발생했습니다." });
+      }
     }
   };
 

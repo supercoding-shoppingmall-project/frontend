@@ -1,3 +1,16 @@
+// className 데이터
+export const STYLE = {
+  addProductsForm:
+    "mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8",
+  productInfo: "border-b border-gray-900/10 pb-12",
+  formTitle:
+    "text-2xl font-semibold leading-7 text-gray-900 text-white bg-indigo-600 rounded-md p-3",
+  column: "mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6",
+  sizeQuantityTitle: "block font-bold leading-6 text-gray-900 sm:col-span-1",
+  sizeQuantity:
+    "mt-2 grid grid-cols-2 gap-x-6 gap-y-2 md:grid-cols-4 lg:grid-cols-8",
+};
+
 // 카테고리 데이터
 export const CATEGORIES = [
   { id: "category1", value: "샌들 & 슬리퍼" },
