@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-export default function SingUp() {
+export default function SignUp() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,15 +20,15 @@ export default function SingUp() {
   const validate = () => {
     const newErrors = {};
     if (!formData.email) newErrors.email = "이메일을 입력해주세요";
-    // if (!formData.password) {
-    //   newErrors.password = "비밀번호를 입력해주세요";
-    // } else if (
-    //   !/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ||
-    //   !/[A-Za-z]/.test(formData.password) ||
-    //   !/\d/.test(formData.password)
-    // ) {
-    //   newErrors.password = "비밀번호는 특수기호, 영어, 숫자를 포함해야 합니다";
-    // }
+    if (!formData.password) {
+      newErrors.password = "비밀번호를 입력해주세요";
+    } else if (
+      !/[!@#$%^&*(),.?":{}|<>]/.test(formData.password) ||
+      !/[A-Za-z]/.test(formData.password) ||
+      !/\d/.test(formData.password)
+    ) {
+      newErrors.password = "비밀번호는 특수기호, 영어, 숫자를 포함해야 합니다";
+    }
     if (!formData.name) newErrors.name = "이름을 입력해주세요";
     if (!formData.phone) newErrors.phone = "전화번호를 입력해주세요";
     if (!formData.gender) newErrors.gender = "성별을 선택해주세요";
@@ -41,26 +42,11 @@ export default function SingUp() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      // submit form logic
-      // console.log("Form submitted successfully");
-
       // API 요청
       try {
-        const formBody = new URLSearchParams(formData).toString();
-        const response = await fetch("/api/user/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formBody,
-        });
+        const response = await axios.post("/api/user/signup", formData);
 
-        if (!response.ok) {
-          throw new Error("회원가입에 실패했습니다.");
-        }
-
-        const data = await response.json();
-        console.log("회원가입 성공:", data);
+        console.log("회원가입 성공:", response.data);
         // 회원가입 성공 후의 처리 (예: 리디렉션, 사용자 정보 저장 등)
       } catch (error) {
         console.error("회원가입 오류:", error);
