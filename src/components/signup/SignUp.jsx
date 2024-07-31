@@ -104,7 +104,7 @@ export default function SignUp() {
                   type="email"
                   placeholder="email을 적어주세요"
                   autoComplete="email"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 pl-2.5"
                   value={formData.email}
                   onChange={changeHandle}
                 />
@@ -127,7 +127,7 @@ export default function SignUp() {
                   type="password"
                   placeholder="password를 적어주세요"
                   autoComplete="password"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 pl-2.5"
                   value={formData.password}
                   onChange={changeHandle}
                 />
@@ -158,7 +158,7 @@ export default function SignUp() {
                 name="name"
                 type="text"
                 autoComplete="name"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.name}
                 onChange={changeHandle}
               />
@@ -180,7 +180,7 @@ export default function SignUp() {
                 name="phone"
                 type="tel"
                 autoComplete="phone"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.phone}
                 onChange={changeHandle}
               />
@@ -244,7 +244,7 @@ export default function SignUp() {
                 name="address"
                 type="text"
                 autoComplete="street-address"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.address}
                 onChange={changeHandle}
               />
