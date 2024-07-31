@@ -3,8 +3,19 @@
 // import { useState } from "react";
 import { Link } from "react-router-dom";
 import { PopoverGroup } from "@headlessui/react";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react";
 
 export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
   return (
     <header className="bg-white">
       <nav
@@ -90,6 +101,14 @@ export default function Header() {
               판매하기
             </button>
           </Link>
+          {isLoggedIn && (
+            <Link to="/userprofile">
+              <UserCircleIcon
+                aria-hidden="true"
+                className="h-10 w-10 text-gray-300"
+              />
+            </Link>
+          )}
           <Link
             to="/login"
             className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
