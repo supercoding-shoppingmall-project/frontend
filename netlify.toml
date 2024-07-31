@@ -1,5 +1,5 @@
 [[redirects]]
   from = "/api/*"
-  to = "http://3.37.165.67:8080/api/:splat"
+  to = "/.netlify/functions/yourFunction"
   status = 200
   force = true
