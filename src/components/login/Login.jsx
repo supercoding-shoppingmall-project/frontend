@@ -32,8 +32,8 @@ export default function Login() {
       console.log("Login successful:", response.data);
 
       // 응답에서 토큰을 추출하여 localStorage에 저장
-      const token = response.data.token; // 응답 형식에 맞게 수정 필요
-      localStorage.setItem("authToken", token);
+      const token = response.headers.get("Authorization");
+      localStorage.setItem("Authorization", token);
 
       // 예를 들어, 토큰을 저장하거나 리다이렉트 처리 등을 할 수 있습니다.
     } catch (error) {
