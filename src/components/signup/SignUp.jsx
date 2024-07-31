@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -49,9 +51,9 @@ export default function SignUp() {
             "Content-Type": "application/json", // JSON 형식으로 전송
           },
         });
-
-        console.log("회원가입 성공:", response.data);
         // 회원가입 성공 후의 처리 (예: 리디렉션, 사용자 정보 저장 등)
+        console.log("회원가입 성공:", response.data);
+        navigate("/login");
       } catch (error) {
         if (error.response) {
           // 서버가 응답을 반환했지만 상태 코드가 2xx가 아닌 경우
@@ -102,7 +104,7 @@ export default function SignUp() {
                   type="email"
                   placeholder="email을 적어주세요"
                   autoComplete="email"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 pl-2.5"
                   value={formData.email}
                   onChange={changeHandle}
                 />
@@ -125,7 +127,7 @@ export default function SignUp() {
                   type="password"
                   placeholder="password를 적어주세요"
                   autoComplete="password"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 pl-2.5"
                   value={formData.password}
                   onChange={changeHandle}
                 />
@@ -156,7 +158,7 @@ export default function SignUp() {
                 name="name"
                 type="text"
                 autoComplete="name"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.name}
                 onChange={changeHandle}
               />
@@ -178,7 +180,7 @@ export default function SignUp() {
                 name="phone"
                 type="tel"
                 autoComplete="phone"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.phone}
                 onChange={changeHandle}
               />
@@ -242,7 +244,7 @@ export default function SignUp() {
                 name="address"
                 type="text"
                 autoComplete="street-address"
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl pl-2.5"
                 value={formData.address}
                 onChange={changeHandle}
               />

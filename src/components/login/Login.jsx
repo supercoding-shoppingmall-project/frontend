@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios"; // axios를 추가합니다.
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -30,6 +31,12 @@ export default function Login() {
 
       // 로그인 성공 시의 처리
       console.log("Login successful:", response.data);
+      navigate("/");
+
+      // 응답에서 토큰을 추출하여 localStorage에 저장
+      const token = response.headers.get("Authorization");
+      localStorage.setItem("Authorization", token);
+
       // 예를 들어, 토큰을 저장하거나 리다이렉트 처리 등을 할 수 있습니다.
     } catch (error) {
       console.error("Login error:", error);
@@ -39,7 +46,7 @@ export default function Login() {
 
   const validatePassword = (password) => {
     const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{3,}$/;
     return regex.test(password);
   };
 
@@ -73,7 +80,7 @@ export default function Login() {
                   type="email"
                   required
                   autoComplete="email"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2.5"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -93,7 +100,7 @@ export default function Login() {
                   type="password"
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 pl-2.5"
                   value={password}
                   onChange={passwordChangeHandle}
                 />
