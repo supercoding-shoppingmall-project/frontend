@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 
 import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
