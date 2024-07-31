@@ -15,11 +15,20 @@ export default function Modal({ open, setOpen }) {
 
   const handleDelete = async () => {
     try {
+      // localStorage에서 Authorization 토큰 가져오기
+      const token = localStorage.getItem("Authorization");
+
       // 사용자가 입력한 자격증명으로 로그인 요청
       const response = await axios.delete("/api/user/delete", {
-        email: email,
-        password: password,
+        headers: {
+          Authorization: token, // Authorization 헤더에 토큰 추가
+        },
+        data: {
+          email: email,
+          password: password,
+        },
       });
+
       console.log(response);
 
       // 회원 탈퇴 성공 후 처리 (예: 로그아웃 및 리다이렉트)
