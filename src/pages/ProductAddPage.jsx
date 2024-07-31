@@ -33,7 +33,12 @@ const ProductAddPage = () => {
     const data = createProductData();
 
     try {
-      const response = await axios.post("/api/sell/save", data);
+      // JSON.stringify로 데이터를 문자열로 변환하여 전송
+      const response = await axios.post("/api/sell/save", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded", // URL 인코딩 형식으로 전송
+        },
+      });
       console.log("등록하기 성공:", response.data);
     } catch (error) {
       if (error.response) {
