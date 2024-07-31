@@ -1,12 +1,50 @@
 "use client";
 
+import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loggedIn = localStorage.getItem("isLoggedIn") === "true";
+    const profileUrl = localStorage.getItem("profilePictureUrl");
+    setIsLoggedIn(loggedIn);
+    setProfilePictureUrl(profileUrl);
+  }, []);
+
+  const categoryClickHandle = async (category) => {
+    try {
+      const response = await axios.get(`/api/product/header/${category}`);
+      if (response.status === 200) {
+        navigate(`/${category}`);
+      } else {
+        console.error(`Failed to fetch data for ${category}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching data for ${category}:`, error);
+    }
+  };
+
+  const logoClickHandle = async () => {
+    try {
+      const response = await axios.get("/api/product/all");
+      if (response.status === 200) {
+        navigate("/");
+      } else {
+        console.error("Failed to fetch all products");
+      }
+    } catch (error) {
+      console.error("Error fetching all products:", error);
+    }
+  };
 
   return (
     <header className="bg-white">
@@ -15,10 +53,10 @@ export default function Header() {
         className="mx-auto flex items-center justify-between p-6 lg:px-5"
       >
         <div className="flex lg:flex-1">
-          <Link to="/" className="-m-1.5 p-1.5 w-20 ml-6">
+          <button onClick={logoClickHandle} className="-m-1.5 p-1.5 w-20 ml-6">
             <span className="sr-only">Your Company</span>
             <img src="/assets/shoes.jpg" alt="shoes" />
-          </Link>
+          </button>
         </div>
         <div className="flex lg:hidden">
           <button
