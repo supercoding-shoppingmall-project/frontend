@@ -4,21 +4,21 @@ import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 
-const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
+const ProductOptions = ({ SizeOption, product, addToCart }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   const addToCartHandle = () => {
     addToCart({
-      id: MockData.id,
-      name: MockData.name,
-      href: MockData.href,
+      id: product.id,
+      name: product.name,
+      href: product.href,
       size: selectedSize.name,
-      price: MockData.price,
+      price: product.price,
       quantity,
-      imageSrc: MockData.imageSrc,
-      imageAlt: MockData.imageAlt,
+      imageSrc: product.imageSrc,
+      imageAlt: product.imageAlt,
     });
     setShowAlert(true);
     // 2초 후에 showAlert를 false로 설정
@@ -28,7 +28,7 @@ const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
-        {FormatToKRW(MockData.price)}
+        {FormatToKRW(product.price)}
       </p>
 
       <form className="mt-10">
