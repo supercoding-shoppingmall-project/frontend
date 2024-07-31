@@ -46,12 +46,13 @@ export default function SingUp() {
 
       // API 요청
       try {
+        const formBody = new URLSearchParams(formData).toString();
         const response = await fetch("/api/user/signup", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
           },
-          body: JSON.stringify(formData),
+          body: formBody,
         });
 
         if (!response.ok) {
