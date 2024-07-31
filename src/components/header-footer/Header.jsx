@@ -30,49 +30,49 @@ export default function Header() {
         </div>
         <PopoverGroup className="lg:flex relative lg:gap-x-12">
           <Link
-            to="/sandals-slippers"
+            to="/api/product/category/1"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             샌들 & 슬리퍼
           </Link>
           <Link
-            to="/running"
+            to="/api/product/category/2"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             러닝
           </Link>
           <Link
-            to="/soccer"
+            to="/api/product/category/3"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             축구
           </Link>
           <Link
-            to="/basketball"
+            to="/api/product/category/4"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             농구
           </Link>
           <Link
-            to="/training-gym"
+            to="/api/product/category/5"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             트레이닝 & 짐
           </Link>
           <Link
-            to="/golf"
+            to="/api/product/category/6"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             골프
           </Link>
           <Link
-            to="/tennis"
+            to="/api/product/category/7"
             className="text-base font-semibold leading-6 text-gray-900 mr-2"
           >
             테니스
           </Link>
           <Link
-            to="/others"
+            to="/api/product/category/8"
             className="text-base font-semibold leading-6 text-gray-900"
           >
             기타
