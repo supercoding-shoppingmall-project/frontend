@@ -101,20 +101,21 @@ export default function Header() {
               판매하기
             </button>
           </Link>
-          {isLoggedIn && (
+          {isLoggedIn ? (
             <Link to="/userprofile">
               <UserCircleIcon
                 aria-hidden="true"
                 className="h-10 w-10 text-gray-300"
               />
             </Link>
+          ) : (
+            <Link
+              to="/login"
+              className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
+            >
+              Log in <span aria-hidden="true">&rarr;</span>
+            </Link>
           )}
-          <Link
-            to="/login"
-            className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
         </div>
       </nav>
     </header>
