@@ -46,13 +46,16 @@ export default function SingUp() {
 
       // API 요청
       try {
-        const response = await fetch("http:/3.37.165.67:8080/api/user/signup", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        });
+        const response = await fetch(
+          "http://3.37.165.67:8080/api/user/signup",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("회원가입에 실패했습니다.");
