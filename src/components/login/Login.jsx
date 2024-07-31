@@ -1,28 +1,52 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const passwordChangeHandle = (e) => {
     const value = e.target.value;
     setPassword(value);
   };
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
     if (!validatePassword(password)) {
       setPasswordError("비밀번호는 특수 문자, 영어, 숫자를 포함해야 합니다.");
+      return;
     } else {
       setPasswordError("");
+    }
+
+    try {
+      const response = await axios.post("/api/user/login", {
+        email: email,
+        password: password,
+      });
+
+      // 로그인 성공 시의 처리
+      console.log("Login successful:", response.data);
+      navigate("/");
+
+      // 응답에서 토큰을 추출하여 localStorage에 저장
+      const token = response.headers.get("Authorization");
+      localStorage.setItem("Authorization", token);
+
+      // 예를 들어, 토큰을 저장하거나 리다이렉트 처리 등을 할 수 있습니다.
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
   const validatePassword = (password) => {
     const regex =
-      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{3,}$/;
     return regex.test(password);
   };
 
@@ -84,17 +108,18 @@ export default function Login() {
               {passwordError && (
                 <p className="mt-2 text-sm text-red-600">{passwordError}</p>
               )}
+              {loginError && (
+                <p className="mt-2 text-sm text-red-600">{loginError}</p>
+              )}
             </div>
 
             <div>
-              <Link to="/userprofile">
-                <button
-                  type="submit"
-                  className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                >
-                  로그인
-                </button>
-              </Link>
+              <button
+                type="submit"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                로그인
+              </button>
             </div>
           </form>
           <Link to="/signup">

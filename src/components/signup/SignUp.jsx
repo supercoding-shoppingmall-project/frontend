@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -49,9 +51,9 @@ export default function SignUp() {
             "Content-Type": "application/json", // JSON 형식으로 전송
           },
         });
-
-        console.log("회원가입 성공:", response.data);
         // 회원가입 성공 후의 처리 (예: 리디렉션, 사용자 정보 저장 등)
+        console.log("회원가입 성공:", response.data);
+        navigate("/login");
       } catch (error) {
         if (error.response) {
           // 서버가 응답을 반환했지만 상태 코드가 2xx가 아닌 경우
@@ -172,7 +174,7 @@ export default function SignUp() {
             >
               전화번호
             </label>
-            <div className="mt-2">
+            <div className="signup-tel mt-2">
               <input
                 id="phone"
                 name="phone"
