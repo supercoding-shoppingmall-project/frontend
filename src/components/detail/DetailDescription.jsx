@@ -4,7 +4,7 @@ const DetailDescription = () => {
   return (
     <div>
       <div class="px-4 sm:px-0">
-        <h3 class="text-base font-semibold leading-7 text-gray-900">
+        <h3 class="text-2xl font-semibold leading-7 text-gray-900">
           추가 정보
         </h3>
       </div>
