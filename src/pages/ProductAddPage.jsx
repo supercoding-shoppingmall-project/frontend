@@ -22,11 +22,11 @@ const ProductAddPage = () => {
 
     // 이미지 파일 추가
     images.forEach((image) => {
-      formData.append("files", image); // 이미지 파일 추가
+      formData.append("images", image); // 이미지 파일 추가
     });
 
     // 제품 데이터를 생성
-    formData.append("data", JSON.stringify(createProductData(formData)));
+    formData.append("product", JSON.stringify(createProductData(formData)));
 
     try {
       // localStorage에서 Authorization 토큰 가져오기
