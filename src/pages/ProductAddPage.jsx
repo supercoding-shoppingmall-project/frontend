@@ -1,16 +1,23 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import { SIZES } from "../constants/AddProducts";
 import AddProductForm from "../components/add-product/AddProductForm";
 import AddProductModal from "../components/add-product/AddProductModal";
 import axios from "axios";
 
 const ProductAddPage = () => {
-  // const { user } = useContext(UserContext);
   const [images, setImages] = useState([]);
   const [descriptions, setDescriptions] = useState([]);
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
-  // const [errors, setErrors] = useState(null);
+  const [errors, setErrors] = useState(null);
+  const [seller, setSeller] = useState(null);
+
+  useEffect(() => {
+    const authEmail = localStorage.getItem("Authorization");
+    if (authEmail) {
+      setSeller(authEmail);
+    }
+  });
 
   const cancelHandle = () => setCancelClicked(true);
 
@@ -20,14 +27,6 @@ const ProductAddPage = () => {
 
     const formData = new FormData(event.target);
     const data = createProductData(formData);
-
-    // if (user && user.id) {
-    //   data.append(`seller`, user.id);
-    // } else {
-    //   console.error("로그인된 유저의 ID가 없습니다.");
-    //   setErrors({ api: "로그인된 유저의 ID가 필요합니다." });
-    //   return;
-    // }
 
     try {
       const response = await axios.post("/api/sell/save", data);
@@ -51,8 +50,6 @@ const ProductAddPage = () => {
         setErrors({ api: "등록하기 중 오류가 발생했습니다." });
       }
     }
-
-    console.log(data);
   };
 
   const createProductData = (formData) => {
@@ -64,8 +61,7 @@ const ProductAddPage = () => {
       .map((desc) => ({ description: desc }));
 
     return {
-      // seller: user.id,
-      seller: "test@gmail.com",
+      seller: seller,
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
@@ -103,7 +99,7 @@ const ProductAddPage = () => {
         addClicked={addClicked}
         setAddClicked={setAddClicked}
       />
-      {/* {errors && <div>{errors.api}</div>} */}
+      {errors && <div>{errors.api}</div>}
     </>
   );
 };
