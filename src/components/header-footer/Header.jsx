@@ -105,14 +105,13 @@ export default function Header() {
             </svg>
           </Link>
 
-          <Link to="/sell">
-            <button
-              onClick={sellClickHandle}
-              className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6"
-            >
-              판매하기
-            </button>
-          </Link>
+          <button
+            onClick={sellClickHandle}
+            className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6"
+          >
+            판매하기
+          </button>
+
           {isLoggedIn ? (
             <Link to="/userprofile">
               <UserCircleIcon
