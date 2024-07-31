@@ -12,6 +12,13 @@ const ProductAddPage = () => {
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
 
+  useEffect(() => {
+    const authEmail = localStorage.getItem("Authorization");
+    if (authEmail) {
+      setSeller(authEmail);
+    }
+  }, []);
+
   const cancelHandle = () => setCancelClicked(true);
 
   const addHandle = async (event) => {
@@ -20,16 +27,15 @@ const ProductAddPage = () => {
 
     const formData = new FormData(event.target);
 
+    // 제품 데이터를 생성하여 JSON 문자열로 변환 후 formData에 추가
+    const productData = createProductData(formData);
+    formData.append("product", JSON.stringify(productData));
+
     // 이미지 파일 추가
     images.forEach((image) => {
-      formData.append("images", image); // 이미지 파일 추가
+      formData.append("images", image);
     });
-
-    // 제품 데이터를 생성
-    formData.append("product", JSON.stringify(createProductData(formData)));
-
     try {
-      // localStorage에서 Authorization 토큰 가져오기
       const token = localStorage.getItem("Authorization");
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
@@ -87,7 +93,6 @@ const ProductAddPage = () => {
         : null;
     }).filter(Boolean);
   };
-
   return (
     <>
       <AddProductForm
