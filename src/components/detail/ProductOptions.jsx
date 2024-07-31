@@ -96,20 +96,14 @@ const ProductOptions = ({ SizeOption, MockData, addToCart }) => {
           </fieldset>
         </div>
 
-        <div className="flex items-center justify-between mt-6">
-          <a
-            href="#"
-            className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
-          >
-            구매 수량
-          </a>
-        </div>
-        <div className="mt-2">
+        <div className="flex items-center justify-between mt-6"></div>
+        <div className="mt-2 flex items-center space-x-2">
+          <span className="text-sm font-medium text-gray-900">구매 수량</span>
           <input
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
-            className="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             min="1"
           />
         </div>
