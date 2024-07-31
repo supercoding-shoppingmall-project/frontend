@@ -132,6 +132,7 @@
 //     </header>
 //   );
 // }
+
 "use client";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -161,14 +162,11 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    // 백엔드에서 카테고리 데이터를 가져오는 함수
     const fetchCategories = async () => {
       try {
-        const response = await axios.get("/api/categories");
-        if (response.status === 200) {
-          setCategories(response.data);
-        } else {
-          console.error("Failed to fetch categories");
-        }
+        const response = await axios.get("/api/product/category");
+        setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
