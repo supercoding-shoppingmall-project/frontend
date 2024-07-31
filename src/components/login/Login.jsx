@@ -1,22 +1,39 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios"; // axios를 추가합니다.
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const passwordChangeHandle = (e) => {
     const value = e.target.value;
     setPassword(value);
   };
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
     if (!validatePassword(password)) {
       setPasswordError("비밀번호는 특수 문자, 영어, 숫자를 포함해야 합니다.");
+      return;
     } else {
       setPasswordError("");
+    }
+
+    try {
+      const response = await axios.post("/api/user/login", {
+        email: email,
+        password: password,
+      });
+
+      // 로그인 성공 시의 처리
+      console.log("Login successful:", response.data);
+      // 예를 들어, 토큰을 저장하거나 리다이렉트 처리 등을 할 수 있습니다.
+    } catch (error) {
+      console.error("Login error:", error);
+      setLoginError("로그인에 실패했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -83,6 +100,9 @@ export default function Login() {
               </div>
               {passwordError && (
                 <p className="mt-2 text-sm text-red-600">{passwordError}</p>
+              )}
+              {loginError && (
+                <p className="mt-2 text-sm text-red-600">{loginError}</p>
               )}
             </div>
 
