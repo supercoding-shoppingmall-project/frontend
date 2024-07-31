@@ -30,13 +30,12 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const data = createProductData();
+    const formData = createProductData();
 
     try {
-      // JSON.stringify로 데이터를 문자열로 변환하여 전송
-      const response = await axios.post("/api/sell/save", data, {
+      const response = await axios.post("/api/sell/save", formData, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded", // URL 인코딩 형식으로 전송
+          "Content-Type": "multipart/form-data", // multipart/form-data로 전송
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -62,6 +61,8 @@ const ProductAddPage = () => {
   };
 
   const createProductData = () => {
+    const formData = new FormData();
+
     const imageUrls = images.filter(
       (url) => typeof url === "string" && url.trim() !== ""
     );
@@ -69,17 +70,27 @@ const ProductAddPage = () => {
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
-    return {
-      seller: seller,
-      category: category,
-      productName: productName,
-      productPrice: Number(productPrice),
-      descriptions: filteredDescriptions,
-      productImage: imageUrls,
-      endtime: endtime,
-      createdAt: createdAt,
-      stockDtos: buildStockData(),
-    };
+    formData.append("seller", seller);
+    formData.append("category", category);
+    formData.append("productName", productName);
+    formData.append("productPrice", Number(productPrice));
+    formData.append("endtime", endtime);
+    formData.append("createdAt", createdAt);
+
+    // descriptions와 images를 FormData에 추가
+    filteredDescriptions.forEach((desc) => {
+      formData.append("descriptions", JSON.stringify(desc));
+    });
+    imageUrls.forEach((url) => {
+      formData.append("productImage", url); // 각 이미지 URL 추가
+    });
+
+    // 재고 데이터 추가
+    buildStockData().forEach((stock) => {
+      formData.append("stockDtos", JSON.stringify(stock));
+    });
+
+    return formData;
   };
 
   const buildStockData = () => {
