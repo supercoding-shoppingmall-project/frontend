@@ -17,6 +17,7 @@ import UserProfile from "./components/user-profile/UserProfile";
 import CartList from "./components/user-profile/CartList";
 import PurchaseList from "./components/user-profile/PurchaseList";
 import CartPage from "./components/cart/CartPage";
+
 import CategoryPage from "./pages/CategoryPage";
 
 function App() {
