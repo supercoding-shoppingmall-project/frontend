@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default function Login() {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -31,11 +30,13 @@ export default function Login() {
 
       // 로그인 성공 시의 처리
       console.log("Login successful:", response.data);
-      navigate("/");
 
       // 응답에서 토큰을 추출하여 localStorage에 저장
       const token = response.headers.get("Authorization");
       localStorage.setItem("Authorization", token);
+
+      // 메인 페이지로 이동하고 새로고침
+      window.location.href = "/";
 
       // 예를 들어, 토큰을 저장하거나 리다이렉트 처리 등을 할 수 있습니다.
     } catch (error) {
