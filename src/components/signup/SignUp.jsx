@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-export default function SingUp() {
+export default function SignUp() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,14 +36,44 @@ export default function SingUp() {
     return newErrors;
   };
 
-  const submitHandle = (e) => {
+  const submitHandle = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      // submit form logic
-      console.log("Form submitted successfully");
+      // API 요청
+      try {
+        const response = await axios.post("/api/user/signup", formData, {
+          headers: {
+            "Content-Type": "application/json", // JSON 형식으로 전송
+          },
+        });
+
+        console.log("회원가입 성공:", response.data);
+        // 회원가입 성공 후의 처리 (예: 리디렉션, 사용자 정보 저장 등)
+      } catch (error) {
+        if (error.response) {
+          // 서버가 응답을 반환했지만 상태 코드가 2xx가 아닌 경우
+          console.error("회원가입 오류:", error.response.data);
+          setErrors({
+            api: `회원가입 오류: ${
+              error.response.data.message || "알 수 없는 오류입니다."
+            }`,
+          });
+        } else if (error.request) {
+          // 요청이 이루어졌지만 응답을 받지 못한 경우
+          console.error(
+            "회원가입 오류: 요청이 이루어졌으나 응답이 없습니다.",
+            error.request
+          );
+          setErrors({ api: "서버 응답을 받을 수 없습니다." });
+        } else {
+          // 오류를 발생시킨 요청 설정 중에 문제가 발생한 경우
+          console.error("회원가입 오류:", error.message);
+          setErrors({ api: "회원가입 중 오류가 발생했습니다." });
+        }
+      }
     }
   };
 
@@ -141,11 +172,11 @@ export default function SingUp() {
             >
               전화번호
             </label>
-            <div className="mt-2">
+            <div className="signup-tel mt-2">
               <input
                 id="phone"
                 name="phone"
-                type="text"
+                type="tel"
                 autoComplete="phone"
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:max-w-2xl"
                 value={formData.phone}
@@ -167,7 +198,7 @@ export default function SingUp() {
                   name="gender"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  value="남성"
+                  value="MALE"
                   onChange={changeHandle}
                 />
                 <label
@@ -183,7 +214,7 @@ export default function SingUp() {
                   name="gender"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  value="여성"
+                  value="FEMALE"
                   onChange={changeHandle}
                 />
                 <label
