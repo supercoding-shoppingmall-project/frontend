@@ -3,7 +3,7 @@ import { useInputValue } from "../../hooks/useInputValue";
 
 const AddPeriod = () => {
   const [endtime, setendtime] = useInputValue("");
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString();
 
   return (
     <>
