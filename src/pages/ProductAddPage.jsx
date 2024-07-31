@@ -11,11 +11,6 @@ const ProductAddPage = () => {
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
-  const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("");
-  const [productPrice, setProductPrice] = useState(0);
-  const [endtime, setEndtime] = useState("");
-  const [createdAt, setCreatedAt] = useState("");
 
   useEffect(() => {
     const authEmail = localStorage.getItem("Authorization");
@@ -30,12 +25,20 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const formData = createProductData();
+    const formData = new FormData(event.target);
+
+    // 이미지 파일 추가
+    images.forEach((image) => {
+      formData.append("files", image); // 이미지 파일 추가
+    });
+
+    // 제품 데이터를 생성
+    formData.append("data", JSON.stringify(createProductData(formData)));
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
-          "Content-Type": "multipart/form-data", // multipart/form-data로 전송
+          "Content-Type": "multipart/form-data",
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -60,42 +63,26 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = () => {
-    const formData = new FormData();
-
-    const imageUrls = images.filter(
-      (url) => typeof url === "string" && url.trim() !== ""
-    );
+  const createProductData = (formData) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
-    formData.append("seller", seller);
-    formData.append("category", category);
-    formData.append("productName", productName);
-    formData.append("productPrice", Number(productPrice));
-    formData.append("endtime", endtime);
-    formData.append("createdAt", createdAt);
-
-    // descriptions와 images를 FormData에 추가
-    filteredDescriptions.forEach((desc) => {
-      formData.append("descriptions", JSON.stringify(desc));
-    });
-    imageUrls.forEach((url) => {
-      formData.append("productImage", url); // 각 이미지 URL 추가
-    });
-
-    // 재고 데이터 추가
-    buildStockData().forEach((stock) => {
-      formData.append("stockDtos", JSON.stringify(stock));
-    });
-
-    return formData;
+    return {
+      seller: seller,
+      category: formData.get("category"),
+      productName: formData.get("productName"),
+      productPrice: Number(formData.get("productPrice")),
+      descriptions: filteredDescriptions,
+      endtime: formData.get("endtime"),
+      createdAt: formData.get("createdAt"),
+      stockDtos: buildStockData(formData),
+    };
   };
 
-  const buildStockData = () => {
+  const buildStockData = (formData) => {
     return SIZES.map((size) => {
-      const quantity = size.quantity; // size 객체에 quantity가 있다고 가정
+      const quantity = formData.get(`${size.size}_quantity`);
       return quantity
         ? {
             size: size.size,
@@ -111,11 +98,6 @@ const ProductAddPage = () => {
         onSubmit={addHandle}
         onImagesChange={setImages}
         onDescriptionsChange={setDescriptions}
-        setProductName={setProductName}
-        setCategory={setCategory}
-        setProductPrice={setProductPrice}
-        setEndtime={setEndtime}
-        setCreatedAt={setCreatedAt}
         cancelHandle={cancelHandle}
       />
       <AddProductModal
