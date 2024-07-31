@@ -29,7 +29,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route
             path="/detail/:id"
-            element={<DetailPage MockDatas={MockDatas} />}
+            // element={<DetailPage MockDatas={MockDatas} />}
           />
           <Route path="/category/:number" element={<CategoryPage />} />
           <Route path="/login" element={<Login />} />
