@@ -11,7 +11,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { MODAL_DATA } from "../../constants/AddProducts";
 
-export default function AddProductsModal({
+export default function AddProductModal({
   cancelClicked,
   setCancelClicked,
   addClicked,
