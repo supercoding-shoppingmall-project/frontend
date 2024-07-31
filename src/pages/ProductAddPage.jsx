@@ -12,13 +12,6 @@ const ProductAddPage = () => {
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
 
-  useEffect(() => {
-    const authEmail = localStorage.getItem("Authorization");
-    if (authEmail) {
-      setSeller(authEmail);
-    }
-  }, []);
-
   const cancelHandle = () => setCancelClicked(true);
 
   const addHandle = async (event) => {
@@ -36,9 +29,12 @@ const ProductAddPage = () => {
     formData.append("data", JSON.stringify(createProductData(formData)));
 
     try {
+      // localStorage에서 Authorization 토큰 가져오기
+      const token = localStorage.getItem("Authorization");
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: token, // Authorization 헤더에 토큰 추가
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -69,7 +65,7 @@ const ProductAddPage = () => {
       .map((desc) => ({ description: desc }));
 
     return {
-      seller: seller,
+      seller: "hbin3673@hbin",
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
