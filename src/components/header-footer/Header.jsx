@@ -1,13 +1,14 @@
 "use client";
 
 // import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { PopoverGroup } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
 
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const sellClickHandle = () => {
     if (isLoggedIn) {
