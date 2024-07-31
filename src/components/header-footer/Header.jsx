@@ -9,6 +9,14 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const sellClickHandle = () => {
+    if (isLoggedIn) {
+      navigate("/sell");
+    } else {
+      navigate("/login");
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
     if (token) {
@@ -97,7 +105,10 @@ export default function Header() {
           </Link>
 
           <Link to="/sell">
-            <button className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6">
+            <button
+              onClick={sellClickHandle}
+              className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6"
+            >
               판매하기
             </button>
           </Link>
