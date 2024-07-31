@@ -1,10 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useCart } from "../../contexts/CartContext";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link } from "react-router-dom";
 
 export default function CartPage({ showPurchaseButton = true }) {
+  const { cart, setCart, removeFromCart, updateQuantity } = useCart();
+
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const fetchedUserId = localStorage.getItem("userId");
+    setUserId(fetchedUserId);
+
+    if (fetchedUserId) {
+      axios
+        .get(`/api/cart/${fetchedUserId}`)
+        .then((response) => {
+          setCart(response.data);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch cart data", error);
+        });
+    }
+  }, [setCart]);
+
   const quantityChangeHandle = (productId, size, delta) => {
     const product = cart.find(
       (item) => item.id === productId && item.size === size
@@ -15,18 +36,11 @@ export default function CartPage({ showPurchaseButton = true }) {
     }
   };
 
-  const { cart, removeFromCart, updateQuantity } = useCart();
-
   const calculateTotalPrice = () => {
-    return cart.reduce(
-      (total, product) =>
-        total + parseFloat(product.price.slice(1)) * product.quantity,
-      0
-    );
-  };
-
-  const formatPrice = (price) => {
-    return `$${Math.round(price)}`;
+    return cart.reduce((total, product) => {
+      const price = parseFloat(product.price.replace(/[^0-9.-]+/g, ""));
+      return total + price * product.quantity;
+    }, 0);
   };
 
   return (
@@ -60,7 +74,6 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        updateQuantity(product.id, product.quantity - 1);
                         quantityChangeHandle(product.id, product.size, -1);
                       }}
                       className="text-gray-500 hover:text-gray-700"
@@ -71,7 +84,6 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        updateQuantity(product.id, product.quantity + 1);
                         quantityChangeHandle(product.id, product.size, 1);
                       }}
                       className="text-gray-500 hover:text-gray-700"
