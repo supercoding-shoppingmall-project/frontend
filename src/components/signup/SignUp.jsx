@@ -190,7 +190,7 @@ export default function SingUp() {
                   name="gender"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  value="남성"
+                  value="MALE"
                   onChange={changeHandle}
                 />
                 <label
@@ -206,7 +206,7 @@ export default function SingUp() {
                   name="gender"
                   type="radio"
                   className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  value="여성"
+                  value="FEMALE"
                   onChange={changeHandle}
                 />
                 <label
