@@ -11,13 +11,18 @@ const ProductAddPage = () => {
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
+  const [productName, setProductName] = useState("");
+  const [category, setCategory] = useState("");
+  const [productPrice, setProductPrice] = useState(0);
+  const [endtime, setEndtime] = useState("");
+  const [createdAt, setCreatedAt] = useState("");
 
   useEffect(() => {
     const authEmail = localStorage.getItem("Authorization");
     if (authEmail) {
       setSeller(authEmail);
     }
-  });
+  }, []);
 
   const cancelHandle = () => setCancelClicked(true);
 
@@ -25,8 +30,7 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const formData = new FormData(event.target);
-    const data = createProductData(formData);
+    const data = createProductData();
 
     try {
       const response = await axios.post("/api/sell/save", data);
@@ -52,7 +56,7 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = (formData) => {
+  const createProductData = () => {
     const imageUrls = images.filter(
       (url) => typeof url === "string" && url.trim() !== ""
     );
@@ -62,20 +66,20 @@ const ProductAddPage = () => {
 
     return {
       seller: seller,
-      category: formData.get("category"),
-      productName: formData.get("productName"),
-      productPrice: Number(formData.get("productPrice")),
+      category: category,
+      productName: productName,
+      productPrice: Number(productPrice),
       descriptions: filteredDescriptions,
       productImage: imageUrls,
-      endtime: formData.get("endtime"),
-      createdAt: formData.get("createdAt"),
-      stockDtos: buildStockData(formData),
+      endtime: endtime,
+      createdAt: createdAt,
+      stockDtos: buildStockData(),
     };
   };
 
-  const buildStockData = (formData) => {
+  const buildStockData = () => {
     return SIZES.map((size) => {
-      const quantity = formData.get(`${size.size}_quantity`);
+      const quantity = size.quantity; // size 객체에 quantity가 있다고 가정
       return quantity
         ? {
             size: size.size,
@@ -91,6 +95,11 @@ const ProductAddPage = () => {
         onSubmit={addHandle}
         onImagesChange={setImages}
         onDescriptionsChange={setDescriptions}
+        setProductName={setProductName}
+        setCategory={setCategory}
+        setProductPrice={setProductPrice}
+        setEndtime={setEndtime}
+        setCreatedAt={setCreatedAt}
         cancelHandle={cancelHandle}
       />
       <AddProductModal
