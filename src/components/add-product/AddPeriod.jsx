@@ -3,7 +3,14 @@ import { useInputValue } from "../../hooks/useInputValue";
 
 const AddPeriod = () => {
   const [endtime, setendtime] = useInputValue("");
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toISOString();
+
+  if (endtime) {
+    const endtimeISO = new Date(endtime).toISOString();
+    console.log(endtimeISO);
+  } else {
+    console.log("endtime이 설정되지 않았습니다.");
+  }
 
   return (
     <>
