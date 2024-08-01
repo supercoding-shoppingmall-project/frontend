@@ -10,14 +10,44 @@ import {
 import { PencilIcon } from "@heroicons/react/24/outline";
 import SizeQuantity from "../add-product/SizeQuantity";
 
-export default function QuantityModal({ isClicked, setIsClicked, sizes }) {
+export default function QuantityModal({
+  isClicked,
+  setIsClicked,
+  sizes,
+  productName,
+}) {
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState(null);
+  const [quantityData, setQuantityData] = useState({});
 
   useEffect(() => {
     if (isClicked) {
       setOpen(true);
     }
   }, [isClicked]);
+
+  const quantityChangeHandle = (size, quantity) => {
+    setQuantityData((prev) => ({ ...prev, [size]: quantity }));
+  };
+
+  const submitHandle = async (event) => {
+    event.preventDefault(); // 기본 폼 제출 방지
+    try {
+      const token = localStorage.getItem("Authorization");
+      await axios.post(`/api/sell/update/${productName}`, quantityData, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      // 성공적으로 업데이트된 후 모달 닫기
+      setOpen(false);
+      setIsClicked(false);
+      alert("재고 수량이 변경되었습니다.");
+    } catch (error) {
+      console.error("재고 수량 변경 중 오류 발생:", error);
+      setError("재고 수량 변경에 실패했습니다.");
+    }
+  };
 
   return (
     <Dialog
@@ -58,11 +88,14 @@ export default function QuantityModal({ isClicked, setIsClicked, sizes }) {
               </div>
             </section>
             <section className="bg-white px-4 pb-4 pt-5 sm:p-6">
-              <form>
+              <form onSubmit={submitHandle}>
                 {/* 사이즈별 재고 변경 */}
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
-                    <SizeQuantity sizes={sizes} />
+                    <SizeQuantity
+                      sizes={sizes}
+                      onQuantityChange={quantityChangeHandle}
+                    />
                   </div>
                 </fieldset>
                 <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row sm:justify-end sm:px-6">

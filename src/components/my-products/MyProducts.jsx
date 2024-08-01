@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import QuantityModal from "./QuantityModal";
-import { PRODUCTS } from "../../constants/MyProducts";
 import { SIZES } from "../../constants/AddProducts";
 import axios from "axios";
 
@@ -10,9 +9,11 @@ export default function MyProducts() {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+  const [currentProduct, setCurrentProduct] = useState(null);
 
-  const btnClickHandle = () => {
+  const btnClickHandle = (productName) => {
     setIsClicked(true);
+    setCurrentProduct(productName);
   };
 
   const getEmailFromToken = (token) => {
@@ -102,7 +103,7 @@ export default function MyProducts() {
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
                     <div>{product.productPrice} 원</div>
                     <button
-                      onClick={btnClickHandle}
+                      onClick={() => btnClickHandle(product.productName)}
                       className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
                     >
                       재고 수량 변경
@@ -124,6 +125,7 @@ export default function MyProducts() {
         isClicked={isClicked}
         setIsClicked={setIsClicked}
         sizes={SIZES}
+        productName={currentProduct}
       />
     </>
   );
