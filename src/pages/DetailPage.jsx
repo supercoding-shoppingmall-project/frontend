@@ -38,8 +38,10 @@ export default function DetailPage() {
     const authHeader = localStorage.getItem("Authorization");
     if (authHeader) {
       try {
-        const token = authHeader.split(" ")[1]; // "Bearer " 부분을 제거하고 토큰만 추출
-        const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 payload 부분을 디코딩하여 JSON 파싱
+        const token = authHeader.split(" ")[1];
+        console.log("Token:", token); // 토큰 확인 로그
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        console.log("Payload:", payload); // 페이로드 확인 로그
         const fetchedUserId = payload.userId;
         setUserId(fetchedUserId);
       } catch (error) {
