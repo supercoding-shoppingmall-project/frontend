@@ -8,7 +8,6 @@ import DetailPage from "./pages/DetailPage";
 import SellingPage from "./pages/SellingPage";
 import ProductAddPage from "./pages/ProductAddPage";
 import PayPage from "./pages/PayPage";
-import MockDatas from "./components/mock-data/MockDatas";
 import Header from "./components/header-footer/Header";
 import Footer from "./components/header-footer/Footer";
 import Login from "./components/login/Login";
