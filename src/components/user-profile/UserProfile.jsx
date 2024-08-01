@@ -1,42 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
 import User from "./User";
 import Madal from "./Modal";
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userInfo, setUserInfo] = useState({
+  const { state } = useLocation();
+  const userInfo = state?.userInfo || {
     email: "",
     name: "",
     phone: "",
     address: "",
     gender: "",
-  });
-
-  // localStorage에서 사용자 ID와 토큰을 가져옴
-  const userId = localStorage.getItem("userId"); // userId를 localStorage에서 가져옴
-  const token = localStorage.getItem("Authorization");
-
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get(`/api/mypage/${userId}`, {
-          headers: {
-            Authorization: token, // 인증 헤더 추가
-          },
-        });
-        setUserInfo(response.data); // 받은 데이터로 상태 업데이트
-      } catch (error) {
-        console.error("Failed to fetch user info:", error);
-      }
-    };
-
-    if (userId) {
-      fetchUserInfo();
-    } else {
-      console.error("User ID is missing.");
-    }
-  }, [userId, token]);
+  };
 
   return (
     <>
