@@ -14,24 +14,24 @@ export default function CartPage({ showPurchaseButton = true }) {
   const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
 
-  useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        const response = await axios.get(`/api/product/${id}`);
-        console.log("Fetched product:", response.data);
-        if (response.data) {
-          setProduct(response.data[0]);
-        }
-      } catch (err) {
-        console.error("Error fetching product:", err);
-        setError("Failed to fetch product");
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProduct = async () => {
+  //     try {
+  //       const response = await axios.get(`/api/product/${id}`);
+  //       console.log("Fetched product:", response.data);
+  //       if (response.data) {
+  //         setProduct(response.data[0]);
+  //       }
+  //     } catch (err) {
+  //       console.error("Error fetching product:", err);
+  //       setError("Failed to fetch product");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchProduct();
-  }, [id]);
+  //   fetchProduct();
+  // }, [id]);
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization"); // Authorization 토큰 가져오기
@@ -90,7 +90,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                   src={product.productImageUrl || "default-image-url.jpg"} // 기본 이미지 URL을 사용합니다.
                   className="h-full w-full object-cover object-center"
                 /> */}
-                <ImageGallery imageSrc={product.imageUrls || []} />
+                <ImageGallery imageSrc={`${product.imageUrls}` || []} />
               </div>
               <div className="ml-4 flex flex-1 flex-col">
                 <div>
