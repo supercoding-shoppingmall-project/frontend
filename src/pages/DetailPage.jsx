@@ -12,7 +12,7 @@ import { useCart } from "../contexts/CartContext";
 export default function DetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null); // 초기값을 null로 설정
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -48,6 +48,8 @@ export default function DetailPage() {
   if (!product) {
     return <div>Product not found</div>;
   }
+
+  console.log("Rendering ImageGallery with imageUrls:", product.imageUrls);
 
   return (
     <div className="bg-white">
