@@ -8,6 +8,14 @@ export default function PayPage() {
   const [cvv, setCvv] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const confirmHandle = () => {
+    console.log("결제 확인");
+    closeModal();
+  };
 
   const submitHandle = (e) => {
     e.preventDefault();
@@ -211,10 +219,34 @@ export default function PayPage() {
           <div className="mt-10 flex justify-center">
             <button
               type="submit"
+              onClick={openModal}
               className="w-1/4 rounded-md bg-blue-600 mb-10 px-3.5 py-2.5 text-center text-lg font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               결제
             </button>
+            {isModalOpen && (
+              <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+                  <h2 className="text-lg font-semibold mb-4">
+                    결제 하시겠습니까?
+                  </h2>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={confirmHandle}
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={closeModal}
+                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </form>
