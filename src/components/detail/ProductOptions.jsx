@@ -37,6 +37,10 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
       id: product.id,
       size: selectedSize.name,
       quantity: quantity,
+      productImageUrl:
+        product.imageUrls && product.imageUrls[0]
+          ? product.imageUrls[0]
+          : "/path/to/default-image.jpg",
     };
 
     if (userId) {
