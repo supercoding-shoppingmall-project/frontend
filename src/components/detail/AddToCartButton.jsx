@@ -2,21 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import Alert from "./Alert";
 
-const AddToCartButton = ({
-  productId,
-  selectedSize,
-  quantity,
-  userId,
-  productImageUrl,
-}) => {
+const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
   const [showAlert, setShowAlert] = useState(false);
 
   const addToCartHandle = async () => {
     const cartItem = {
-      id: productId,
+      productId: productId,
       size: selectedSize,
       quantity: quantity,
-      productImageUrl: productImageUrl,
     };
 
     if (userId) {

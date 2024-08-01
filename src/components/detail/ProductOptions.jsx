@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
+import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
-import AddToCartButton from "./AddToCartButton";
 import axios from "axios";
+import AddToCartButton from "./AddToCartButton"; // AddToCartButton 컴포넌트를 불러옵니다.
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
+  const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState([]);
 
@@ -62,7 +64,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size.name}
+                  value={size.name} // size 객체가 아닌 size.name을 사용합니다.
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
@@ -124,13 +126,10 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           selectedSize={selectedSize}
           quantity={quantity}
           userId={userId}
-          productImageUrl={
-            product.imageUrls && product.imageUrls[0]
-              ? product.imageUrls[0]
-              : "/path/to/default-image.jpg"
-          }
         />
       </form>
+
+      {showAlert && <Alert />}
 
       <div className="mt-10">
         <h2 className="text-2xl font-semibold">장바구니에 담은 상품</h2>
