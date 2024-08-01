@@ -25,7 +25,7 @@ const ProductAddPage = () => {
   };
 
   useEffect(() => {
-    fetchSellerInfo();
+    fetchAuthInfo();
   }, []);
 
   const cancelHandle = () => setCancelClicked(true);
