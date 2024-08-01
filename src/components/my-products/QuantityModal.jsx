@@ -36,13 +36,18 @@ export default function QuantityModal({
 
   const submitHandle = async (event) => {
     event.preventDefault(); // 기본 폼 제출 방지
+    console.log("전송할 productName:", productName); // productName 로그 추가
     try {
       const token = localStorage.getItem("Authorization");
-      await axios.post(`/api/sell/update/${productName}`, quantityData, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await axios.put(
+        `/api/sell/update/${productName}`,
+        quantityData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       // 성공적으로 업데이트된 후 모달 닫기
       if (response.status === 200) {
         setOpen(false);
