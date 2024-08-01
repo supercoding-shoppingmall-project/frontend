@@ -3,8 +3,9 @@ import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
+import axios from "axios";
 
-const ProductOptions = ({ SizeOption, product, addToCart }) => {
+const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -13,8 +14,8 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
     console.log("ProductOptions rendering with product:", product);
   }, [product]);
 
-  const addToCartHandle = () => {
-    addToCart({
+  const addToCartHandle = async () => {
+    const cartItem = {
       id: product.id,
       name: product.name,
       href: product.href,
@@ -23,7 +24,17 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
       quantity,
       imageSrc: product.imageUrls,
       imageAlt: product.imageAlt,
-    });
+    };
+
+    addToCart(cartItem);
+
+    try {
+      await axios.post(`/api/cart/${userId}`, cartItem);
+      console.log("Added to cart:", cartItem);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 2000);
   };
