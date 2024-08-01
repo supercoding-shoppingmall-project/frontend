@@ -37,6 +37,8 @@ export default function DetailPage() {
     console.log("Product state updated:", product);
   }, [product]);
 
+  console.log("DetailPage rendering");
+
   if (loading) {
     return <div>Loading...</div>;
   }
