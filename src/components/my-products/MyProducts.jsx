@@ -15,6 +15,16 @@ export default function MyProducts() {
     setIsClicked(true);
   };
 
+  const getEmailFromToken = () => {
+    // JWT 토큰에서 이메일 추출 로직 구현
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1])); // JWT의 페이로드를 디코드
+      return payload.email; // 이메일 반환
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,16 +67,6 @@ export default function MyProducts() {
     }
   }, [email]);
 
-  const getEmailFromToken = () => {
-    // JWT 토큰에서 이메일 추출 로직 구현
-    const token = localStorage.getItem("Authorization");
-    if (token) {
-      const payload = JSON.parse(atob(token.split(".")[1])); // JWT의 페이로드를 디코드
-      return payload.email; // 이메일 반환
-    }
-    return null; // 이메일이 없을 경우 null 반환
-  };
-
   return (
     <>
       <div className="bg-white">
@@ -74,41 +74,34 @@ export default function MyProducts() {
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
-            {PRODUCTS.map((product) => (
-              <div
-                key={product.id}
-                className="group p-3 border border-solid border-slate-300 rounded"
-              >
-                {/* <div className="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-h-8 xl:aspect-w-7 relative">
-                  <img
-                    alt={product.imageAlt}
-                    src={product.imageSrc}
-                    className="h-full w-full object-cover object-center"
-                  />
-                  <button
-                    onClick={btnClickHandle}
-                    className="absolute left-0 bottom-0 w-full text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around"
-                  >
-                    재고 수량 변경
-                  </button>
-                </div> */}
-                <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                  <h3 className="text-lg font-bold text-gray-900">
-                    {product.name}
-                  </h3>
-                  <div>{product.closingDate}</div>
+            {data && data.length > 0 ? (
+              data.map((product) => (
+                <div
+                  key={product.id}
+                  className="group p-3 border border-solid border-slate-300 rounded"
+                >
+                  <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
+                    <h3 className="text-lg font-bold text-gray-900">
+                      {product.name}
+                    </h3>
+                    <div>{product.closingDate}</div>
+                  </div>
+                  <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
+                    <div>{product.price} 원</div>
+                    <button
+                      onClick={btnClickHandle}
+                      className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
+                    >
+                      재고 수량 변경
+                    </button>
+                  </div>
                 </div>
-                <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                  <div>{product.price} 원</div>
-                  <button
-                    onClick={btnClickHandle}
-                    className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
-                  >
-                    재고 수량 변경
-                  </button>
-                </div>
+              ))
+            ) : (
+              <div className="text-center text-gray-500">
+                판매 물품이 없습니다.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>

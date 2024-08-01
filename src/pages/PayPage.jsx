@@ -9,12 +9,14 @@ export default function PayPage() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsPaymentComplete(false); // 모달이 열릴 때 결제 완료 상태를 초기화
+  };
   const closeModal = () => setIsModalOpen(false);
 
   const confirmHandle = () => {
-    console.log("결제 확인");
-    closeModal();
+    setIsPaymentComplete(true); // 결제 완료 상태로 변경
   };
 
   const submitHandle = (e) => {
