@@ -13,7 +13,7 @@ export default function Modal({ open, setOpen }) {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleDelete = async () => {
+  const deleteHandle = async () => {
     try {
       // localStorage에서 Authorization 토큰 가져오기
       const token = localStorage.getItem("Authorization");
@@ -113,7 +113,7 @@ export default function Modal({ open, setOpen }) {
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={handleDelete}
+                onClick={deleteHandle}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Deactivate
