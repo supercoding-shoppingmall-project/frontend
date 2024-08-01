@@ -15,6 +15,7 @@ export default function DetailPage() {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -34,6 +35,14 @@ export default function DetailPage() {
 
     fetchProduct();
   }, [id]);
+
+  useEffect(() => {
+    const authHeader = localStorage.getItem("Authorization");
+    if (authHeader) {
+      const fetchedUserId = JSON.parse(authHeader).userId;
+      setUserId(fetchedUserId);
+    }
+  }, []);
 
   useEffect(() => {
     console.log("Product state updated:", product);
@@ -69,6 +78,7 @@ export default function DetailPage() {
             product={product}
             SizeOption={SizeOption}
             addToCart={addToCart}
+            userId={userId}
           />
           <ProductInfo description={product.description || []} />
           <DetailDescription />
