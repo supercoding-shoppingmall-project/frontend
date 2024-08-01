@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
@@ -8,6 +8,10 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
+
+  useEffect(() => {
+    console.log("ProductOptions rendering with product:", product);
+  }, [product]);
 
   const addToCartHandle = () => {
     addToCart({
@@ -21,18 +25,19 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
       imageAlt: product.imageAlt,
     });
     setShowAlert(true);
-    // 2초 후에 showAlert를 false로 설정
     setTimeout(() => setShowAlert(false), 2000);
   };
+
+  const productPrice = Number(product.price);
+  if (isNaN(productPrice)) {
+    console.error("Price is not a number:", product.price);
+  }
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
-        {FormatToKRW(Number(product.price))}
+        {FormatToKRW(productPrice)}
       </p>
-
-      <p>{console.log("price", product.price)}</p>
-      <p>{console.log("Image Urls", product.imageUrls)}</p>
 
       <form className="mt-10">
         <div className="mt-10">
