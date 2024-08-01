@@ -22,7 +22,7 @@ const UserProfile = () => {
       try {
         const response = await axios.get(`/api/mypage/${userId}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // 인증 헤더 추가
+            Authorization: token, // 인증 헤더 추가
           },
         });
         setUserInfo(response.data); // 받은 데이터로 상태 업데이트
