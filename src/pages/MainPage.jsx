@@ -10,23 +10,20 @@ export default function MainPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchProducts = async (page, pageSize) => {
-    try {
-      const response = await axios.get(
-        `/api/product/all?page=${page}&pageSize=${pageSize}`
-      );
-      setProducts(response.data);
-    } catch (err) {
-      setError("Failed to fetch products");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    setLoading(true);
-    fetchProducts(currentPage, 100);
-  }, [currentPage]);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("/api/product/all");
+        setProducts(response.data);
+      } catch (err) {
+        setError("Failed to fetch products");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const totalPages = Math.ceil(products.length / ItemsPerPage);
 
