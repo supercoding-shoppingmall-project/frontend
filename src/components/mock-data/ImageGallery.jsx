@@ -1,6 +1,8 @@
+// ImageGallery.jsx
 import React from "react";
 
 const ImageGallery = ({ imageSrc = [] }) => {
+  console.log("ImageGallery imageSrc:", imageSrc); // 확인용 로그
   return (
     <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
       {imageSrc.length > 1 && (
