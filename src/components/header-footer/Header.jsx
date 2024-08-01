@@ -45,7 +45,7 @@ export default function Header() {
 
     if (!userId || !token) {
       console.error("User ID 또는 token이 없습니다.");
-      navigate("/login"); // 로그인 페이지로 이동
+      // navigate("/login"); // 로그인 페이지로 이동
       return;
     }
 

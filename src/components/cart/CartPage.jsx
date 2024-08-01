@@ -294,8 +294,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                 <div>
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <h3>{`Product ID: ${product.productId}`}</h3>
-                    <p className="ml-4">{FormatToKRW(product.price || 0)}</p> //
-                    가격이 없을 경우 기본값을 사용합니다.
+                    <p className="ml-4">{FormatToKRW(product.price || 0)}</p>
                   </div>
                   <p className="mt-1 text-sm text-gray-500">{`Size: ${product.size}`}</p>
                 </div>
