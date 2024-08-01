@@ -12,7 +12,7 @@ import { useCart } from "../contexts/CartContext";
 export default function DetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null); // 초기값을 null로 설정
+  const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,8 +20,10 @@ export default function DetailPage() {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`/api/product/${id}`);
-        console.log("Fetched product:", response.data); // product 객체의 구조 확인
-        setProduct(response.data);
+        console.log("Fetched product:", response.data);
+        if (response.data) {
+          setProduct(response.data[0]);
+        }
       } catch (err) {
         console.error("Error fetching product:", err);
         setError("Failed to fetch product");
@@ -56,7 +58,7 @@ export default function DetailPage() {
   return (
     <div className="bg-white">
       <div className="pt-6">
-        <ImageGallery imageUrls={product.imageUrls || []} />
+        <ImageGallery imageSrc={product.imageUrls || []} />
         <div className="mx-auto max-w-2xl px-4 pb-16 pt-10 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:grid-rows-[auto,auto,1fr] lg:gap-x-8 lg:px-8 lg:pb-24 lg:pt-16">
           <div className="lg:col-span-2 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
