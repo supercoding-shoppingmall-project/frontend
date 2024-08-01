@@ -114,7 +114,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
-import ImageGallery from "./ImageGallery"; // ImageGallery 컴포넌트 임포트
+import ImageGallery from "../mock-data/ImageGallery"; // ImageGallery 컴포넌트 임포트
 
 const User = () => {
   const [profileImageUrl, setProfileImageUrl] = useState(null); // 프로필 이미지 상태
