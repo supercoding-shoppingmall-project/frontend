@@ -9,6 +9,7 @@ import {
 } from "@headlessui/react";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import SizeQuantity from "../add-product/SizeQuantity";
+import axios from "axios";
 
 export default function QuantityModal({
   isClicked,
@@ -105,6 +106,7 @@ export default function QuantityModal({
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
                     <SizeQuantity
                       sizes={sizes}
+                      quantities={quantityData}
                       onQuantityChange={quantityChangeHandle}
                     />
                   </div>
