@@ -18,7 +18,7 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const formData = new FormData();
+    const formData = new FormData(event.target);
 
     // 이미지 파일 추가
     images.forEach((image) => {
@@ -45,7 +45,6 @@ const ProductAddPage = () => {
           api: `등록하기 오류: ${
             error.response.data.message || "알 수 없는 오류입니다."
           }`,
-          status: error.response.status,
         });
       } else if (error.request) {
         console.error(
@@ -69,7 +68,7 @@ const ProductAddPage = () => {
       seller: "hbin3673@hbin",
       category: formData.get("category"),
       productName: formData.get("productName"),
-      productPrice: formData.get("productPrice"),
+      productPrice: Number(formData.get("productPrice")),
       descriptions: filteredDescriptions,
       endtime: formData.get("endtime"),
       createdAt: formData.get("createdAt"),
@@ -103,11 +102,7 @@ const ProductAddPage = () => {
         addClicked={addClicked}
         setAddClicked={setAddClicked}
       />
-      {errors && (
-        <div>
-          {errors.api} {errors.status && `상태 코드: ${errors.status}`}
-        </div>
-      )}
+      {errors && <div>{errors.api}</div>}
     </>
   );
 };
