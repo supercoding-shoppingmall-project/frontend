@@ -17,7 +17,6 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
-      name: product.name,
       size: selectedSize,
       quantity: quantity,
       productImageUrl:
