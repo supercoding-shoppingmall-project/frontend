@@ -17,8 +17,13 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
-      size: selectedSize.name,
+      name: product.name,
+      size: selectedSize,
       quantity: quantity,
+      productImageUrl:
+        product.imageUrls && product.imageUrls[0]
+          ? product.imageUrls[0]
+          : "/path/to/default-image.jpg",
     };
 
     if (userId) {
