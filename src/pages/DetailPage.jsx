@@ -1,4 +1,4 @@
-import ImageGallery from "../components/mock-data/ImageGallery";
+import ImageGallery from "../components/image-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
 import DetailDescription from "../components/detail/DetailDescription";
