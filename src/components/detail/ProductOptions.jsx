@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
+import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
+import axios from "axios";
 import AddToCartButton from "./AddToCartButton";
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0].name);
+  const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size.name} // size 객체가 아닌 size.name을 사용합니다.
+                  value={size.name}
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
@@ -102,11 +105,13 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
 
         <AddToCartButton
           productId={product.id}
-          selectedSize={selectedSize}
+          selectedSize={Number(selectedSize)}
           quantity={quantity}
           userId={userId}
         />
       </form>
+
+      {showAlert && <Alert />}
     </div>
   );
 };
