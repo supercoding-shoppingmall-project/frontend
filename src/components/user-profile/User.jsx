@@ -68,6 +68,9 @@ const User = () => {
           구매 목록 조회
         </div>
       </Link>
+      <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+        로그 아웃
+      </div>
     </div>
   );
 };
