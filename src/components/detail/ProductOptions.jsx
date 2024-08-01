@@ -17,7 +17,7 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
       size: selectedSize.name,
       price: product.price,
       quantity,
-      imageSrc: product.imageSrc,
+      imageSrc: product.imageUrls,
       imageAlt: product.imageAlt,
     });
     setShowAlert(true);
