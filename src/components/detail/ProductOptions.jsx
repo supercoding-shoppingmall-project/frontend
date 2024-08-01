@@ -17,7 +17,7 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
       size: selectedSize.name,
       price: product.price,
       quantity,
-      imageSrc: product.imageSrc,
+      imageSrc: product.imageUrls,
       imageAlt: product.imageAlt,
     });
     setShowAlert(true);
@@ -28,7 +28,7 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
-        {FormatToKRW(product.price)}
+        {FormatToKRW(Number(product.price))}
       </p>
 
       <form className="mt-10">

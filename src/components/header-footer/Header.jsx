@@ -39,7 +39,7 @@ export default function Header() {
       // 사용자 정보 가져오기
       const response = await axios.get(`/api/mypage/${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
       });
 
