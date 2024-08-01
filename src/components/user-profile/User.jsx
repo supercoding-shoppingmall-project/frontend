@@ -25,7 +25,7 @@ const User = () => {
     }
   };
 
-  const fetchUserInfoAndNavigate = async () => {
+  const userProfileClickHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
       const userId = getUserIdToken(token);
@@ -115,7 +115,7 @@ const User = () => {
 
       <div
         className="font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 cursor-pointer"
-        onClick={fetchUserInfoAndNavigate} // 내 프로필 클릭 시 사용자 정보 요청 및 페이지 이동
+        onClick={userProfileClickHandle}
       >
         내 프로필
       </div>
