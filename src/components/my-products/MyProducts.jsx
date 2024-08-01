@@ -39,7 +39,7 @@ export default function MyProducts() {
       }
 
       try {
-        const response = await axios.get(`/api/sell/${email}`, {
+        const response = await axios.get(`/api/product/all`, {
           headers: {
             Authorization: token, // 가져온 토큰으로 API 요청
           },
