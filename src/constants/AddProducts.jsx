@@ -25,14 +25,14 @@ export const CATEGORIES = [
 
 // 사이즈 및 재고 데이터
 export const SIZES = [
-  { id: "size240", size: "240" },
-  { id: "size250", size: "250" },
-  { id: "size260", size: "260" },
-  { id: "size270", size: "270" },
-  { id: "size280", size: "280" },
-  { id: "size290", size: "290" },
-  { id: "size300", size: "300" },
-  { id: "size310", size: "310" },
+  { id: "size240", size: 240 },
+  { id: "size250", size: 250 },
+  { id: "size260", size: 260 },
+  { id: "size270", size: 270 },
+  { id: "size280", size: 280 },
+  { id: "size290", size: 290 },
+  { id: "size300", size: 300 },
+  { id: "size310", size: 310 },
 ];
 
 // 상품등록 모달 데이터

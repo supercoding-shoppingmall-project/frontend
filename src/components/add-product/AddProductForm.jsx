@@ -7,6 +7,7 @@ import AddPrice from "./AddPrice";
 import AddPeriod from "./AddPeriod";
 import ProductDescription from "./ProductDescription";
 import AddButtons from "./AddButtons";
+import { useState } from "react";
 
 export default function AddProductForm({
   onSubmit,
@@ -14,6 +15,15 @@ export default function AddProductForm({
   onDescriptionsChange,
   cancelHandle,
 }) {
+  const [quantities, setQuantities] = useState({}); // 수량 상태 관리
+
+  const quantityChangeHandle = (size, value) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [size]: value,
+    }));
+  };
+
   return (
     <form
       id="addProductsForm"
@@ -34,7 +44,11 @@ export default function AddProductForm({
           <div className="mt-10">
             <div className={STYLE.sizeQuantityTitle}>사이즈 및 개수</div>
             <div className={STYLE.sizeQuantity}>
-              <SizeQuantity sizes={SIZES} />
+              <SizeQuantity
+                sizes={SIZES} // 사이즈 배열 전달
+                quantities={quantities} // 현재 수량 전달
+                onQuantityChange={quantityChangeHandle} // 수량 변경 핸들러 전달
+              />
             </div>
           </div>
 

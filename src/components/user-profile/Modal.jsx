@@ -5,8 +5,44 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import axios from "axios";
 
 export default function Modal({ open, setOpen }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleDelete = async () => {
+    try {
+      // localStorage에서 Authorization 토큰 가져오기
+      const token = localStorage.getItem("Authorization");
+
+      // 사용자가 입력한 자격증명으로 로그인 요청
+      const response = await axios.delete("/api/user/delete", {
+        headers: {
+          Authorization: token, // Authorization 헤더에 토큰 추가
+        },
+        data: {
+          email: email,
+          password: password,
+        },
+      });
+
+      console.log(response);
+
+      // 회원 탈퇴 성공 후 처리 (예: 로그아웃 및 리다이렉트)
+      localStorage.removeItem("Authorization");
+      alert("회원 탈퇴가 성공적으로 처리되었습니다.");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Error during account deletion:", error);
+      setErrorMessage(
+        "회원 탈퇴에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요."
+      );
+    }
+  };
+
   return (
     <Dialog
       open={open}
@@ -40,11 +76,11 @@ export default function Modal({ open, setOpen }) {
                     회원정보를 지우시겠습니까?
                   </DialogTitle>
                   <p className="text-sm text-gray-500 mt-2 mb-2">
-                    회원탈퇴시 모든정보는 지워지며 다시 되돌리수 없습니다.
+                    회원탈퇴시 모든정보는 지워지며 다시 되돌릴 수 없습니다.
                     <br />
                     이메일 / 비밀번호를 입력해 주세요.
                   </p>
-                  <div className="rounded-md ring-1 ring-gray-300  ">
+                  <div className="rounded-md ring-1 ring-gray-300 mb-2">
                     <input
                       id="email"
                       name="email"
@@ -52,32 +88,38 @@ export default function Modal({ open, setOpen }) {
                       placeholder="email"
                       autoComplete="email"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
-                  <div className="rounded-md ring-1 ring-gray-300  ">
+                  <div className="rounded-md ring-1 ring-gray-300 mb-2">
                     <input
                       id="password"
                       name="password"
-                      type="text"
+                      type="password"
                       placeholder="password"
-                      autoComplete="password"
+                      autoComplete="current-password"
                       className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                   </div>
+                  {errorMessage && (
+                    <p className="text-red-600 text-sm">{errorMessage}</p>
+                  )}
                 </div>
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={() => setOpen(false)}
+                onClick={handleDelete}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Deactivate
               </button>
               <button
                 type="button"
-                data-autofocus
                 onClick={() => setOpen(false)}
                 className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
               >
