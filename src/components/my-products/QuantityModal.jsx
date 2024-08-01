@@ -118,6 +118,7 @@ export default function QuantityModal({
                   </button>
                 </div>
               </form>
+              {error && <div className="text-red-500">{error}</div>}
             </section>
           </DialogPanel>
         </div>
