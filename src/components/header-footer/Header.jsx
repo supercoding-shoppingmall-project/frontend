@@ -31,6 +31,7 @@ export default function Header() {
       const token = localStorage.getItem("Authorization");
 
       if (!userId || !token) {
+        console.error("User ID or token is missing.");
         navigate("/login");
         return;
       }
@@ -38,7 +39,7 @@ export default function Header() {
       // 사용자 정보 가져오기
       const response = await axios.get(`/api/mypage/${userId}`, {
         headers: {
-          Authorization: token,
+          Authorization: `Bearer ${token}`,
         },
       });
 
