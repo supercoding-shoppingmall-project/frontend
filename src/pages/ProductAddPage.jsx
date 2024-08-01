@@ -16,7 +16,7 @@ const ProductAddPage = () => {
 
   const addHandle = async (event) => {
     event.preventDefault();
-    setAddClicked(true);
+    // setAddClicked(true);
 
     const formData = new FormData();
 
