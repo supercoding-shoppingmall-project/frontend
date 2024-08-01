@@ -4,6 +4,7 @@ import { useCart } from "../../contexts/CartContext";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link } from "react-router-dom";
+import { deleteCartItem } from "../../utils/ApiService";
 
 export default function CartPage({ showPurchaseButton = true }) {
   const { cart, setCart, removeFromCart, updateQuantity } = useCart();
@@ -51,6 +52,19 @@ export default function CartPage({ showPurchaseButton = true }) {
       const price = parseFloat(product.price) || 0;
       return total + price * (product.quantity || 1);
     }, 0);
+  };
+
+  const removeHandle = async (productId, size) => {
+    const token = localStorage.getItem("Authorization");
+    if (userId && token) {
+      try {
+        await deleteCartItem(userId, productId, size, token);
+        removeFromCart(productId, size);
+      } catch (error) {
+        setError("Failed to remove item from cart");
+        console.error(error);
+      }
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -115,7 +129,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <button
                       type="button"
                       onClick={() =>
-                        removeFromCart(product.productId, product.size)
+                        removeHandle(product.productId, product.size)
                       }
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
