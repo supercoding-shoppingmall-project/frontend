@@ -17,13 +17,13 @@ const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
-      name: product.name,
-      href: product.href,
       size: selectedSize.name,
-      price: product.price,
+      href: product.href,
       quantity,
-      imageSrc: product.imageUrls,
-      imageAlt: product.imageAlt,
+      // price: product.price,
+      // name: product.name,
+      // imageSrc: product.imageUrls,
+      // imageAlt: product.imageAlt,
     };
 
     addToCart(cartItem);
@@ -133,6 +133,7 @@ const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
           className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           장바구니에 담기
+          {console.log("장바구니 담기 성공")}
         </button>
       </form>
       {showAlert && <Alert />}
