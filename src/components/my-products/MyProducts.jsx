@@ -17,8 +17,13 @@ export default function MyProducts() {
 
   const getEmailFromToken = (token) => {
     if (token) {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload.email; // 이메일 반환
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.email; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
     }
     return null; // 이메일이 없을 경우 null 반환
   };
