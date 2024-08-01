@@ -8,11 +8,9 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: productId,
-      size: selectedSize,
+      size: Number(selectedSize),
       quantity: quantity,
     };
-
-    console.log("Attempting to add to cart:", cartItem);
 
     if (userId) {
       try {
@@ -25,14 +23,13 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
         });
         console.log("Added to cart:", cartItem);
       } catch (error) {
-        console.error("Error adding to cart:", error.response);
+        console.error("Error adding to cart:", error.response.data);
       }
     } else {
       console.error("User ID is not available");
     }
 
     setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 2000);
   };
 
   return (
