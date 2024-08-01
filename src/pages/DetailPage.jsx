@@ -7,11 +7,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { SizeOption } from "../constants/SizeOption";
-import { useCart } from "../contexts/CartContext";
 
 export default function DetailPage() {
   const { id } = useParams();
-  const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -77,7 +75,6 @@ export default function DetailPage() {
           <ProductOptions
             product={product}
             SizeOption={SizeOption}
-            addToCart={addToCart}
             userId={userId}
           />
           <ProductInfo description={product.description || []} />

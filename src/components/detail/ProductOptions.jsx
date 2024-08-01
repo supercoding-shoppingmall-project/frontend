@@ -5,7 +5,7 @@ import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 import axios from "axios";
 
-const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
+const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -17,22 +17,31 @@ const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
+      name: product.name,
       size: selectedSize.name,
-      href: product.href,
-      quantity,
+      // href: product.href,
       // price: product.price,
-      // name: product.name,
-      // imageSrc: product.imageUrls,
+      // quantity,
+      // imageSrc:
+      //   product.imageUrls && product.imageUrls[0]
+      //     ? product.imageUrls[0]
+      //     : "/path/to/default-image.jpg",
       // imageAlt: product.imageAlt,
     };
 
-    addToCart(cartItem);
-
-    try {
-      await axios.post(`/api/cart/${userId}`, cartItem);
-      console.log("Added to cart:", cartItem);
-    } catch (error) {
-      console.error("Error adding to cart:", error);
+    if (userId) {
+      try {
+        await axios.post(`/api/cart/${userId}`, cartItem, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
+          },
+        });
+        console.log("Added to cart:", cartItem);
+      } catch (error) {
+        console.error("Error adding to cart:", error);
+      }
+    } else {
+      console.error("User ID is not available");
     }
 
     setShowAlert(true);
@@ -133,7 +142,6 @@ const ProductOptions = ({ SizeOption, product, addToCart, userId }) => {
           className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
         >
           장바구니에 담기
-          {console.log("장바구니 담기 성공")}
         </button>
       </form>
       {showAlert && <Alert />}
