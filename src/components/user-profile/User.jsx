@@ -1,8 +1,18 @@
 import React from "react";
+import axios from "axios"; // axios import 추가
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 const User = () => {
+  const logoutHandle = async () => {
+    try {
+      await axios.post("/api/user/logout"); // 로그아웃 API 요청 보내기
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   return (
     <div className="sm:w-60 w-full py-3">
       <div className="bg-white text-center border border-gray-300 p-7 block">
@@ -68,7 +78,10 @@ const User = () => {
           구매 목록 조회
         </div>
       </Link>
-      <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+      <div
+        className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200 cursor-pointer"
+        onClick={logoutHandle}
+      >
         로그 아웃
       </div>
     </div>
