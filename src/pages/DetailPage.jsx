@@ -12,7 +12,7 @@ import { useCart } from "../contexts/CartContext";
 export default function DetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null); // 초기값을 null로 설정
+  const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +20,7 @@ export default function DetailPage() {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`/api/product/${id}`);
-        console.log("Fetched product:", response.data); // product 객체의 구조 확인
+        console.log("Fetched product:", response.data);
         setProduct(response.data);
       } catch (err) {
         console.error("Error fetching product:", err);
