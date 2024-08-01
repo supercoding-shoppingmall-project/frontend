@@ -12,24 +12,31 @@ const ProductAddPage = () => {
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
 
-  useEffect(() => {
-    const authEmail = localStorage.getItem("Authorization");
-    if (authEmail) {
-      setSeller(authEmail);
-    }
-  });
-
   const cancelHandle = () => setCancelClicked(true);
 
   const addHandle = async (event) => {
     event.preventDefault();
-    setAddClicked(true);
+    // setAddClicked(true);
 
-    const formData = new FormData(event.target);
-    const data = createProductData(formData);
+    const formData = new FormData();
+
+    // 이미지 파일 추가
+    images.forEach((image) => {
+      formData.append("images", image); // 이미지 파일 추가
+    });
+
+    // 제품 데이터를 생성
+    formData.append("product", JSON.stringify(createProductData(formData)));
 
     try {
-      const response = await axios.post("/api/sell/save", data);
+      // localStorage에서 Authorization 토큰 가져오기
+      const token = localStorage.getItem("Authorization");
+      const response = await axios.post("/api/sell/save", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token, // Authorization 헤더에 토큰 추가
+        },
+      });
       console.log("등록하기 성공:", response.data);
     } catch (error) {
       if (error.response) {
@@ -53,20 +60,16 @@ const ProductAddPage = () => {
   };
 
   const createProductData = (formData) => {
-    const imageUrls = images.filter(
-      (url) => typeof url === "string" && url.trim() !== ""
-    );
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
     return {
-      seller: seller,
+      seller: "hbin3673@hbin",
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
       descriptions: filteredDescriptions,
-      productImage: imageUrls,
       endtime: formData.get("endtime"),
       createdAt: formData.get("createdAt"),
       stockDtos: buildStockData(formData),
