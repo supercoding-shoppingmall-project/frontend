@@ -18,7 +18,7 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const formData = new FormData(event.target);
+    const formData = new FormData();
 
     // 이미지 파일 추가
     images.forEach((image) => {
@@ -27,12 +27,6 @@ const ProductAddPage = () => {
 
     // 제품 데이터를 생성
     formData.append("product", JSON.stringify(createProductData(formData)));
-
-    // 폼 데이터 콘솔 출력 (전송하기 전)
-    console.log("전송할 폼 데이터 내용:");
-    for (let [key, value] of formData.entries()) {
-      console.log(`${key}:`, value);
-    }
 
     try {
       // localStorage에서 Authorization 토큰 가져오기
@@ -51,6 +45,7 @@ const ProductAddPage = () => {
           api: `등록하기 오류: ${
             error.response.data.message || "알 수 없는 오류입니다."
           }`,
+          status: error.response.status,
         });
       } else if (error.request) {
         console.error(
@@ -74,7 +69,7 @@ const ProductAddPage = () => {
       seller: "hbin3673@hbin",
       category: formData.get("category"),
       productName: formData.get("productName"),
-      productPrice: Number(formData.get("productPrice")),
+      productPrice: formData.get("productPrice"),
       descriptions: filteredDescriptions,
       endtime: formData.get("endtime"),
       createdAt: formData.get("createdAt"),
