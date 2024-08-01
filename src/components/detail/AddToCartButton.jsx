@@ -32,7 +32,6 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
     }
 
     setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 2000);
   };
 
   return (
