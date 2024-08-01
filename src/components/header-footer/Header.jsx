@@ -25,31 +25,6 @@ export default function Header() {
     }
   }, []);
 
-  const userIconClickHandle = async () => {
-    try {
-      const userId = localStorage.getItem("userId");
-      const token = localStorage.getItem("Authorization");
-
-      if (!userId || !token) {
-        navigate("/login");
-        return;
-      }
-
-      // 사용자 정보 가져오기
-      const response = await axios.get(`/api/mypage/${userId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      // API 요청 성공 시 프로필 페이지로 이동
-      navigate("/userprofile", { state: { userInfo: response.data } });
-    } catch (error) {
-      console.error("Failed to fetch user info:", error);
-      navigate("/login");
-    }
-  };
-
   return (
     <header className="bg-white">
       <nav
@@ -113,7 +88,7 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
-          <Link to={"/cartpage"}>
+          <Link to={"/CartPage"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -138,12 +113,12 @@ export default function Header() {
           </button>
 
           {isLoggedIn ? (
-            <div onClick={userIconClickHandle} className="cursor-pointer">
+            <Link to="/userprofile">
               <UserCircleIcon
                 aria-hidden="true"
                 className="h-10 w-10 text-gray-300"
               />
-            </div>
+            </Link>
           ) : (
             <Link
               to="/login"
