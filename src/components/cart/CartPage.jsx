@@ -57,6 +57,10 @@ export default function CartPage({ showPurchaseButton = true }) {
     }
   }, [setCart]);
 
+  useEffect(() => {
+    console.log("Product Name:", product.data);
+  }, [product]);
+
   const quantityChangeHandle = (productId, size, delta) => {
     const product = cart.find(
       (item) => item.productId === productId && item.size === size
@@ -96,7 +100,6 @@ export default function CartPage({ showPurchaseButton = true }) {
               <div className="ml-4 flex flex-1 flex-col">
                 <div>
                   <div className="flex justify-between text-base font-medium text-gray-900">
-                    {console.log("Product name:", product.name)}
                     <h3>{product.name || "No Name"}</h3>
                     <p className="ml-4">{FormatToKRW(product.price || 0)}</p>
                   </div>
