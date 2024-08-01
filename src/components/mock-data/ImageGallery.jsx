@@ -1,6 +1,6 @@
 import React from "react";
 
-const ImageGallery = ({ imageSrc }) => {
+const ImageGallery = ({ imageSrc = [] }) => {
   return (
     <div className="mx-auto mt-6 max-w-2xl sm:px-6 lg:max-w-7xl lg:grid lg:grid-cols-3 lg:gap-x-8 lg:px-8">
       {imageSrc[1] && (

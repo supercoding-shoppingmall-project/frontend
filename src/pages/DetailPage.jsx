@@ -12,7 +12,7 @@ import { useCart } from "../contexts/CartContext";
 export default function DetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
