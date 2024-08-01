@@ -11,6 +11,22 @@ const ProductAddPage = () => {
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
+  const [token, setToken] = useState("");
+
+  const fetchAuthInfo = () => {
+    const authToken = localStorage.getItem("Authorization");
+    const sellerEmail = localStorage.getItem("sellerEmail"); // 예시로 로컬스토리지에서 이메일 가져오기
+    if (authToken) {
+      setToken(authToken);
+    }
+    if (sellerEmail) {
+      setSeller(sellerEmail);
+    }
+  };
+
+  useEffect(() => {
+    fetchSellerInfo();
+  }, []);
 
   const cancelHandle = () => setCancelClicked(true);
 
@@ -26,11 +42,9 @@ const ProductAddPage = () => {
     });
 
     // 제품 데이터를 생성
-    formData.append("product", JSON.stringify(createProductData(formData)));
+    formData.append("product", JSON.stringify(createProductData()));
 
     try {
-      // localStorage에서 Authorization 토큰 가져오기
-      const token = localStorage.getItem("Authorization");
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -59,25 +73,25 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = (formData) => {
+  const createProductData = () => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
     return {
-      seller,
+      seller: seller,
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
       descriptions: filteredDescriptions,
       endtime: formData.get("endtime"),
       createdAt: formData.get("createdAt"),
-      stockDtos: buildStockData(formData),
+      stockDtos: buildStockData(),
     };
   };
 
-  const buildStockData = (formData) => {
-    return SIZES.map((size) => {
+  const buildStockData = () => {
+    const stockData = SIZES.map((size) => {
       const quantity = formData.get(`${size.size}_quantity`);
       return quantity
         ? {
@@ -86,6 +100,8 @@ const ProductAddPage = () => {
           }
         : null;
     }).filter(Boolean);
+
+    return stockData;
   };
 
   return (
