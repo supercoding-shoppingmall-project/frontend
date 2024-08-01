@@ -140,12 +140,15 @@ const User = () => {
         console.error("Failed to fetch profile image:", error);
         setProfileImageUrl(null); // 기본 이미지로 설정
       }
+      console.log("Response data:", error.response.data);
+      console.log("Response status:", error.response.status);
+      console.log("Response headers:", error.response.headers);
     };
 
     fetchProfileImage();
   }, []);
 
-  const handleFileUpload = async (event) => {
+  const fileUploadHandle = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -263,7 +266,7 @@ const User = () => {
             <input
               type="file"
               className="sr-only"
-              onChange={handleFileUpload}
+              onChange={fileUploadHandle}
             />
           </label>
         </div>
