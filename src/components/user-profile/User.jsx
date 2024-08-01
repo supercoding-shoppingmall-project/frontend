@@ -114,6 +114,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link, useNavigate } from "react-router-dom";
+import ImageGallery from "./ImageGallery"; // ImageGallery 컴포넌트 임포트
 
 const User = () => {
   const [profileImageUrl, setProfileImageUrl] = useState(null); // 프로필 이미지 상태
@@ -185,7 +186,6 @@ const User = () => {
     return null;
   };
 
-  //로그아웃기능
   const logoutHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
@@ -205,7 +205,6 @@ const User = () => {
     }
   };
 
-  //유저정보 불러오기 기능
   const userProfileClickHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
@@ -246,7 +245,7 @@ const User = () => {
   return (
     <div className="sm:w-60 w-full py-3">
       <div className="bg-white text-center border border-gray-300 p-7 block">
-        <div className="mt-2 flex items-center gap-x-3">
+        <div className="mt-2 flex items-center gap-x-3 ">
           {profileImageUrl ? (
             <img
               src={profileImageUrl}
@@ -268,6 +267,8 @@ const User = () => {
             />
           </label>
         </div>
+        {/* 이미지 갤러리 추가 */}
+        {profileImageUrl && <ImageGallery imageSrc={[profileImageUrl]} />}
       </div>
 
       <div
