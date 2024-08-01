@@ -6,7 +6,7 @@ import FormatToKRW from "../../utils/FormatToKRW";
 import AddToCartButton from "./AddToCartButton";
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
-  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
+  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0].name);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size}
+                  value={size.name}
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
