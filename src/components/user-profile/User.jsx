@@ -124,7 +124,7 @@ const User = () => {
     const fetchProfileImage = async () => {
       try {
         const token = localStorage.getItem("Authorization");
-        const encodedEmail = encodeURIComponent(getUserEmailFromToken(token));
+        const encodedEmail = getUserEmailFromToken(token);
 
         const response = await axios.get(
           `/api/mypage/profile-image/${encodedEmail}`,
@@ -137,15 +137,20 @@ const User = () => {
 
         setProfileImageUrl(response.data.profileImageUrl); // 프로필 이미지 URL 설정
       } catch (error) {
-        console.error("Failed to fetch profile image:", error);
-        setProfileImageUrl(null); // 기본 이미지로 설정
+        if (error.response) {
+          console.error("Error response:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else {
+          console.error("Error message:", error.message);
+        }
       }
     };
 
     fetchProfileImage();
   }, []);
 
-  const handleFileUpload = async (event) => {
+  const fileUploadHandle = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -154,7 +159,7 @@ const User = () => {
 
     try {
       const token = localStorage.getItem("Authorization");
-      const encodedEmail = encodeURIComponent(getUserEmailFromToken(token));
+      const encodedEmail = getUserEmailFromToken(token);
 
       const response = await axios.post(
         `/api/mypage/profile-image/${encodedEmail}`,
@@ -177,7 +182,7 @@ const User = () => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email; // 이메일 반환
+        return payload.userId; // 유저 아이디 반환
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
         return null;
@@ -263,7 +268,7 @@ const User = () => {
             <input
               type="file"
               className="sr-only"
-              onChange={handleFileUpload}
+              onChange={fileUploadHandle}
             />
           </label>
         </div>
