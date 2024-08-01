@@ -38,6 +38,33 @@ export default function Header() {
     return null; // 이메일이 없을 경우 null 반환
   };
 
+  // 장바구니 아이콘 클릭 핸들러
+  const cartClickHandle = async () => {
+    const token = localStorage.getItem("Authorization"); // 토큰 가져오기
+    const userId = getUserIdToken(token); // userId 가져오기
+
+    if (!userId || !token) {
+      console.error("User ID 또는 token이 없습니다.");
+      navigate("/login"); // 로그인 페이지로 이동
+      return;
+    }
+
+    try {
+      // 장바구니 데이터 가져오기
+      const response = await axios.get(`/api/cart/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      // 장바구니 페이지로 이동하며 데이터 전달
+      navigate("/CartPage", { state: { cartData: response.data } });
+    } catch (error) {
+      console.error("장바구니 데이터를 가져오는 데 실패했습니다:", error);
+      navigate("/login"); // 로그인 페이지로 이동
+    }
+  };
+
   const userIconClickHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
