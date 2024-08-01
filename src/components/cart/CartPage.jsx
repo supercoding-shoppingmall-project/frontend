@@ -11,7 +11,9 @@ export default function CartPage({ showPurchaseButton = true }) {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const fetchedUserId = localStorage.getItem("userId");
+    const authHeader = localStorage.getItem("Authorization"); // Authorization 헤더 가져오기
+    const fetchedUserId = authHeader ? JSON.parse(authHeader).userId : null; // userId 추출
+
     setUserId(fetchedUserId);
 
     if (fetchedUserId) {
