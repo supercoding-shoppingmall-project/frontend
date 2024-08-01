@@ -113,7 +113,7 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
-          <Link to={"/CartPage"}>
+          <Link to={"/cartpage"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
