@@ -4,6 +4,44 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 const User = () => {
+  const getUserIdToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
+  const userProfileClickHandle = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      const userId = getUserIdToken(token);
+
+      if (!userId || !token) {
+        console.error("User ID or token is missing.");
+        navigate("/login");
+        return;
+      }
+
+      // 사용자 정보 가져오기
+      const response = await axios.get(`/api/mypage/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      // API 요청 성공 시 프로필 페이지로 이동
+      navigate("/userprofile", { state: { userInfo: response.data } });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      navigate("/login");
+    }
+  };
   const token = localStorage.getItem("Authorization");
 
   const logoutHandle = async () => {
@@ -74,11 +112,13 @@ const User = () => {
           </div>
         </div>
       </div>
-      <Link to="/userprofile">
-        <div className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 ">
-          내 프로필
-        </div>
-      </Link>
+
+      <div
+        className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 "
+        onClick={userProfileClickHandle}
+      >
+        내 프로필
+      </div>
       <Link to="/cartlist">
         <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
           장바구니 상품 조회
