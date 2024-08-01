@@ -1,47 +1,23 @@
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
-// import ImageGallery from "../mock-data/ImageGallery";
 // import { useCart } from "../../contexts/CartContext";
 // import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 // import FormatToKRW from "../../utils/FormatToKRW";
-// import { Link, useParams } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 // export default function CartPage({ showPurchaseButton = true }) {
 //   const { cart, setCart, removeFromCart, updateQuantity } = useCart();
-//   const { id } = useParams();
 //   const [userId, setUserId] = useState(null);
 //   const [error, setError] = useState(null);
 //   const [loading, setLoading] = useState(true);
-//   const [product, setProduct] = useState(null);
-
-//   // useEffect(() => {
-//   //   const fetchProduct = async () => {
-//   //     try {
-//   //       const response = await axios.get(`/api/product/${id}`);
-//   //       console.log("Fetched product:", response.data);
-//   //       if (response.data) {
-//   //         setProduct(response.data[0]);
-//   //       }
-//   //     } catch (err) {
-//   //       console.error("Error fetching product:", err);
-//   //       setError("Failed to fetch product");
-//   //     } finally {
-//   //       setLoading(false);
-//   //     }
-//   //   };
-
-//   //   fetchProduct();
-//   // }, [id]);
 
 //   useEffect(() => {
-//     const token = localStorage.getItem("Authorization"); // Authorization 토큰 가져오기
+//     const token = localStorage.getItem("Authorization");
 //     if (token) {
-//       // JWT 토큰에서 userId 추출
 //       const payload = token.split(".")[1];
 //       const decodedPayload = JSON.parse(atob(payload));
 //       setUserId(decodedPayload.userId);
 
-//       // 장바구니 데이터 요청
 //       axios
 //         .get(`/api/cart/${decodedPayload.userId}`, {
 //           headers: {
@@ -49,17 +25,16 @@
 //           },
 //         })
 //         .then((response) => {
-//           setCart(response.data.items); // JSON의 items 배열을 cart 상태로 설정
+//           setCart(response.data.items);
 //         })
 //         .catch((error) => {
 //           console.error("Failed to fetch cart data", error);
+//         })
+//         .finally(() => {
+//           setLoading(false);
 //         });
 //     }
 //   }, [setCart]);
-
-//   useEffect(() => {
-//     console.log("Product Name:", product.data);
-//   }, [product]);
 
 //   const quantityChangeHandle = (productId, size, delta) => {
 //     const product = cart.find(
@@ -73,10 +48,13 @@
 
 //   const calculateTotalPrice = () => {
 //     return cart.reduce((total, product) => {
-//       const price = parseFloat(product.price) || 0; // 가격이 숫자로 변환되지 않을 경우 기본값 0 사용
-//       return total + price * (product.quantity || 1); // 수량이 없는 경우 기본값 1 사용
+//       const price = parseFloat(product.price) || 0;
+//       return total + price * (product.quantity || 1);
 //     }, 0);
 //   };
+
+//   if (loading) return <div>Loading...</div>;
+//   if (error) return <div>Error: {error}</div>;
 
 //   return (
 //     <div className="max-w-3xl mx-auto p-4">
@@ -91,10 +69,9 @@
 //               <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
 //                 <img
 //                   alt={product.name || "Product Image"}
-//                   src={cartItem.productImageUrl || "default-image-url.jpg"} // 기본 이미지 URL을 사용합니다.
+//                   src={product.productImageUrl || "default-image-url.jpg"} // 기본 이미지 URL을 사용합니다.
 //                   className="h-full w-full object-cover object-center"
 //                 />
-
 //               </div>
 //               <div className="ml-4 flex flex-1 flex-col">
 //                 <div>
@@ -203,6 +180,7 @@ export default function CartPage({ showPurchaseButton = true }) {
         })
         .catch((error) => {
           console.error("Failed to fetch cart data", error);
+          setError("Failed to fetch cart data");
         })
         .finally(() => {
           setLoading(false);
@@ -216,8 +194,16 @@ export default function CartPage({ showPurchaseButton = true }) {
     );
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
+      console.log(
+        `Updating quantity for ${productId} size ${size} to ${newQuantity}`
+      );
       updateQuantity(productId, size, newQuantity);
     }
+  };
+
+  const removeHandle = (productId, size) => {
+    console.log(`Removing product ${productId} size ${size}`);
+    removeFromCart(productId, size);
   };
 
   const calculateTotalPrice = () => {
@@ -289,7 +275,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <button
                       type="button"
                       onClick={() =>
-                        removeFromCart(product.productId, product.size)
+                        removeHandle(product.productId, product.size)
                       }
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
