@@ -18,7 +18,7 @@ const ProductAddPage = () => {
     event.preventDefault();
     setAddClicked(true);
 
-    const formData = new FormData(event.target);
+    const formData = new FormData();
 
     // 이미지 파일 추가
     images.forEach((image) => {
