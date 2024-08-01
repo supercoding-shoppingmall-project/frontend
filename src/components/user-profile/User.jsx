@@ -1,51 +1,14 @@
 import React from "react";
 import axios from "axios"; // axios import 추가
 import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const User = () => {
-  const getUserIdToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId;
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const userProfileClickHandle = async () => {
-    try {
-      const token = localStorage.getItem("Authorization");
-      const userId = getUserIdToken(token);
-
-      if (!userId || !token) {
-        console.error("User ID or token is missing.");
-        navigate("/login");
-        return;
-      }
-
-      // 사용자 정보 가져오기
-      const response = await axios.get(`/api/mypage/${userId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      // API 요청 성공 시 프로필 페이지로 이동
-      navigate("/userprofile", { state: { userInfo: response.data } });
-    } catch (error) {
-      console.error("Failed to fetch user info:", error);
-      navigate("/login");
-    }
-  };
-  const token = localStorage.getItem("Authorization");
+  const navigate = useNavigate();
 
   const logoutHandle = async () => {
     try {
+      const token = localStorage.getItem("Authorization");
       await axios.post(
         "/api/user/logout",
         {},
@@ -60,6 +23,43 @@ const User = () => {
     } catch (error) {
       console.error("Logout failed:", error);
     }
+  };
+
+  const fetchUserInfoAndNavigate = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      const userId = getUserIdToken(token);
+
+      if (!userId || !token) {
+        console.error("User ID or token is missing.");
+        navigate("/login");
+        return;
+      }
+
+      const response = await axios.get(`/api/mypage/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      navigate("/userprofile", { state: { userInfo: response.data } });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      navigate("/login");
+    }
+  };
+
+  const getUserIdToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId; // userId를 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null;
+      }
+    }
+    return null;
   };
 
   return (
@@ -85,7 +85,7 @@ const User = () => {
         >
           파일 찾기
         </label>
-        <div className=" mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-3 py-5">
+        <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-3 py-5">
           <div className="text-center">
             <PhotoIcon
               aria-hidden="true"
@@ -112,23 +112,26 @@ const User = () => {
           </div>
         </div>
       </div>
-      <div onClick={userProfileClickHandle} className="cursor-pointer">
-        <div className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 ">
-          내 프로필
-        </div>
+
+      <div
+        className="font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 cursor-pointer"
+        onClick={fetchUserInfoAndNavigate} // 내 프로필 클릭 시 사용자 정보 요청 및 페이지 이동
+      >
+        내 프로필
       </div>
+
       <Link to="/cartlist">
-        <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+        <div className="font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
           장바구니 상품 조회
         </div>
       </Link>
       <Link to="/purchaselist">
-        <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
+        <div className="font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
           구매 목록 조회
         </div>
       </Link>
       <div
-        className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200 cursor-pointer"
+        className="font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200 cursor-pointer"
         onClick={logoutHandle}
       >
         로그 아웃
