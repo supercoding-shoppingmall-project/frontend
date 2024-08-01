@@ -1,11 +1,17 @@
 import React from "react";
 import { useInputValue } from "../../hooks/useInputValue";
 
-const SizeQuantity = ({ sizes }) => {
+const SizeQuantity = ({ sizes, onQuantityChange }) => {
   return (
     <>
       {sizes.map((size) => {
         const [quantityValue, setQuantityValue] = useInputValue(0);
+
+        // 수량이 변경될 때마다 부모 컴포넌트에 전달
+        const quantityChangeHandle = (value) => {
+          setQuantityValue(value);
+          onQuantityChange(size.size, value);
+        };
 
         return (
           <div className="mt-2 col-span-1" key={size.id}>
@@ -23,7 +29,7 @@ const SizeQuantity = ({ sizes }) => {
                 autoComplete={size.size}
                 className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
                 value={quantityValue}
-                onChange={setQuantityValue}
+                onChange={(e) => quantityChangeHandle(e.target.value)}
               />
             </div>
           </div>
