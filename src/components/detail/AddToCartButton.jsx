@@ -7,21 +7,25 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
 
   const addToCartHandle = async () => {
     const cartItem = {
-      productId: productId,
+      id: productId,
       size: selectedSize,
       quantity: quantity,
     };
 
+    console.log("Attempting to add to cart:", cartItem);
+
     if (userId) {
       try {
+        const token = localStorage.getItem("Authorization").split(" ")[1];
         await axios.post(`/api/cart/${userId}`, cartItem, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         });
         console.log("Added to cart:", cartItem);
       } catch (error) {
-        console.error("Error adding to cart:", error);
+        console.error("Error adding to cart:", error.response.data);
       }
     } else {
       console.error("User ID is not available");
