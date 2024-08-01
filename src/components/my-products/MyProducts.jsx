@@ -95,12 +95,12 @@ export default function MyProducts() {
                 >
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
                     <h3 className="text-lg font-bold text-gray-900">
-                      {product.name}
+                      {product.productName}
                     </h3>
-                    <div>{product.closingDate}</div>
+                    <div>{product.endtime}</div>
                   </div>
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                    <div>{product.price} 원</div>
+                    <div>{product.productPrice} 원</div>
                     <button
                       onClick={btnClickHandle}
                       className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
