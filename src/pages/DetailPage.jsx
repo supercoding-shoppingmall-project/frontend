@@ -31,6 +31,10 @@ export default function DetailPage() {
     fetchProduct();
   }, [id]);
 
+  useEffect(() => {
+    console.log(product);
+  }, [product]);
+
   if (loading) {
     return <div>Loading...</div>;
   }
