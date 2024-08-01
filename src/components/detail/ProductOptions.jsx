@@ -9,20 +9,34 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     console.log("ProductOptions rendering with product:", product);
-  }, [product]);
+
+    const fetchCartItems = async () => {
+      if (userId) {
+        try {
+          const response = await axios.get(`/api/cart/${userId}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
+            },
+          });
+          setCartItems(response.data);
+        } catch (error) {
+          console.error("Error fetching cart items:", error);
+        }
+      }
+    };
+
+    fetchCartItems();
+  }, [product, userId]);
 
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
       size: selectedSize,
       quantity: quantity,
-      productImageUrl:
-        product.imageUrls && product.imageUrls[0]
-          ? product.imageUrls[0]
-          : "/path/to/default-image.jpg",
     };
 
     if (userId) {
@@ -33,6 +47,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           },
         });
         console.log("Added to cart:", cartItem);
+        setCartItems((prevItems) => [...prevItems, cartItem]);
       } catch (error) {
         console.error("Error adding to cart:", error);
       }
@@ -141,6 +156,35 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
         </button>
       </form>
       {showAlert && <Alert />}
+
+      <div className="mt-10">
+        <h2 className="text-2xl font-semibold">장바구니에 담은 상품</h2>
+        <ul>
+          {cartItems.map((item) => (
+            <li key={`${item.id}-${item.size}`} className="flex py-6">
+              <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                <img
+                  src={item.productImageUrl}
+                  alt={item.name}
+                  className="h-full w-full object-cover object-center"
+                />
+              </div>
+              <div className="ml-4 flex flex-1 flex-col">
+                <div>
+                  <div className="flex justify-between text-base font-medium text-gray-900">
+                    <h3>{item.name}</h3>
+                    <p className="ml-4">{FormatToKRW(item.price)}</p>
+                  </div>
+                  <p className="mt-1 text-sm text-gray-500">{item.size}</p>
+                </div>
+                <div className="flex flex-1 items-end justify-between text-sm">
+                  <p className="text-gray-500">수량: {item.quantity}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
