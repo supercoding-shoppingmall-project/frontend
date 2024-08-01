@@ -25,10 +25,24 @@ export default function Header() {
     }
   }, []);
 
+  const getUserIdToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId; // 이메일 반환
+        console.log(userId);
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
   const userIconClickHandle = async () => {
     try {
-      const userId = localStorage.getItem("userId");
       const token = localStorage.getItem("Authorization");
+      const userId = getUserIdToken(token);
 
       if (!userId || !token) {
         console.error("User ID or token is missing.");
