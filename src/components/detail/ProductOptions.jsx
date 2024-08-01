@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
-import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
+import AddToCartButton from "./AddToCartButton";
 import axios from "axios";
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
-  const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [cartItems, setCartItems] = useState([]);
 
@@ -31,33 +30,6 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
 
     fetchCartItems();
   }, [product, userId]);
-
-  const addToCartHandle = async () => {
-    const cartItem = {
-      id: product.id,
-      size: selectedSize.name,
-      quantity: quantity,
-    };
-
-    if (userId) {
-      try {
-        await axios.post(`/api/cart/${userId}`, cartItem, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("Authorization")}`,
-          },
-        });
-        console.log("Added to cart:", cartItem);
-        setCartItems((prevItems) => [...prevItems, cartItem]);
-      } catch (error) {
-        console.error("Error adding to cart:", error);
-      }
-    } else {
-      console.error("User ID is not available");
-    }
-
-    setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 2000);
-  };
 
   const productPrice = Number(product.price);
   if (isNaN(productPrice)) {
@@ -90,7 +62,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size}
+                  value={size.name}
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
@@ -147,15 +119,18 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           />
         </div>
 
-        <button
-          type="button"
-          onClick={addToCartHandle}
-          className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          장바구니에 담기
-        </button>
+        <AddToCartButton
+          productId={product.id}
+          selectedSize={selectedSize}
+          quantity={quantity}
+          userId={userId}
+          productImageUrl={
+            product.imageUrls && product.imageUrls[0]
+              ? product.imageUrls[0]
+              : "/path/to/default-image.jpg"
+          }
+        />
       </form>
-      {showAlert && <Alert />}
 
       <div className="mt-10">
         <h2 className="text-2xl font-semibold">장바구니에 담은 상품</h2>
