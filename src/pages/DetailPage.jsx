@@ -1,4 +1,4 @@
-import ImageGallery from "../components/mock-data/ImageGallery";
+import ImageGallery from "../components/image-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
 import DetailDescription from "../components/detail/DetailDescription";
@@ -12,7 +12,7 @@ import { useCart } from "../contexts/CartContext";
 export default function DetailPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
-  const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
