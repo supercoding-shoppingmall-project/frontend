@@ -31,6 +31,9 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
         {FormatToKRW(Number(product.price))}
       </p>
 
+      <p>{console.log("price", product.price)}</p>
+      <p>{console.log("Image Urls", product.imageUrls)}</p>
+
       <form className="mt-10">
         <div className="mt-10">
           <div className="flex items-center justify-between">

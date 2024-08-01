@@ -25,6 +25,32 @@ export default function Header() {
     }
   }, []);
 
+  const userIconClickHandle = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem("Authorization");
+
+      if (!userId || !token) {
+        console.error("User ID or token is missing.");
+        navigate("/login");
+        return;
+      }
+
+      // 사용자 정보 가져오기
+      const response = await axios.get(`/api/mypage/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      // API 요청 성공 시 프로필 페이지로 이동
+      navigate("/userprofile", { state: { userInfo: response.data } });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+      navigate("/login");
+    }
+  };
+
   return (
     <header className="bg-white">
       <nav
@@ -113,12 +139,12 @@ export default function Header() {
           </button>
 
           {isLoggedIn ? (
-            <Link to="/userprofile">
+            <div onClick={userIconClickHandle} className="cursor-pointer">
               <UserCircleIcon
                 aria-hidden="true"
                 className="h-10 w-10 text-gray-300"
               />
-            </Link>
+            </div>
           ) : (
             <Link
               to="/login"
