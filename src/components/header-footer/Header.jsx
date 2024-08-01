@@ -11,6 +11,19 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
+  const categoryClickHandle = async (categoryId) => {
+    try {
+      const response = await axios.get(`/api/product/header/${categoryId}`);
+      if (response.status === 200) {
+        navigate(`/api/product/header/${categoryId}`);
+      } else {
+        console.error(`Failed to fetch data for category ${categoryId}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching data for category ${categoryId}:`, error);
+    }
+  };
+
   const sellClickHandle = () => {
     if (isLoggedIn) {
       navigate("/sell");
@@ -26,6 +39,19 @@ export default function Header() {
     }
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const response = await axios.get("/api/product/category");
+        setCategory(response.data);
+      } catch (error) {
+        console.error("Error fetching category:", error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <header className="bg-white">
       <nav
@@ -33,60 +59,21 @@ export default function Header() {
         className="mx-auto flex items-center justify-between p-6 lg:px-5"
       >
         <div className="flex lg:flex-1">
-          <Link to="/" className="relative -m-1.5 p-1.5 w-2/5 ml-6">
+          <Link to="/" className="relative -m-1.5 p-1.5 w-20 ml-6">
             <span className="sr-only">Your Company</span>
             <img src="/assets/shoes.jpg" alt="shoes" />
           </Link>
         </div>
         <PopoverGroup className="lg:flex relative lg:gap-x-12">
-          <Link
-            to="/api/product/header/1"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            샌들 & 슬리퍼
-          </Link>
-          <Link
-            to="/header/2"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            러닝
-          </Link>
-          <Link
-            to="/category/3"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            축구
-          </Link>
-          <Link
-            to="/api/product/category/4"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            농구
-          </Link>
-          <Link
-            to="/api/product/category/트레이닝 & 짐"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            트레이닝 & 짐
-          </Link>
-          <Link
-            to="/api/product/category/골프"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            골프
-          </Link>
-          <Link
-            to="/api/product/category/테니스"
-            className="text-base font-semibold leading-6 text-gray-900 mr-2"
-          >
-            테니스
-          </Link>
-          <Link
-            to="/api/product/category/기타"
-            className="text-base font-semibold leading-6 text-gray-900"
-          >
-            기타
-          </Link>
+          {category.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => categoryClickHandle(category.id)}
+              className="text-base font-semibold leading-6 text-gray-900 mr-2"
+            >
+              {category.name}
+            </button>
+          ))}
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
           <Link to={"/CartPage"}>
