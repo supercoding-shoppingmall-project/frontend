@@ -11,14 +11,20 @@ export default function CartPage({ showPurchaseButton = true }) {
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const authHeader = localStorage.getItem("Authorization"); // Authorization 헤더 가져오기
-    const fetchedUserId = authHeader ? JSON.parse(authHeader).userId : null; // userId 추출
+    const token = localStorage.getItem("Authorization"); // Authorization 토큰 가져오기
+    if (token) {
+      // JWT 토큰에서 userId 추출
+      const payload = token.split(".")[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      setUserId(decodedPayload.userId);
 
-    setUserId(fetchedUserId);
-
-    if (fetchedUserId) {
+      // 장바구니 데이터 요청
       axios
-        .get(`/api/cart/${fetchedUserId}`)
+        .get(`/api/cart/${decodedPayload.userId}`, {
+          headers: {
+            Authorization: token,
+          },
+        })
         .then((response) => {
           setCart(response.data);
         })
