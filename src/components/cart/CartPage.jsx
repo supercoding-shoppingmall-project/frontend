@@ -201,7 +201,7 @@ export default function CartPage({ showPurchaseButton = true }) {
     }
   };
 
-  const handleRemove = (productId, size) => {
+  const removeHandle = (productId, size) => {
     console.log(`Removing product ${productId} size ${size}`);
     removeFromCart(productId, size);
   };
@@ -275,7 +275,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <button
                       type="button"
                       onClick={() =>
-                        handleRemove(product.productId, product.size)
+                        removeHandle(product.productId, product.size)
                       }
                       className="font-medium text-indigo-600 hover:text-indigo-500"
                     >
