@@ -124,7 +124,7 @@ const User = () => {
     const fetchProfileImage = async () => {
       try {
         const token = localStorage.getItem("Authorization");
-        const encodedEmail = encodeURIComponent(getUserEmailFromToken(token));
+        const encodedEmail = getUserEmailFromToken(token);
 
         const response = await axios.get(
           `/api/mypage/profile-image/${encodedEmail}`,
@@ -159,7 +159,7 @@ const User = () => {
 
     try {
       const token = localStorage.getItem("Authorization");
-      const encodedEmail = encodeURIComponent(getUserEmailFromToken(token));
+      const encodedEmail = getUserEmailFromToken(token);
 
       const response = await axios.post(
         `/api/mypage/profile-image/${encodedEmail}`,
@@ -182,7 +182,7 @@ const User = () => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email; // 이메일 반환
+        return payload.userId; // 유저 아이디 반환
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
         return null;
