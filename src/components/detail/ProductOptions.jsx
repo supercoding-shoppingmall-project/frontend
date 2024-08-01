@@ -105,7 +105,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
 
         <AddToCartButton
           productId={product.id}
-          selectedSize={Number(selectedSize)}
+          selectedSize={parseInt(selectedSize, 10)}
           quantity={quantity}
           userId={userId}
         />

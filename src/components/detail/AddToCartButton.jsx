@@ -8,7 +8,7 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: productId,
-      size: Number(selectedSize),
+      size: selectedSize,
       quantity: quantity,
     };
 
@@ -30,6 +30,7 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
     }
 
     setShowAlert(true);
+    setTimeout(() => setShowAlert(false), 2000);
   };
 
   return (
