@@ -137,13 +137,12 @@ const User = () => {
 
         setProfileImageUrl(response.data.profileImageUrl); // 프로필 이미지 URL 설정
       } catch (error) {
-        console.error("Failed to fetch profile image:", error);
-        setProfileImageUrl(null); // 기본 이미지로 설정
-        // 오류의 상세 정보 출력
         if (error.response) {
-          console.log("Response data:", error.response.data);
-          console.log("Response status:", error.response.status);
-          console.log("Response headers:", error.response.headers);
+          console.error("Error response:", error.response.data);
+          console.error("Response status:", error.response.status);
+          console.error("Response headers:", error.response.headers);
+        } else {
+          console.error("Error message:", error.message);
         }
       }
     };
