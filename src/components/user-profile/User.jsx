@@ -4,9 +4,20 @@ import { PhotoIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
 
 const User = () => {
+  const token = localStorage.getItem("Authorization");
+
   const logoutHandle = async () => {
     try {
-      await axios.post("/api/user/logout"); // 로그아웃 API 요청 보내기
+      await axios.post(
+        "/api/user/logout",
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      localStorage.removeItem("Authorization");
       window.location.href = "/";
     } catch (error) {
       console.error("Logout failed:", error);
