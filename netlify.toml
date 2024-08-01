@@ -3,21 +3,3 @@
   to = "http://3.37.165.67:8080/api/:splat"
   status = 200
   force = true
-
-[[redirects]]
-  from = "/*.js"
-  to = "http://3.37.165.67:8080/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*.css"
-  to = "http://3.37.165.67:8080/:splat"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-  force = true
