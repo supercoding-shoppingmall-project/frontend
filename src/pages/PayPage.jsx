@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate를 import합니다.
 import CartPage from "../components/cart/CartPage";
 
 export default function PayPage() {
@@ -10,25 +9,14 @@ export default function PayPage() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
-
-  const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 이동을 처리합니다.
-
   const openModal = () => {
     setIsModalOpen(true);
     setIsPaymentComplete(false); // 모달이 열릴 때 결제 완료 상태를 초기화
   };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setIsPaymentComplete(false); // 모달을 닫을 때 결제 완료 상태를 초기화
-  };
+  const closeModal = () => setIsModalOpen(false);
 
   const confirmHandle = () => {
     setIsPaymentComplete(true); // 결제 완료 상태로 변경
-    setTimeout(() => {
-      navigate("/"); // 메인 페이지로 이동
-    }, 2000); // 2초 후 이동 (메시지 표시 후 이동)
   };
 
   const submitHandle = (e) => {
@@ -241,31 +229,23 @@ export default function PayPage() {
             {isModalOpen && (
               <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75">
                 <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-                  {isPaymentComplete ? (
-                    <h2 className="text-lg font-semibold mb-4 text-green-600">
-                      결제가 완료되었습니다
-                    </h2>
-                  ) : (
-                    <>
-                      <h2 className="text-lg font-semibold mb-4">
-                        결제 하시겠습니까?
-                      </h2>
-                      <div className="flex justify-end space-x-4">
-                        <button
-                          onClick={confirmHandle}
-                          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                        >
-                          Yes
-                        </button>
-                        <button
-                          onClick={closeModal}
-                          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
-                        >
-                          No
-                        </button>
-                      </div>
-                    </>
-                  )}
+                  <h2 className="text-lg font-semibold mb-4">
+                    결제 하시겠습니까?
+                  </h2>
+                  <div className="flex justify-end space-x-4">
+                    <button
+                      onClick={confirmHandle}
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={closeModal}
+                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                    >
+                      No
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
