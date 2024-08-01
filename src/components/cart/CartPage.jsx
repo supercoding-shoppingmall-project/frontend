@@ -94,7 +94,11 @@ export default function CartPage({ showPurchaseButton = true }) {
                   src={product.imageUrl || "default-image-url.jpg"} // 기본 이미지 URL을 사용합니다.
                   className="h-full w-full object-cover object-center"
                 />
-                {console.log("Product Image URL:", product.productImageUrl)}
+                <img
+                  alt={product.name || "Product Image"}
+                  src={product.productImageUrl || "default-image-url.jpg"} // 기본 이미지 URL을 사용합니다.
+                  className="h-full w-full object-cover object-center"
+                />
                 {/* <ImageGallery imageSrc={`${product.imageUrls}` || []} /> */}
               </div>
               <div className="ml-4 flex flex-1 flex-col">
