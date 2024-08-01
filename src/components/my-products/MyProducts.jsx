@@ -9,17 +9,15 @@ import axios from "axios";
 export default function MyProducts() {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState(null);
-  const email = getEmailFromToken();
+  const [error, setError] = useState(null);
 
   const btnClickHandle = () => {
     setIsClicked(true);
   };
 
-  const getEmailFromToken = () => {
-    // JWT 토큰에서 이메일 추출 로직 구현
-    const token = localStorage.getItem("Authorization");
+  const getEmailFromToken = (token) => {
     if (token) {
-      const payload = JSON.parse(atob(token.split(".")[1])); // JWT의 페이로드를 디코드
+      const payload = JSON.parse(atob(token.split(".")[1]));
       return payload.email; // 이메일 반환
     }
     return null; // 이메일이 없을 경우 null 반환
@@ -27,22 +25,27 @@ export default function MyProducts() {
 
   useEffect(() => {
     const fetchData = async () => {
+      const token = localStorage.getItem("Authorization"); // 토큰을 한 번만 가져옵니다.
+      const email = getEmailFromToken(token); // 이메일 가져오기
+
+      if (!email) {
+        setError("이메일을 가져올 수 없습니다.");
+        return;
+      }
+
       try {
-        const token = localStorage.getItem("authToken"); // 로컬 스토리지에서 토큰 가져오기
         const response = await axios.get(`/api/sell/${email}`, {
           headers: {
-            Authorization: token, // 직접 토큰을 헤더에 추가
+            Authorization: token, // 가져온 토큰으로 API 요청
           },
         });
         setData(response.data);
       } catch (error) {
         if (error.response) {
-          // 서버가 응답을 했고, 상태 코드가 2xx가 아닌 경우
           console.error("판매 물품 조회 중 오류 발생:", error.response.data);
           console.error("상태 코드:", error.response.status);
           console.error("헤더:", error.response.headers);
 
-          // 상태 코드에 따라 사용자에게 알림 처리
           if (error.response.status === 404) {
             console.error("판매 물품을 찾을 수 없습니다.");
           } else if (error.response.status === 401) {
@@ -53,19 +56,23 @@ export default function MyProducts() {
             console.error("판매 물품 조회 중 문제가 발생했습니다.");
           }
         } else if (error.request) {
-          // 요청이 이루어졌지만 응답을 받지 못한 경우
           console.error("응답을 받지 못했습니다:", error.request);
         } else {
-          // 오류를 발생시킨 요청 설정
           console.error("요청 설정 중 오류 발생:", error.message);
         }
       }
     };
 
-    if (email) {
-      fetchData();
-    }
-  }, [email]);
+    fetchData();
+  }, []);
+
+  if (error) {
+    return <div>{error}</div>; // 오류 메시지 표시
+  }
+
+  if (!data) {
+    return <div>데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 로딩 표시
+  }
 
   return (
     <>
