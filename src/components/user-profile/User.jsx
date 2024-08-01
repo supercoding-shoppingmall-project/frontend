@@ -8,13 +8,13 @@ const User = () => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId; // 이메일 반환
+        return payload.userId;
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
-        return null; // 이메일이 없을 경우 null 반환
+        return null;
       }
     }
-    return null; // 이메일이 없을 경우 null 반환
+    return null;
   };
 
   const userProfileClickHandle = async () => {
@@ -112,12 +112,10 @@ const User = () => {
           </div>
         </div>
       </div>
-
-      <div
-        className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 "
-        onClick={userProfileClickHandle}
-      >
-        내 프로필
+      <div onClick={userProfileClickHandle} className="cursor-pointer">
+        <div className=" font-light text-gray-700 py-1.5 px-1 mt-3 border-b border-solid border-gray-200 ">
+          내 프로필
+        </div>
       </div>
       <Link to="/cartlist">
         <div className=" font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200">
