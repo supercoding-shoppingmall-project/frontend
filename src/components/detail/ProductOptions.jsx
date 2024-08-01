@@ -17,16 +17,8 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: product.id,
-      name: product.name,
       size: selectedSize.name,
-      // href: product.href,
-      // price: product.price,
-      // quantity,
-      // imageSrc:
-      //   product.imageUrls && product.imageUrls[0]
-      //     ? product.imageUrls[0]
-      //     : "/path/to/default-image.jpg",
-      // imageAlt: product.imageAlt,
+      quantity: quantity,
     };
 
     if (userId) {
