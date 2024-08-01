@@ -1,9 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import User from "./User";
 import Madal from "./Modal";
 
 const UserProfile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    name: "",
+    phone: "",
+    address: "",
+    gender: "",
+  });
+
+  // localStorage에서 사용자 ID와 토큰을 가져옴
+  const userId = localStorage.getItem("userId"); // userId를 localStorage에서 가져옴
+  const token = localStorage.getItem("Authorization");
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`/api/mypage/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // 인증 헤더 추가
+          },
+        });
+        setUserInfo(response.data); // 받은 데이터로 상태 업데이트
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserInfo();
+    } else {
+      console.error("User ID is missing.");
+    }
+  }, [userId, token]);
 
   return (
     <>
@@ -26,6 +59,7 @@ const UserProfile = () => {
                   id="name"
                   name="name"
                   type="text"
+                  value={userInfo.name}
                   autoComplete="name"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -44,6 +78,7 @@ const UserProfile = () => {
                   id="phone"
                   name="phone"
                   type="text"
+                  value={userInfo.phone}
                   autoComplete="phone"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                 />
@@ -58,6 +93,7 @@ const UserProfile = () => {
                   id="email"
                   name="email"
                   type="email"
+                  value={userInfo.email}
                   autoComplete="email"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
@@ -73,6 +109,7 @@ const UserProfile = () => {
                     id="male"
                     name="gender"
                     type="radio"
+                    checked={userInfo.gender === "MALE"}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label
@@ -87,6 +124,7 @@ const UserProfile = () => {
                     id="female"
                     name="gender"
                     type="radio"
+                    checked={userInfo.gender === "FEMALE"}
                     className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
                   />
                   <label
@@ -111,6 +149,7 @@ const UserProfile = () => {
                   id="street-address"
                   name="street-address"
                   type="text"
+                  value={userInfo.address}
                   autoComplete="street-address"
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
