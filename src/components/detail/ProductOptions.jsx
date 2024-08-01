@@ -4,10 +4,10 @@ import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 import axios from "axios";
-import AddToCartButton from "./AddToCartButton";
+import AddToCartButton from "./AddToCartButton"; // AddToCartButton 컴포넌트를 불러옵니다.
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
-  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0].name);
+  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
@@ -46,7 +46,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size.name}
+                  value={size.name} // size 객체가 아닌 size.name을 사용합니다.
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
@@ -103,9 +103,10 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           />
         </div>
 
+        {/* 직접적으로 사이즈 값을 지정 */}
         <AddToCartButton
           productId={product.id}
-          selectedSize={parseInt(selectedSize, 10)}
+          selectedSize={240} // 직접적으로 사이즈 값을 지정합니다.
           quantity={quantity}
           userId={userId}
         />
