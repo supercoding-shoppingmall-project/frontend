@@ -39,9 +39,10 @@ export default function MyProducts() {
       }
 
       try {
-        const response = await axios.get(`/api/sell/${email}`, {
+        const encodedEmail = encodeURIComponent(email);
+        const response = await axios.get(`/api/sell/${encodedEmail}`, {
           headers: {
-            Authorization: token, // 가져온 토큰으로 API 요청
+            Authorization: token,
           },
         });
         setData(response.data);
