@@ -4,7 +4,7 @@ import ImageGallery from "../mock-data/ImageGallery";
 import { useCart } from "../../contexts/CartContext";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function CartPage({ showPurchaseButton = true }) {
   const { cart, setCart, removeFromCart, updateQuantity } = useCart();
