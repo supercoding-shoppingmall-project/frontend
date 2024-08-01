@@ -5,11 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { PopoverGroup } from "@headlessui/react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { useState, useEffect } from "react";
-
 export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-
   const sellClickHandle = () => {
     if (isLoggedIn) {
       navigate("/sell");
@@ -17,7 +15,6 @@ export default function Header() {
       navigate("/login");
     }
   };
-
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
     if (token) {
@@ -113,7 +110,7 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
-          <Link to={"/cartpage"}>
+          <Link to={"/CartPage"}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -129,7 +126,6 @@ export default function Header() {
               />
             </svg>
           </Link>
-
           <button
             onClick={sellClickHandle}
             className="relative mr-4 rounded-xl bg-black text-sm font-semibold px-3 py-1.5 text-white leading-6"
