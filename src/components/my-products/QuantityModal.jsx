@@ -28,6 +28,10 @@ export default function QuantityModal({
 
   const quantityChangeHandle = (size, quantity) => {
     setQuantityData((prev) => ({ ...prev, [size]: quantity }));
+    console.log("현재 재고 수량 데이터:", {
+      ...quantityData,
+      [size]: quantity,
+    });
   };
 
   const submitHandle = async (event) => {
@@ -40,12 +44,14 @@ export default function QuantityModal({
         },
       });
       // 성공적으로 업데이트된 후 모달 닫기
-      setOpen(false);
-      setIsClicked(false);
-      alert("재고 수량이 변경되었습니다.");
+      if (response.status === 200) {
+        setOpen(false);
+        setIsClicked(false);
+        alert("재고 수량이 변경되었습니다.");
+      }
     } catch (error) {
       console.error("재고 수량 변경 중 오류 발생:", error);
-      setError("재고 수량 변경에 실패했습니다.");
+      setError("재고 수량 변경에 실패했습니다. 다시 시도해 주세요.");
     }
   };
 
@@ -118,6 +124,7 @@ export default function QuantityModal({
                   </button>
                 </div>
               </form>
+              {error && <div className="text-red-500">{error}</div>}
             </section>
           </DialogPanel>
         </div>
