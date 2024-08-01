@@ -10,16 +10,31 @@ const ProductAddPage = () => {
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [seller, setSeller] = useState(null);
+  const [retrievedToken, setRetrievedToken] = useState(null);
+
+  const getEmailFromToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.email; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
 
   useEffect(() => {
-    // 토큰에서 이메일 추출
-    const retrievedToken = localStorage.getItem("Authorization");
-    if (retrievedToken) {
-      const payload = retrievedToken.split(".")[1];
-      const decodedPayload = JSON.parse(atob(payload));
-      setSeller(decodedPayload.email); // 이메일 설정
-      setToken(retrievedToken); // 토큰 저장
+    const token = localStorage.getItem("Authorization");
+    setRetrievedToken(token);
+    const email = getEmailFromToken(retrievedToken);
+
+    if (email) {
+      // 이메일이 유효할 경우 추가적인 로직을 여기에 작성
+      console.log("사용자 이메일:", email);
+    } else {
+      console.log("유효하지 않은 토큰입니다.");
     }
   }, []);
 
@@ -37,13 +52,16 @@ const ProductAddPage = () => {
     });
 
     // 제품 데이터를 생성
-    formData.append("product", JSON.stringify(createProductData(formData)));
+    formData.append(
+      "product",
+      JSON.stringify(createProductData(formData, retrievedToken))
+    );
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: token, // Authorization 헤더에 토큰 추가
+          Authorization: retrievedToken,
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -68,13 +86,13 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = (formData) => {
+  const createProductData = (formData, token) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
     return {
-      seller: seller,
+      seller: token, // token을 seller로 사용
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
