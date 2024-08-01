@@ -42,7 +42,7 @@ const ProductAddPage = () => {
     });
 
     // 제품 데이터를 생성
-    formData.append("product", JSON.stringify(createProductData()));
+    formData.append("product", JSON.stringify(createProductData(formData)));
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
@@ -73,7 +73,7 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = () => {
+  const createProductData = (formData) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
@@ -86,11 +86,11 @@ const ProductAddPage = () => {
       descriptions: filteredDescriptions,
       endtime: formData.get("endtime"),
       createdAt: formData.get("createdAt"),
-      stockDtos: buildStockData(),
+      stockDtos: buildStockData(formData),
     };
   };
 
-  const buildStockData = () => {
+  const buildStockData = (formData) => {
     const stockData = SIZES.map((size) => {
       const quantity = formData.get(`${size.size}_quantity`);
       return quantity
