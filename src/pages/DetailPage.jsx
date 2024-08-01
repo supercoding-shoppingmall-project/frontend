@@ -37,8 +37,14 @@ export default function DetailPage() {
   useEffect(() => {
     const authHeader = localStorage.getItem("Authorization");
     if (authHeader) {
-      const fetchedUserId = JSON.parse(authHeader).userId;
-      setUserId(fetchedUserId);
+      try {
+        const token = authHeader.split(" ")[1]; // "Bearer " 부분을 제거하고 토큰만 추출
+        const payload = JSON.parse(atob(token.split(".")[1])); // 토큰의 payload 부분을 디코딩하여 JSON 파싱
+        const fetchedUserId = payload.userId;
+        setUserId(fetchedUserId);
+      } catch (error) {
+        console.error("Failed to parse token:", error);
+      }
     }
   }, []);
 
