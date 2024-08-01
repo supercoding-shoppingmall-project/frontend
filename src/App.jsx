@@ -27,10 +27,7 @@ function App() {
         <Header />
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route
-            path="/detail/:id"
-            // element={<DetailPage MockDatas={MockDatas} />}
-          />
+          <Route path="/detail/:id" element={<DetailPage />} />
           <Route path="/category/:number" element={<CategoryPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />

@@ -7,9 +7,9 @@ const ProductInfo = ({ description }) => {
         <h3 className="text-2xl font-medium text-gray-900">상품 스펙</h3>
         <div className="mt-4">
           <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-            {description.highlights.map((highlight) => (
-              <li key={highlight} className="text-gray-400">
-                <span className="text-gray-600">{highlight}</span>
+            {description.map((highlight) => (
+              <li key={description} className="text-gray-400">
+                <span className="text-gray-600">{description}</span>
               </li>
             ))}
           </ul>
