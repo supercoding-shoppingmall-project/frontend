@@ -15,6 +15,16 @@ export default function MyProducts() {
     setIsClicked(true);
   };
 
+  const getEmailFromToken = () => {
+    // JWT 토큰에서 이메일 추출 로직 구현
+    const token = localStorage.getItem("Authorization");
+    if (token) {
+      const payload = JSON.parse(atob(token.split(".")[1])); // JWT의 페이로드를 디코드
+      return payload.email; // 이메일 반환
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -56,16 +66,6 @@ export default function MyProducts() {
       fetchData();
     }
   }, [email]);
-
-  const getEmailFromToken = () => {
-    // JWT 토큰에서 이메일 추출 로직 구현
-    const token = localStorage.getItem("Authorization");
-    if (token) {
-      const payload = JSON.parse(atob(token.split(".")[1])); // JWT의 페이로드를 디코드
-      return payload.email; // 이메일 반환
-    }
-    return null; // 이메일이 없을 경우 null 반환
-  };
 
   return (
     <>
