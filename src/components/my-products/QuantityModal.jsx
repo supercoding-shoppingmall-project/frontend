@@ -134,7 +134,7 @@ export default function QuantityModal({
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
                     <SizeQuantity
-                      sizes={stockDtos.size}
+                      sizes={stockDtos}
                       quantities={quantityData}
                       onQuantityChange={quantityChangeHandle}
                     />
