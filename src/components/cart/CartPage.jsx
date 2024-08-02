@@ -261,14 +261,14 @@ export default function CartPage({ showPurchaseButton = true }) {
     }, 0);
   };
 
-  const removeHandle = async (productId, size) => {
+  const removeHandle = async (id, size) => {
     const token = localStorage.getItem("Authorization");
     const payload = token.split(".")[1];
     const decodedPayload = JSON.parse(atob(payload));
     setUserId(decodedPayload.userId);
     if (userId && token) {
       try {
-        await deleteCartItem(productId, userId);
+        await deleteCartItem(id, userId);
         // removeFromCart(productId, size);
       } catch (error) {
         setError("Failed to remove item from cart");
@@ -339,9 +339,7 @@ export default function CartPage({ showPurchaseButton = true }) {
                     <div className="flex">
                       <button
                         type="button"
-                        onClick={() =>
-                          removeHandle(product.productId, product.size)
-                        }
+                        onClick={() => removeHandle(product.id, product.size)}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Remove
