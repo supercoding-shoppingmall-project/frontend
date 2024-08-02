@@ -25,10 +25,13 @@ export default function QuantityModal({
     if (isClicked) {
       setOpen(true);
       // stockDtos.sizeStock을 초기 quantityData로 설정
-      const initialQuantityData = stockDtos.size.reduce((acc, size, index) => {
-        acc[size] = stockDtos.sizeStock[index]; // size에 해당하는 stock을 매핑
-        return acc;
-      }, {});
+      const initialQuantityData = stockDtos.size.reduce(
+        (acc, { size, sizeStock }) => {
+          acc[size] = sizeStock; // size에 해당하는 stock을 매핑
+          return acc;
+        },
+        {}
+      );
       setQuantityData(initialQuantityData);
     }
   }, [isClicked, stockDtos]);
@@ -60,10 +63,30 @@ export default function QuantityModal({
         setOpen(false);
         setIsClicked(false);
         alert("재고 수량이 변경되었습니다.");
+      } else {
+        // 상태 코드가 200이 아닐 경우 에러 처리
+        setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
       }
     } catch (error) {
-      console.error("재고 수량 변경 중 오류 발생:", error);
-      setError("재고 수량 변경에 실패했습니다. 다시 시도해 주세요.");
+      // 에러 타입에 따라 세분화된 에러 메시지 제공
+      if (error.response) {
+        // 서버가 응답했지만 상태 코드가 2xx가 아닌 경우
+        if (error.response.status === 404) {
+          setError("해당 제품을 찾을 수 없습니다.");
+        } else if (error.response.status === 400) {
+          setError("잘못된 요청입니다. 입력 값을 확인해 주세요.");
+        } else if (error.response.status === 401) {
+          setError("인증 오류가 발생했습니다. 다시 로그인 해주세요.");
+        } else {
+          setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
+        }
+      } else if (error.request) {
+        // 요청이 이루어졌지만 응답이 없는 경우
+        setError("서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.");
+      } else {
+        // 오류를 발생시킨 요청 설정
+        setError("오류가 발생했습니다. 다시 시도해 주세요.");
+      }
     }
   };
 
