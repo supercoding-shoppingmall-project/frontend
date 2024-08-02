@@ -10,22 +10,33 @@ const ProductAddPage = () => {
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [seller, setSeller] = useState(null);
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [productData, setProductData] = useState({
+    category: "",
+    productName: "",
+    productPrice: "",
+    endtime: "",
+  });
 
-  const fetchAuthInfo = () => {
-    const authToken = localStorage.getItem("Authorization");
-    const sellerEmail = localStorage.getItem("sellerEmail"); // 예시로 로컬스토리지에서 이메일 가져오기
-    if (authToken) {
-      setToken(authToken);
+  const getEmailFromToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.email; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
     }
-    if (sellerEmail) {
-      setSeller(sellerEmail);
-    }
+    return null; // 이메일이 없을 경우 null 반환
   };
 
   useEffect(() => {
-    fetchAuthInfo();
+    const token = localStorage.getItem("Authorization");
+    setToken(token);
+    const userEmail = getEmailFromToken(token);
+    setEmail(userEmail);
   }, []);
 
   const cancelHandle = () => setCancelClicked(true);
@@ -33,6 +44,11 @@ const ProductAddPage = () => {
   const addHandle = async (event) => {
     event.preventDefault();
     // setAddClicked(true);
+
+    if (!email) {
+      setErrors("이메일을 가져올 수 없습니다.");
+      return;
+    }
 
     const formData = new FormData();
 
@@ -42,7 +58,9 @@ const ProductAddPage = () => {
     });
 
     // 제품 데이터를 생성
-    formData.append("product", JSON.stringify(createProductData(formData)));
+    const createdAt = new Date().toISOString().split("T")[0];
+    const productDataToSend = createProductData(createdAt, formData);
+    formData.append("product", JSON.stringify(productDataToSend));
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
@@ -73,19 +91,19 @@ const ProductAddPage = () => {
     }
   };
 
-  const createProductData = (formData) => {
+  const createProductData = (createdAt, formData) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
     return {
-      seller: seller,
-      category: formData.get("category"),
-      productName: formData.get("productName"),
-      productPrice: Number(formData.get("productPrice")),
+      seller: email,
+      category: productData.category,
+      productName: productData.productName,
+      productPrice: Number(productData.productPrice),
       descriptions: filteredDescriptions,
-      endtime: formData.get("endtime"),
-      createdAt: formData.get("createdAt"),
+      endtime: productData.endtime,
+      createdAt: createdAt,
       stockDtos: buildStockData(formData),
     };
   };
