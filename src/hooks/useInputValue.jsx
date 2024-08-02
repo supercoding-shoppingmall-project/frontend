@@ -4,7 +4,11 @@ export const useInputValue = (initialValue) => {
   const [value, setValue] = useState(initialValue);
 
   const changeHandle = (event) => {
-    setValue(event.target.value);
+    const newValue = event.target.value;
+    setValue(newValue);
+    if (onChange) {
+      onChange(newValue);
+    }
   };
 
   return [value, changeHandle];
