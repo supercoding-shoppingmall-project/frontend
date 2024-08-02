@@ -10,10 +10,12 @@ export default function MyProducts() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [currentProduct, setCurrentProduct] = useState(null);
+  const [currentStockDtos, setCurrentStockDtos] = useState("");
 
-  const btnClickHandle = (productName) => {
+  const btnClickHandle = (productName, stockDtos) => {
     setIsClicked(true);
     setCurrentProduct(productName);
+    setCurrentStockDtos(stockDtos);
   };
 
   const getEmailFromToken = (token) => {
@@ -103,7 +105,9 @@ export default function MyProducts() {
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
                     <div>{FormatToKRW(product.productPrice)}</div>
                     <button
-                      onClick={() => btnClickHandle(product.productName)}
+                      onClick={() =>
+                        btnClickHandle(product.productName, product.stockDtos)
+                      }
                       className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
                     >
                       재고 수량 변경
@@ -125,7 +129,7 @@ export default function MyProducts() {
         isClicked={isClicked}
         setIsClicked={setIsClicked}
         productName={currentProduct}
-        stockDtos={stockDtos}
+        stockDtos={currentStockDtos}
       />
     </>
   );
