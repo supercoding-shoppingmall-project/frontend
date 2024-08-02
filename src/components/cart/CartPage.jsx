@@ -255,7 +255,7 @@ const getUserIdFromToken = (token) => {
 
 export default function CartPage({ showPurchaseButton = true }) {
   const [cart, setCart] = useState([]); // 장바구니 항목
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId, cartItemId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -299,7 +299,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       try {
         // API 호출을 통해 수량 업데이트
         await axios.put(
-          `/api/cart/${userId}`,
+          `/api/cart/${userId}/items/${cartItemId}`,
           {
             productId: productId,
             size: size,
