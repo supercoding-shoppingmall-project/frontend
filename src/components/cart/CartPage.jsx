@@ -219,25 +219,25 @@ import { Link, useNavigate } from "react-router-dom";
 import { deleteCartItem } from "../../utils/ApiService";
 
 // 장바구니 수량 업데이트 함수
-const updateCartItemQuantity = async (productId, size, newQuantity) => {
-  const token = localStorage.getItem("Authorization");
-  const userId = getUserIdFromToken(token);
+// const updateCartItemQuantity = async (productId, size, newQuantity) => {
+//   const token = localStorage.getItem("Authorization");
+//   const userId = getUserIdFromToken(token);
 
-  try {
-    await axios.put(
-      `/api/cart/${userId}`,
-      { productId, size, quantity: newQuantity },
-      {
-        headers: {
-          Authorization: token,
-        },
-      }
-    );
-  } catch (error) {
-    console.error("Failed to update item quantity in cart", error);
-    throw error;
-  }
-};
+//   try {
+//     await axios.post(
+//       `/api/cart/${userId}`,
+//       { productId, size, quantity: newQuantity },
+//       {
+//         headers: {
+//           Authorization: token,
+//         },
+//       }
+//     );
+//   } catch (error) {
+//     console.error("Failed to update item quantity", error);
+//     throw error;
+//   }
+// };
 
 // 토큰에서 사용자 ID 추출 함수
 const getUserIdFromToken = (token) => {
@@ -297,8 +297,22 @@ export default function CartPage({ showPurchaseButton = true }) {
       const newQuantity = Math.max(1, product.quantity + delta);
 
       try {
-        await updateCartItemQuantity(productId, size, newQuantity);
-        // 클라이언트 측 장바구니 상태 업데이트
+        // API 호출을 통해 수량 업데이트
+        await axios.put(
+          `/api/cart/${userId}/items`,
+          {
+            productId: productId,
+            size: size,
+            quantity: newQuantity,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("Authorization"),
+            },
+          }
+        );
+
+        // 상태 업데이트
         setCart(
           cart.map((item) =>
             item.productId === productId && item.size === size
@@ -307,11 +321,28 @@ export default function CartPage({ showPurchaseButton = true }) {
           )
         );
       } catch (error) {
-        setError("Failed to update item quantity");
         console.error("Failed to update item quantity", error);
+        setError("Failed to update item quantity");
       }
     }
   };
+
+  //     try {
+  //       await updateCartItemQuantity(productId, size, newQuantity);
+  //       // 클라이언트 측 장바구니 상태 업데이트
+  //       setCart(
+  //         cart.map((item) =>
+  //           item.productId === productId && item.size === size
+  //             ? { ...item, quantity: newQuantity }
+  //             : item
+  //         )
+  //       );
+  //     } catch (error) {
+  //       setError("Failed to update item quantity");
+  //       console.error("Failed to update item quantity", error);
+  //     }
+  //   }
+  // };
 
   const calculateTotalPrice = () => {
     return cart.reduce((total, product) => {
