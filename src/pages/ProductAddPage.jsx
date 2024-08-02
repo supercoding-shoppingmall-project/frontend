@@ -37,7 +37,6 @@ const ProductAddPage = () => {
 
   const addHandle = async (event) => {
     event.preventDefault();
-    // setAddClicked(true);
 
     if (!email) {
       setErrors("이메일을 가져올 수 없습니다.");
@@ -62,6 +61,7 @@ const ProductAddPage = () => {
         },
       });
       console.log("등록하기 성공:", response.data);
+      setAddClicked(true);
     } catch (error) {
       apiErrorHandle(error);
     }
@@ -92,6 +92,8 @@ const ProductAddPage = () => {
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
+    const today = new Date().toISOString().split("T")[0];
+
     return {
       seller: email,
       category: target.category.value,
@@ -99,7 +101,7 @@ const ProductAddPage = () => {
       productPrice: Number(target.productPrice.value),
       descriptions: filteredDescriptions,
       endtime: target.endtime.value,
-      createdAt: target.createdAt.value,
+      createdAt: today,
       stockDtos: buildStockData(target),
     };
   };

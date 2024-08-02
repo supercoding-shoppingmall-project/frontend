@@ -1,8 +1,6 @@
 import React from "react";
-import { useInputValue } from "../../hooks/useInputValue";
 
-const AddPeriod = ({ onChange }) => {
-  const [endtime, inputChangeHandle] = useInputValue("", onChange);
+const AddPeriod = () => {
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -23,8 +21,6 @@ const AddPeriod = ({ onChange }) => {
             autoComplete="endtime"
             className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
             //required
-            value={endtime}
-            onChange={inputChangeHandle}
           />
         </div>
       </div>
