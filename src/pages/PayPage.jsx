@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CartPage from "../components/cart/CartPage";
+import { useLocation } from "react-router-dom";
 
 export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -17,6 +18,13 @@ export default function PayPage() {
 
   const confirmHandle = () => {
     setIsPaymentComplete(true); // 결제 완료 상태로 변경
+  };
+
+  const { state } = useLocation();
+  const userInfo = state?.userInfo || {
+    name: "",
+    phone: "",
+    address: "",
   };
 
   const submitHandle = (e) => {
@@ -63,7 +71,8 @@ export default function PayPage() {
                 id="name"
                 name="name"
                 type="text"
-                autoComplete="given-name"
+                value={userInfo.name}
+                autoComplete="name"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 required
               />
@@ -81,7 +90,8 @@ export default function PayPage() {
                 id="phone-number"
                 name="phone-number"
                 type="text"
-                autoComplete="family-name"
+                value={userInfo.phone}
+                autoComplete="phone"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 required
               />
@@ -101,8 +111,9 @@ export default function PayPage() {
               <input
                 id="address"
                 name="address"
-                type="tel"
-                autoComplete="tel"
+                type="text"
+                value={userInfo.address}
+                autoComplete="address"
                 className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 required
               />
