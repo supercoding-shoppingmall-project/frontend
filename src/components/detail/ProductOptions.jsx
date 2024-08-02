@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
+import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
-import AddToCartButton from "./AddToCartButton";
+import axios from "axios";
+import AddToCartButton from "./AddToCartButton"; // AddToCartButton 컴포넌트를 불러옵니다.
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
-  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0].name);
+  const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
+  const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
@@ -100,13 +103,16 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           />
         </div>
 
+        {/* 직접적으로 사이즈 값을 지정 */}
         <AddToCartButton
           productId={product.id}
-          selectedSize={selectedSize}
+          selectedSize={240} // 직접적으로 사이즈 값을 지정합니다.
           quantity={quantity}
           userId={userId}
         />
       </form>
+
+      {showAlert && <Alert />}
     </div>
   );
 };
