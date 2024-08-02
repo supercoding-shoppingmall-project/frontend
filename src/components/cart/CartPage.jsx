@@ -265,7 +265,7 @@ export default function CartPage({ showPurchaseButton = true }) {
     const token = localStorage.getItem("Authorization");
     const payload = token.split(".")[1];
     const decodedPayload = JSON.parse(atob(payload));
-    const userId = decodedPayload.userId;
+    setUserId(decodedPayload.userId);
     if (userId && token) {
       try {
         await deleteCartItem(productId);
