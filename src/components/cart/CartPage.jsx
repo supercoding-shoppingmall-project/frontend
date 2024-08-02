@@ -225,7 +225,7 @@ const updateCartItemQuantity = async (productId, size, newQuantity) => {
 
   try {
     await axios.put(
-      `/api/cart/${userId}/items`,
+      `/api/cart/${userId}`,
       { productId, size, quantity: newQuantity },
       {
         headers: {
