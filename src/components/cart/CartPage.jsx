@@ -173,7 +173,7 @@ import { deleteCartItem } from "../../utils/ApiService";
 
 export default function CartPage({ showPurchaseButton = true }) {
   const [cart, setCart] = useState([]); // 장바구니 항목
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId, cartItemId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -213,6 +213,36 @@ export default function CartPage({ showPurchaseButton = true }) {
       setLoading(false);
     }
   }, [setCart]);
+
+  useEffect(
+    (productId) => {
+      const cartItemId = productId;
+      const token = localStorage.getItem("Authorization");
+      if (token) {
+        const payload = token.split(".")[1];
+        const decodedPayload = JSON.parse(atob(payload));
+        setUserId(decodedPayload.userId);
+
+        axios
+          .delete(`/api/cart/${decodedPayload.userId}/items/${cartItemId}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .catch((error) => {
+            setError("Failed to Remove cart data"); // 에러 메시지를 상태에 저장
+            console.error("Failed to delete cart data", error);
+          })
+          .finally(() => {
+            setLoading(false); // 데이터 로딩 완료
+          });
+      } else {
+        setError("No authorization token found");
+        setLoading(false);
+      }
+    },
+    [setCart]
+  );
 
   const quantityChangeHandle = (productId, size, delta) => {
     const product = cart.find(
