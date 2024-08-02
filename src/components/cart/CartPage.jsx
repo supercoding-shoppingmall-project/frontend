@@ -166,17 +166,23 @@
 // }
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useCart } from "../../contexts/CartContext";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link } from "react-router-dom";
 import { deleteCartItem } from "../../utils/ApiService";
 
 export default function CartPage({ showPurchaseButton = true }) {
-  const { cart, setCart, removeFromCart, updateQuantity } = useCart();
+  const [cart, setCart] = useState([]); // 장바구니 항목
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // 장바구니에서 항목 제거 함수
+  const removeFromCart = (productId, size) => {
+    setCart(
+      cart.filter((item) => item.productId !== productId || item.size !== size)
+    );
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
@@ -193,6 +199,9 @@ export default function CartPage({ showPurchaseButton = true }) {
         })
         .then((response) => {
           setCart(response.data.items);
+          console.log(response.data.items);
+          console.log(data.items);
+          console.log(items);
         })
         .catch((error) => {
           setError("Failed to fetch cart data"); // 에러 메시지를 상태에 저장
