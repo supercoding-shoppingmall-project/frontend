@@ -267,9 +267,10 @@
 //     </div>
 //   );
 // }
+
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
-import CartPage from "../components/cart/CartPage";
+import { useNavigate, useLocation } from "react-router-dom"; // useNavigate를 추가로 import
+import axios from "axios";
 
 export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
@@ -279,45 +280,51 @@ export default function PayPage() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
-  const navigate = useNavigate(); // Initialize navigate for redirection
+  const [isPaymentComplete, setIsPaymentComplete] = useState(false); // 결제 완료 상태 추가
+
+  const navigate = useNavigate(); // useNavigate 훅을 추가로 선언
+  const { state } = useLocation();
+  const userInfo = state?.userInfo || {
+    name: "",
+    phone: "",
+    address: "",
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
-    setIsPaymentComplete(false); // Reset payment complete state
+    setIsPaymentComplete(false); // 모달이 열릴 때 결제 완료 상태를 초기화
   };
 
   const closeModal = () => setIsModalOpen(false);
 
   const confirmHandle = async () => {
-    setIsPaymentComplete(true); // Mark payment as complete
+    setIsPaymentComplete(true); // 결제 완료 상태로 변경
 
     try {
-      // Simulate API call to complete payment
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulating a network request
+      // 결제 완료 후, 실제로는 서버에 요청을 보내야 하지만, 여기서는 단순히 로그만 출력합니다.
+      // const response = await axios.post('/api/payment', { ... });
 
-      // Reset input fields
+      // 입력 필드 초기화
       setCardNumber("");
       setExpiryDate("");
       setCvv("");
       setBankName("");
       setAccountNumber("");
 
-      // Close the modal
+      // 모달 닫기
       closeModal();
 
-      // Redirect to home page
+      // 메인 페이지로 리디렉션
       navigate("/");
     } catch (error) {
-      // Handle error if the payment fails
-      console.error("Payment failed:", error);
-      setIsPaymentComplete(false);
+      console.error("결제 실패:", error);
+      setIsPaymentComplete(false); // 결제 실패 시 상태 초기화
     }
   };
 
   const submitHandle = (e) => {
     e.preventDefault();
-    openModal(); // Open modal to confirm payment
+    openModal(); // 모달 열기
   };
 
   const paymentMethodChangeHandle = (method) => {
@@ -506,6 +513,7 @@ export default function PayPage() {
           <div className="mt-10 flex justify-center">
             <button
               type="submit"
+              onClick={openModal}
               className="w-1/4 rounded-md bg-blue-600 mb-10 px-3.5 py-2.5 text-center text-lg font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
               결제
