@@ -7,8 +7,8 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
 
   const addToCartHandle = async () => {
     const cartItem = {
-      id: productId,
-      size: parseInt(selectedSize, 10),
+      productId: productId,
+      size: Number(selectedSize),
       quantity: quantity,
     };
 
