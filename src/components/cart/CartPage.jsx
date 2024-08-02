@@ -178,11 +178,11 @@ export default function CartPage({ showPurchaseButton = true }) {
   const [loading, setLoading] = useState(true);
 
   // 장바구니에서 항목 제거 함수
-  const removeFromCart = (productId, size) => {
-    setCart(
-      cart.filter((item) => item.productId !== productId || item.size !== size)
-    );
-  };
+  // const removeFromCart = (productId, size) => {
+  //   setCart(
+  //     cart.filter((item) => item.productId !== productId || item.size !== size)
+  //   );
+  // };
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
@@ -214,35 +214,35 @@ export default function CartPage({ showPurchaseButton = true }) {
     }
   }, [setCart]);
 
-  useEffect(
-    (productId) => {
-      const cartItemId = productId;
-      const token = localStorage.getItem("Authorization");
-      if (token) {
-        const payload = token.split(".")[1];
-        const decodedPayload = JSON.parse(atob(payload));
-        setUserId(decodedPayload.userId);
+  // useEffect(
+  //   (productId) => {
+  //     const cartItemId = productId;
+  //     const token = localStorage.getItem("Authorization");
+  //     if (token) {
+  //       const payload = token.split(".")[1];
+  //       const decodedPayload = JSON.parse(atob(payload));
+  //       setUserId(decodedPayload.userId);
 
-        axios
-          .delete(`/api/cart/${decodedPayload.userId}/items/${cartItemId}`, {
-            headers: {
-              Authorization: token,
-            },
-          })
-          .catch((error) => {
-            setError("Failed to Remove cart data"); // 에러 메시지를 상태에 저장
-            console.error("Failed to delete cart data", error);
-          })
-          .finally(() => {
-            setLoading(false); // 데이터 로딩 완료
-          });
-      } else {
-        setError("No authorization token found");
-        setLoading(false);
-      }
-    },
-    [setCart]
-  );
+  //       axios
+  //         .delete(`/api/cart/${decodedPayload.userId}/items/${cartItemId}`, {
+  //           headers: {
+  //             Authorization: token,
+  //           },
+  //         })
+  //         .catch((error) => {
+  //           setError("Failed to Remove cart data"); // 에러 메시지를 상태에 저장
+  //           console.error("Failed to delete cart data", error);
+  //         })
+  //         .finally(() => {
+  //           setLoading(false); // 데이터 로딩 완료
+  //         });
+  //     } else {
+  //       setError("No authorization token found");
+  //       setLoading(false);
+  //     }
+  //   },
+  //   [setCart]
+  // );
 
   const quantityChangeHandle = (productId, size, delta) => {
     const product = cart.find(
@@ -265,8 +265,8 @@ export default function CartPage({ showPurchaseButton = true }) {
     const token = localStorage.getItem("Authorization");
     if (userId && token) {
       try {
-        await deleteCartItem(userId, productId, size, token);
-        removeFromCart(productId, size);
+        await deleteCartItem(productId);
+        // removeFromCart(productId, size);
       } catch (error) {
         setError("Failed to remove item from cart");
         console.error("Failed to remove item from cart", error);
