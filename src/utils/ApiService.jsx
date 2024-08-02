@@ -14,6 +14,7 @@ export const deleteCartItem = async (id, userId) => {
       },
       // data: { productId, size },
     });
+    window.location.reload();
   } catch (error) {
     console.error("Failed to remove item from cart", error);
     throw error;
