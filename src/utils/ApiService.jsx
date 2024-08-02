@@ -8,7 +8,7 @@ const API_BASE_URL = "/api"; // API의 기본 URL 설정
 export const deleteCartItem = async (productId, userId) => {
   const token = localStorage.getItem("Authorization");
   try {
-    await axios.delete(`${API_BASE_URL}/cart/${userId}/item/${productId}`, {
+    await axios.delete(`${API_BASE_URL}/cart/${userId}/items/${productId}`, {
       headers: {
         Authorization: token,
       },
