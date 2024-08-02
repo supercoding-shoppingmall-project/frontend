@@ -11,33 +11,22 @@ const ProductAddPage = () => {
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
-  const [fetchToken, setFetchToken] = useState("");
+  const [token, setToken] = useState("");
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("Authorization");
-  //   const email = getEmailFromToken(token);
+  const fetchAuthInfo = () => {
+    const authToken = localStorage.getItem("Authorization");
+    const sellerEmail = localStorage.getItem("sellerEmail"); // 예시로 로컬스토리지에서 이메일 가져오기
+    if (authToken) {
+      setToken(authToken);
+    }
+    if (sellerEmail) {
+      setSeller(sellerEmail);
+    }
+  };
 
-  //   if (!email) {
-  //     setErrors("이메일을 가져올 수 없습니다.");
-  //     return;
-  //   }
-
-  //   setSeller(email);
-  //   setFetchToken(token);
-  // }, []);
-
-  // const getEmailFromToken = (token) => {
-  //   if (token) {
-  //     try {
-  //       const payload = JSON.parse(atob(token.split(".")[1]));
-  //       return payload.email;
-  //     } catch (error) {
-  //       console.error("토큰 디코딩 오류:", error);
-  //       return null;
-  //     }
-  //   }
-  //   return null;
-  // };
+  useEffect(() => {
+    fetchAuthInfo();
+  }, []);
 
   const cancelHandle = () => setCancelClicked(true);
 
@@ -59,7 +48,7 @@ const ProductAddPage = () => {
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          // Authorization: fetchToken,
+          Authorization: token, // Authorization 헤더에 토큰 추가
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -90,7 +79,7 @@ const ProductAddPage = () => {
       .map((desc) => ({ description: desc }));
 
     return {
-      seller: "hbin3673@hbin",
+      seller: seller,
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
@@ -104,15 +93,15 @@ const ProductAddPage = () => {
   const buildStockData = (formData) => {
     const stockData = SIZES.map((size) => {
       const quantity = formData.get(`${size.size}_quantity`);
-      return {
-        size: size.size, // 사이즈
-        sizeStock: quantity ? Number(quantity) : 0, // 재고 수량
-      };
+      return quantity
+        ? {
+            size: size.size,
+            sizeStock: Number(quantity),
+          }
+        : null;
     }).filter(Boolean);
-
     return stockData;
   };
-
   return (
     <>
       <AddProductForm
