@@ -299,7 +299,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       try {
         // API 호출을 통해 수량 업데이트
         await axios.put(
-          `/api/cart/${userId}/items`,
+          `/api/cart/${userId}`,
           {
             productId: productId,
             size: size,
