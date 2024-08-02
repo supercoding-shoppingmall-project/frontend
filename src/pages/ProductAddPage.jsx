@@ -11,39 +11,37 @@ const ProductAddPage = () => {
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
   const [seller, setSeller] = useState(null);
-  const [fetchToken, setFetchToken] = useState("");
+  // const [fetchToken, setFetchToken] = useState("");
 
-  useEffect(() => {
-    const token = localStorage.getItem("Authorization");
-    const email = getEmailFromToken(token);
-
-    if (!email) {
-      setErrors("이메일을 가져올 수 없습니다.");
-      return;
-    }
-
-    setSeller(email);
-    setFetchToken(token);
-  }, []);
-
-  const getEmailFromToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email;
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-        return null;
-      }
-    }
-    return null;
-  };
+  // const getEmailFromToken = (token) => {
+  //   if (token) {
+  //     try {
+  //       const payload = JSON.parse(atob(token.split(".")[1]));
+  //       return payload.email;
+  //     } catch (error) {
+  //       console.error("토큰 디코딩 오류:", error);
+  //       return null;
+  //     }
+  //   }
+  //   return null;
+  // };
 
   const cancelHandle = () => setCancelClicked(true);
 
   const addHandle = async (event) => {
     event.preventDefault();
     // setAddClicked(true);
+
+    // const token = localStorage.getItem("Authorization");
+    // const email = getEmailFromToken(token);
+
+    // if (!email) {
+    //   setErrors("이메일을 가져올 수 없습니다.");
+    //   return;
+    // }
+
+    // setSeller(email);
+    // setFetchToken(token);
 
     const formData = new FormData();
 
@@ -60,7 +58,7 @@ const ProductAddPage = () => {
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: fetchToken,
+          // Authorization: fetchToken,
         },
       });
       console.log("등록하기 성공:", response.data);
@@ -91,7 +89,7 @@ const ProductAddPage = () => {
       .map((desc) => ({ description: desc }));
 
     return {
-      seller,
+      seller: "hbin3673@hbin",
       category: formData.get("category"),
       productName: formData.get("productName"),
       productPrice: Number(formData.get("productPrice")),
