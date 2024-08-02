@@ -22,10 +22,10 @@ export default function QuantityModal({
   const [quantityData, setQuantityData] = useState({});
 
   useEffect(() => {
-    if (isClicked) {
+    if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
       // stockDtos.sizeStock을 초기 quantityData로 설정
-      const initialQuantityData = stockDtos.size.reduce(
+      const initialQuantityData = stockDtos.reduce(
         (acc, { size, sizeStock }) => {
           acc[size] = sizeStock; // size에 해당하는 stock을 매핑
           return acc;
