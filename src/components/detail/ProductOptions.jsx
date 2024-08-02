@@ -105,7 +105,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
         {/* 직접적으로 사이즈 값을 지정 */}
         <AddToCartButton
           productId={product.id}
-          selectedSize={240} // 직접적으로 사이즈 값을 지정합니다.
+          selectedSize={selectedSize}
           quantity={quantity}
           userId={userId}
         />
