@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { deleteCartItem } from "../../utils/ApiService";
 
 export default function CartPage({ showPurchaseButton = true }) {
@@ -10,6 +10,7 @@ export default function CartPage({ showPurchaseButton = true }) {
   const [userId, setUserId, cartItemId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
@@ -56,6 +57,38 @@ export default function CartPage({ showPurchaseButton = true }) {
       const price = parseFloat(product.price) || 0;
       return total + price * (product.quantity || 1);
     }, 0);
+  };
+
+  const getUserIdToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
+  const payClickHandle = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      const userId = getUserIdToken(token);
+
+      // 사용자 정보 가져오기
+      const response = await axios.get(`/api/mypage/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      // API 요청 성공 시 구매 페이지로 이동
+      navigate("/pay", { state: { userInfo: response.data } });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
   };
 
   const removeHandle = async (id, size) => {
@@ -162,6 +195,7 @@ export default function CartPage({ showPurchaseButton = true }) {
             <Link to={"/pay"}>
               <button
                 type="button"
+                onClick={payClickHandle}
                 className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
               >
                 구매하기

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import CartPage from "../components/cart/CartPage";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function PayPage() {
   const [paymentMethod, setPaymentMethod] = useState("card");
