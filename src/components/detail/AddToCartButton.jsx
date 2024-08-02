@@ -8,9 +8,11 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
   const addToCartHandle = async () => {
     const cartItem = {
       id: productId,
-      size: selectedSize,
+      size: parseInt(selectedSize, 10),
       quantity: quantity,
     };
+
+    console.log("CartItem being sent to backend:", cartItem);
 
     if (userId) {
       try {
