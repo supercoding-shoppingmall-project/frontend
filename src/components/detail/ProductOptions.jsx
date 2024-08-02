@@ -6,9 +6,9 @@ import FormatToKRW from "../../utils/FormatToKRW";
 import AddToCartButton from "./AddToCartButton";
 import axios from "axios";
 
-const fetchSizeStock = async (productId, size) => {
+const fetchSizeStock = async (id, size) => {
   try {
-    const response = await axios.get(`/api/product/${productId}/${size}Stock`);
+    const response = await axios.get(`/api/product/${id}/${size}Stock`);
     return response.data.stock;
   } catch (error) {
     console.error(`Failed to fetch stock for size ${size}:`, error);
