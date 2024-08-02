@@ -15,8 +15,7 @@ const AddImages = ({ onImagesChange }) => {
           [id]: reader.result,
         }));
 
-        const imageUrl = URL.createObjectURL(file);
-        onImagesChange((prev) => [...prev, imageUrl]);
+        onImagesChange((prev) => [...prev, file]);
       };
       reader.readAsDataURL(file);
     }

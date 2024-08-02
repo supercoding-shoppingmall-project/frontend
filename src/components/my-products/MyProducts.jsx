@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import QuantityModal from "./QuantityModal";
-import { SIZES } from "../../constants/AddProducts";
+import FormatToKRW from "../../utils/FormatToKRW";
 import axios from "axios";
 
 export default function MyProducts() {
@@ -20,19 +20,19 @@ export default function MyProducts() {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email; // 이메일 반환
+        return payload.email;
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
-        return null; // 이메일이 없을 경우 null 반환
+        return null;
       }
     }
-    return null; // 이메일이 없을 경우 null 반환
+    return null;
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const token = localStorage.getItem("Authorization"); // 토큰을 한 번만 가져옵니다.
-      const email = getEmailFromToken(token); // 이메일 가져오기
+      const token = localStorage.getItem("Authorization");
+      const email = getEmailFromToken(token);
 
       if (!email) {
         setError("이메일을 가져올 수 없습니다.");
@@ -74,11 +74,11 @@ export default function MyProducts() {
   }, []);
 
   if (error) {
-    return <div>{error}</div>; // 오류 메시지 표시
+    return <div>{error}</div>;
   }
 
   if (!data) {
-    return <div>데이터가 존재하지 않습니다.</div>; // 데이터가 없을 때 로딩 표시
+    return <div>데이터가 존재하지 않습니다.</div>;
   }
 
   return (
@@ -101,7 +101,7 @@ export default function MyProducts() {
                     <div>{product.endtime}</div>
                   </div>
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                    <div>{product.productPrice} 원</div>
+                    <div>{FormatToKRW(product.productPrice)}</div>
                     <button
                       onClick={() => btnClickHandle(product.productName)}
                       className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
@@ -124,8 +124,8 @@ export default function MyProducts() {
       <QuantityModal
         isClicked={isClicked}
         setIsClicked={setIsClicked}
-        sizes={SIZES}
         productName={currentProduct}
+        stockDtos={stockDtos}
       />
     </>
   );

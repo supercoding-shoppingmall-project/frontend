@@ -10,26 +10,20 @@ const ProductAddPage = () => {
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [token, setToken] = useState(null);
   const [email, setEmail] = useState(null);
-  const [productData, setProductData] = useState({
-    category: "",
-    productName: "",
-    productPrice: "",
-    endtime: "",
-  });
+  const [token, setToken] = useState(null);
 
   const getEmailFromToken = (token) => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email; // 이메일 반환
+        return payload.email;
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
-        return null; // 이메일이 없을 경우 null 반환
+        return null;
       }
     }
-    return null; // 이메일이 없을 경우 null 반환
+    return null;
   };
 
   useEffect(() => {
@@ -43,7 +37,6 @@ const ProductAddPage = () => {
 
   const addHandle = async (event) => {
     event.preventDefault();
-    // setAddClicked(true);
 
     if (!email) {
       setErrors("이메일을 가져올 수 없습니다.");
@@ -52,65 +45,70 @@ const ProductAddPage = () => {
 
     const formData = new FormData();
 
-    // 이미지 파일 추가
     images.forEach((image) => {
-      formData.append("images", image); // 이미지 파일 추가
+      formData.append("images", image);
     });
 
-    // 제품 데이터를 생성
-    const createdAt = new Date().toISOString().split("T")[0];
-    const productDataToSend = createProductData(createdAt, formData);
-    formData.append("product", JSON.stringify(productDataToSend));
+    const productData = createProductData(event.target);
+
+    formData.append("product", JSON.stringify(productData));
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: token, // Authorization 헤더에 토큰 추가
+          Authorization: token,
         },
       });
       console.log("등록하기 성공:", response.data);
+      setAddClicked(true);
     } catch (error) {
-      if (error.response) {
-        console.error("등록하기 오류:", error.response.data);
-        setErrors({
-          api: `등록하기 오류: ${
-            error.response.data.message || "알 수 없는 오류입니다."
-          }`,
-        });
-      } else if (error.request) {
-        console.error(
-          "등록하기 오류: 요청이 이루어졌으나 응답이 없습니다.",
-          error.request
-        );
-        setErrors({ api: "서버 응답을 받을 수 없습니다." });
-      } else {
-        console.error("등록하기 오류:", error.message);
-        setErrors({ api: "등록하기 중 오류가 발생했습니다." });
-      }
+      apiErrorHandle(error);
     }
   };
 
-  const createProductData = (createdAt, formData) => {
+  const apiErrorHandle = (error) => {
+    if (error.response) {
+      console.error("등록하기 오류:", error.response.data);
+      setErrors({
+        api: `등록하기 오류: ${
+          error.response.data.message || "알 수 없는 오류입니다."
+        }`,
+      });
+    } else if (error.request) {
+      console.error(
+        "등록하기 오류: 요청이 이루어졌으나 응답이 없습니다.",
+        error.request
+      );
+      setErrors({ api: "서버 응답을 받을 수 없습니다." });
+    } else {
+      console.error("등록하기 오류:", error.message);
+      setErrors({ api: "등록하기 중 오류가 발생했습니다." });
+    }
+  };
+
+  const createProductData = (target) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
+    const today = new Date().toISOString().split("T")[0];
+
     return {
       seller: email,
-      category: productData.category,
-      productName: productData.productName,
-      productPrice: Number(productData.productPrice),
+      category: target.category.value,
+      productName: target.productName.value,
+      productPrice: Number(target.productPrice.value),
       descriptions: filteredDescriptions,
-      endtime: productData.endtime,
-      createdAt: createdAt,
-      stockDtos: buildStockData(formData),
+      endtime: target.endtime.value,
+      createdAt: today,
+      stockDtos: buildStockData(target),
     };
   };
 
-  const buildStockData = (formData) => {
+  const buildStockData = (target) => {
     const stockData = SIZES.map((size) => {
-      const quantity = formData.get(`${size.size}_quantity`);
+      const quantity = target[`${size.size}_quantity`].value;
       return quantity
         ? {
             size: size.size,
