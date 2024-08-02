@@ -30,7 +30,6 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
     }
 
     setShowAlert(true);
-    setTimeout(() => setShowAlert(false), 2000); // 일정 시간 후에 Alert를 숨깁니다.
   };
 
   return (

@@ -39,9 +39,9 @@ export default function DetailPage() {
     if (authHeader) {
       try {
         const token = authHeader.split(" ")[1];
-        console.log("Token:", token); // 토큰 확인 로그
+        console.log("Token:", token);
         const payload = JSON.parse(atob(token.split(".")[1]));
-        console.log("Payload:", payload); // 페이로드 확인 로그
+        console.log("Payload:", payload);
         const fetchedUserId = payload.userId;
         setUserId(fetchedUserId);
       } catch (error) {
