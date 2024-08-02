@@ -135,10 +135,6 @@ export default function CartPage({ showPurchaseButton = true }) {
                     >
                       Remove
                     </button>
-                    <div className="flex justify-between text-base font-medium text-gray-900">
-                      <p>총 가격</p>
-                      <p>{FormatToKRW(product.totalPrice)}</p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -146,7 +142,12 @@ export default function CartPage({ showPurchaseButton = true }) {
           ))}
         </ul>
       </div>
+
       <div className="border-t border-gray-200 py-6">
+        <div className="flex justify-between text-base font-medium text-gray-900">
+          <p>총 가격</p>
+          <p>{`${product.totalPrice}`}</p>
+        </div>
         {showPurchaseButton && (
           <div className="mt-6 flex justify-center">
             <Link to={"/pay"}>
