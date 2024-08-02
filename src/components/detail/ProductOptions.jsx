@@ -3,8 +3,7 @@ import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
-import axios from "axios";
-import AddToCartButton from "./AddToCartButton"; // AddToCartButton 컴포넌트를 불러옵니다.
+import AddToCartButton from "./AddToCartButton";
 
 const ProductOptions = ({ SizeOption, product, userId }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
@@ -46,7 +45,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size.name} // size 객체가 아닌 size.name을 사용합니다.
+                  value={size.name} // size 객체가 아닌 size.name을 사용
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
