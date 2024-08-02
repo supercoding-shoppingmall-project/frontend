@@ -6,14 +6,13 @@ import FormatToKRW from "../../utils/FormatToKRW";
 import AddToCartButton from "./AddToCartButton";
 import axios from "axios";
 
-// 사이즈별 재고를 가져오는 함수
 const fetchSizeStock = async (id) => {
   try {
     const response = await axios.get(`/api/product/${id}`);
     return response.data.sizeStock;
   } catch (error) {
     console.error(`Failed to fetch stock for product ${id}:`, error);
-    return null;
+    return {};
   }
 };
 
@@ -109,7 +108,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
 
                   <span className="block text-sm text-gray-600 mt-1">
                     재고:{" "}
-                    {sizeStocks[size.name] !== undefined
+                    {sizeStocks && sizeStocks[size.name] !== undefined
                       ? sizeStocks[size.name]
                       : "조회 중..."}
                   </span>
