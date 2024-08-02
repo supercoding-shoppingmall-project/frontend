@@ -10,8 +10,8 @@ const ProductAddPage = () => {
   const [cancelClicked, setCancelClicked] = useState(false);
   const [addClicked, setAddClicked] = useState(false);
   const [errors, setErrors] = useState(null);
-	const [email, setEmail] = useState(null);
-	const [token, setToken] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [token, setToken] = useState(null);
 
   const getEmailFromToken = (token) => {
     if (token) {
@@ -26,9 +26,9 @@ const ProductAddPage = () => {
     return null;
   };
 
-	useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("Authorization");
-		setToken(token);
+    setToken(token);
     const userEmail = getEmailFromToken(token);
     setEmail(userEmail);
   }, []);
@@ -39,18 +39,20 @@ const ProductAddPage = () => {
     event.preventDefault();
     // setAddClicked(true);
 
-		if (!email) {
-			setErrors("이메일을 가져올 수 없습니다.");
-			return;
-		}
+    if (!email) {
+      setErrors("이메일을 가져올 수 없습니다.");
+      return;
+    }
 
-    const formData = new FormData(event.target);
+    const formData = new FormData();
 
     images.forEach((image) => {
       formData.append("images", image);
     });
 
-    formData.append("product", JSON.stringify(createProductData(formData)));
+    const productData = createProductData(event.target);
+
+    formData.append("product", JSON.stringify(productData));
 
     try {
       const response = await axios.post("/api/sell/save", formData, {
@@ -61,50 +63,50 @@ const ProductAddPage = () => {
       });
       console.log("등록하기 성공:", response.data);
     } catch (error) {
-      apiErrorHandle(error)
+      apiErrorHandle(error);
     }
   };
 
-	const apiErrorHandle = (error) => {
-		if (error.response) {
-			console.error("등록하기 오류:", error.response.data);
-			setErrors({
-				api: `등록하기 오류: ${
-					error.response.data.message || "알 수 없는 오류입니다."
-				}`,
-			});
-		} else if (error.request) {
-			console.error(
-				"등록하기 오류: 요청이 이루어졌으나 응답이 없습니다.",
-				error.request
-			);
-			setErrors({ api: "서버 응답을 받을 수 없습니다." });
-		} else {
-			console.error("등록하기 오류:", error.message);
-			setErrors({ api: "등록하기 중 오류가 발생했습니다." });
-		}
-	}
+  const apiErrorHandle = (error) => {
+    if (error.response) {
+      console.error("등록하기 오류:", error.response.data);
+      setErrors({
+        api: `등록하기 오류: ${
+          error.response.data.message || "알 수 없는 오류입니다."
+        }`,
+      });
+    } else if (error.request) {
+      console.error(
+        "등록하기 오류: 요청이 이루어졌으나 응답이 없습니다.",
+        error.request
+      );
+      setErrors({ api: "서버 응답을 받을 수 없습니다." });
+    } else {
+      console.error("등록하기 오류:", error.message);
+      setErrors({ api: "등록하기 중 오류가 발생했습니다." });
+    }
+  };
 
-  const createProductData = (formData) => {
+  const createProductData = (target) => {
     const filteredDescriptions = descriptions
       .filter((desc) => desc && desc.trim() !== "")
       .map((desc) => ({ description: desc }));
 
     return {
       seller: email,
-      category: formData.get("category"),
-      productName: formData.get("productName"),
-      productPrice: Number(formData.get("productPrice")),
+      category: target.category.value,
+      productName: target.productName.value,
+      productPrice: Number(target.productPrice.value),
       descriptions: filteredDescriptions,
-      endtime: formData.get("endtime"),
-      createdAt: formData.get("createdAt"),
-      stockDtos: buildStockData(formData),
+      endtime: target.endtime.value,
+      createdAt: target.createdAt.value,
+      stockDtos: buildStockData(target),
     };
   };
 
-  const buildStockData = (formData) => {
+  const buildStockData = (target) => {
     const stockData = SIZES.map((size) => {
-      const quantity = formData.get(`${size.size}_quantity`);
+      const quantity = target[`${size.size}_quantity`].value;
       return quantity
         ? {
             size: size.size,
