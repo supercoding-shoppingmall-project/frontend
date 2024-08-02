@@ -14,8 +14,8 @@ import axios from "axios";
 export default function QuantityModal({
   isClicked,
   setIsClicked,
-  sizes,
   productName,
+  stockDtos,
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -24,8 +24,14 @@ export default function QuantityModal({
   useEffect(() => {
     if (isClicked) {
       setOpen(true);
+      // stockDtos.sizeStock을 초기 quantityData로 설정
+      const initialQuantityData = stockDtos.size.reduce((acc, size, index) => {
+        acc[size] = stockDtos.sizeStock[index]; // size에 해당하는 stock을 매핑
+        return acc;
+      }, {});
+      setQuantityData(initialQuantityData);
     }
-  }, [isClicked]);
+  }, [isClicked, stockDtos]);
 
   const quantityChangeHandle = (size, quantity) => {
     setQuantityData((prev) => ({ ...prev, [size]: quantity }));
@@ -105,7 +111,7 @@ export default function QuantityModal({
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
                     <SizeQuantity
-                      sizes={sizes}
+                      sizes={stockDtos.size}
                       quantities={quantityData}
                       onQuantityChange={quantityChangeHandle}
                     />
