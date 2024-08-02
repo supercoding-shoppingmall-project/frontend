@@ -200,8 +200,6 @@ export default function CartPage({ showPurchaseButton = true }) {
         .then((response) => {
           setCart(response.data.items);
           console.log(response.data.items);
-          console.log(data.items);
-          console.log(items);
         })
         .catch((error) => {
           setError("Failed to fetch cart data"); // 에러 메시지를 상태에 저장
