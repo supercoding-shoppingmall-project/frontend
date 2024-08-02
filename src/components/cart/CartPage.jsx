@@ -268,7 +268,7 @@ export default function CartPage({ showPurchaseButton = true }) {
     setUserId(decodedPayload.userId);
     if (userId && token) {
       try {
-        await deleteCartItem(productId);
+        await deleteCartItem(productId, userId);
         // removeFromCart(productId, size);
       } catch (error) {
         setError("Failed to remove item from cart");
