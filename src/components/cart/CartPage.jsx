@@ -146,7 +146,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       <div className="border-t border-gray-200 py-6">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>총 가격</p>
-          <p>{product.totalPrice}</p>
+          <p>{`${product.totalPrice}`}</p>
         </div>
         {showPurchaseButton && (
           <div className="mt-6 flex justify-center">
