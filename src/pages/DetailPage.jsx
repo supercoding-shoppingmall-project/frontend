@@ -81,16 +81,18 @@ export default function DetailPage() {
               {product.name || "No Name"}
             </h1>
           </div>
-          <ProductOptions
-            product={product}
-            SizeOption={SizeOption}
-            userId={userId}
-          />
+          <div>
+            <ProductOptions
+              product={product}
+              SizeOption={SizeOption}
+              userId={userId}
+            />
+            <SizeStock product={product} />
+          </div>
           <SizeStock product={product} />
           <ProductInfo description={product.description || []} />
           <DetailDescription />
         </div>
-        <SizeStock product={product} />
       </div>
 
       {/* <div>
