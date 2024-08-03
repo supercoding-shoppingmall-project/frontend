@@ -52,8 +52,8 @@ export default function QuantityModal({
 
     const updatedStockDtos = Object.entries(quantityData).map(
       ([size, sizeStock]) => ({
-        size: Number(size),
-        sizeStock: sizeStock,
+        size: size,
+        sizeStock: Number(sizeStock),
       })
     );
 
