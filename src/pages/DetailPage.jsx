@@ -109,7 +109,18 @@ export default function DetailPage() {
                 {product.sizeStock.map((stock, index) => (
                   <tr key={index}>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {SizeOption}
+                      {
+                        [
+                          "240",
+                          "250",
+                          "260",
+                          "270",
+                          "280",
+                          "290",
+                          "300",
+                          "310",
+                        ][index]
+                      }
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {stock}
