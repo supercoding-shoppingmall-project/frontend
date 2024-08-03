@@ -6,7 +6,7 @@ const SizeStock = ({ product }) => {
       <div>
         <h2>Size Stock:</h2>
         <div className="max-w-md mx-auto mt-8">
-          <h2 className="text-xl font-semibold mb-4">Size Stock:</h2>
+          {/* <h2 className="text-xl font-semibold mb-4">Size Stock:</h2> */}
           {product.sizeStock && Array.isArray(product.sizeStock) && (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
