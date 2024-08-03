@@ -86,6 +86,7 @@ export default function DetailPage() {
             SizeOption={SizeOption}
             userId={userId}
           />
+          <SizeStock product={product} />
           <ProductInfo description={product.description || []} />
           <DetailDescription />
         </div>

@@ -5,48 +5,35 @@ const SizeStock = (product) => {
     <div>
       <div className="max-w-md mx-auto mt-8">
         <h2 className="text-xl font-semibold mb-4">Size Stock:</h2>
-        {product.sizeStock ? (
-          Array.isArray(product.sizeStock) ? (
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Size
-                  </th>
-                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Stock
-                  </th>
+        {product.sizeStock && Array.isArray(product.sizeStock) && (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Size
+                </th>
+                <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Stock
+                </th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {product.sizeStock.map((stock, index) => (
+                <tr key={index}>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {
+                      ["240", "250", "260", "270", "280", "290", "300", "310"][
+                        index
+                      ]
+                    }
+                  </td>
+                  <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                    {stock}
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
-                {product.sizeStock.map((stock, index) => (
-                  <tr key={index}>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                      {
-                        [
-                          "240",
-                          "250",
-                          "260",
-                          "270",
-                          "280",
-                          "290",
-                          "300",
-                          "310",
-                        ][index]
-                      }
-                    </td>
-                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
-                      {stock}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <div>sizeStock is not an array</div>
-          )
-        ) : (
-          <div>No sizeStock data</div>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
       {console.log("sizeStock:", product.sizeStock)}
