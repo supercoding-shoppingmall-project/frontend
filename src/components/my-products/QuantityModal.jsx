@@ -19,6 +19,7 @@ export default function QuantityModal({
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [quantityData, setQuantityData] = useState({});
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function QuantityModal({
   const submitHandle = async (event) => {
     event.preventDefault();
     console.log("전송할 productName:", productName);
+    setLoading(true);
 
     const updatedStockDtos = Object.entries(quantityData).map(
       ([size, sizeStock]) => ({
@@ -57,40 +59,51 @@ export default function QuantityModal({
 
     try {
       const token = localStorage.getItem("Authorization");
-      const requestBody = { stockDtos: updatedStockDtos };
+      console.log("전송할 재고수량객체:", updatedStockDtos);
 
       const response = await axios.put(
         `/api/sell/update/${productName}`,
-        requestBody,
+        updatedStockDtos,
         {
           headers: {
             Authorization: token,
           },
         }
       );
+
       if (response.status === 200) {
         setOpen(false);
         setIsClicked(false);
+        setQuantityData({});
         alert("재고 수량이 변경되었습니다.");
       } else {
         setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
       }
     } catch (error) {
       if (error.response) {
-        if (error.response.status === 404) {
-          setError("해당 제품을 찾을 수 없습니다.");
-        } else if (error.response.status === 400) {
-          setError("잘못된 요청입니다. 입력 값을 확인해 주세요.");
-        } else if (error.response.status === 401) {
-          setError("인증 오류가 발생했습니다. 다시 로그인 해주세요.");
-        } else {
-          setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
+        switch (error.response.status) {
+          case 404:
+            setError("해당 제품을 찾을 수 없습니다.");
+            break;
+          case 400:
+            setError("잘못된 요청입니다. 입력 값을 확인해 주세요.");
+            break;
+          case 401:
+            setError("인증 오류가 발생했습니다. 다시 로그인 해주세요.");
+            break;
+          case 403:
+            setError("이 작업을 수행할 권한이 없습니다.");
+            break;
+          default:
+            setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
         }
       } else if (error.request) {
         setError("서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.");
       } else {
         setError("오류가 발생했습니다. 다시 시도해 주세요.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -163,7 +176,8 @@ export default function QuantityModal({
                   </button>
                 </div>
               </form>
-              {error && <div className="text-red-500">{error}</div>}
+              {error && <div>{error}</div>}
+              {loading && <div>로딩 중...</div>}
             </section>
           </DialogPanel>
         </div>
