@@ -90,6 +90,7 @@ export default function DetailPage() {
           <ProductInfo description={product.description || []} />
           <DetailDescription />
         </div>
+        <SizeStock product={product} />
       </div>
 
       {/* <div>
