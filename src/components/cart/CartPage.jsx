@@ -65,7 +65,7 @@ export default function CartPage({ showPurchaseButton = true }) {
       try {
         // API 호출을 통해 수량 업데이트
         await axios.put(
-          `/api/cart/${userId}/items/${productId}`,
+          `/api/cart/${userId}`,
           {
             size: size,
             quantity: newQuantity,
