@@ -96,7 +96,7 @@ export default function DetailPage() {
           Array.isArray(product.sizeStock) ? (
             product.sizeStock.map((stock, index) => (
               <div key={index}>
-                Size: {stock.size}, Stock: {stock.stock}
+                Size: {stock.size}, Stock: {stock}
               </div>
             ))
           ) : (
@@ -106,6 +106,7 @@ export default function DetailPage() {
           <div>No sizeStock data</div>
         )}
       </div>
+      {console.log("size:", product.size)}
       {console.log("sizeStock:", product.sizeStock)}
     </div>
   );
