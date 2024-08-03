@@ -36,13 +36,13 @@ export default function QuantityModal({
     }
   }, [isClicked, stockDtos]);
 
-  const quantityChangeHandle = (size, quantity) => {
-    setQuantityData((prev) => ({ ...prev, [size]: quantity }));
-    console.log("현재 재고 수량 데이터:", {
-      ...quantityData,
-      [size]: quantity,
-    });
-  };
+	const quantityChangeHandle = (size, quantity) => {
+		setQuantityData((prev) => {
+			const newData = { ...prev, [size]: quantity };
+			console.log("현재 재고 수량 데이터:", newData);
+			return newData;
+		});
+	};
 
   const submitHandle = async (event) => {
     event.preventDefault();
@@ -59,7 +59,7 @@ export default function QuantityModal({
       const token = localStorage.getItem("Authorization");
       const response = await axios.put(
         `/api/sell/update/${productName}`,
-        quantityData,
+        updatedStockDtos,
         {
           headers: {
             Authorization: token,
