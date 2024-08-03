@@ -63,7 +63,12 @@ export default function QuantityModal({
 
       const response = await axios.put(
         `/api/sell/update/${productName}`,
-        updatedStockDtos
+        updatedStockDtos,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
       if (response.status === 200) {
