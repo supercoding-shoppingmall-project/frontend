@@ -36,13 +36,13 @@ export default function QuantityModal({
     }
   }, [isClicked, stockDtos]);
 
-	const quantityChangeHandle = (size, quantity) => {
-		setQuantityData((prev) => {
-			const newData = { ...prev, [size]: quantity };
-			console.log("현재 재고 수량 데이터:", newData);
-			return newData;
-		});
-	};
+  const quantityChangeHandle = (size, quantity) => {
+    setQuantityData((prev) => {
+      const newData = { ...prev, [size]: quantity };
+      console.log("현재 재고 수량 데이터:", newData);
+      return newData;
+    });
+  };
 
   const submitHandle = async (event) => {
     event.preventDefault();
@@ -57,9 +57,11 @@ export default function QuantityModal({
 
     try {
       const token = localStorage.getItem("Authorization");
+      const requestBody = { stockDtos: updatedStockDtos };
+
       const response = await axios.put(
         `/api/sell/update/${productName}`,
-        updatedStockDtos,
+        requestBody,
         {
           headers: {
             Authorization: token,
@@ -71,13 +73,10 @@ export default function QuantityModal({
         setIsClicked(false);
         alert("재고 수량이 변경되었습니다.");
       } else {
-        // 상태 코드가 200이 아닐 경우 에러 처리
         setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
       }
     } catch (error) {
-      // 에러 타입에 따라 세분화된 에러 메시지 제공
       if (error.response) {
-        // 서버가 응답했지만 상태 코드가 2xx가 아닌 경우
         if (error.response.status === 404) {
           setError("해당 제품을 찾을 수 없습니다.");
         } else if (error.response.status === 400) {
@@ -88,10 +87,8 @@ export default function QuantityModal({
           setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
         }
       } else if (error.request) {
-        // 요청이 이루어졌지만 응답이 없는 경우
         setError("서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.");
       } else {
-        // 오류를 발생시킨 요청 설정
         setError("오류가 발생했습니다. 다시 시도해 주세요.");
       }
     }
@@ -137,7 +134,6 @@ export default function QuantityModal({
             </section>
             <section className="bg-white px-4 pb-4 pt-5 sm:p-6">
               <form onSubmit={submitHandle}>
-                {/* 사이즈별 재고 변경 */}
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
                     <SizeQuantity
