@@ -1,33 +1,57 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React from "react";
 
-const SizeStock = ({ productId, size }) => {
-  const [stock, setStock] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchSizeStock = async () => {
-      try {
-        const response = await axios.get(
-          `/api/product/${productId}/${size}Stock`
-        );
-        setStock(response.data.stock);
-      } catch (error) {
-        console.error(`Failed to fetch stock for size ${size}:`, error);
-        setError("Failed to fetch stock");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSizeStock();
-  }, [productId, size]);
-
-  if (loading) return <span>조회 중...</span>;
-  if (error) return <span>{error}</span>;
-
-  return <span>재고: {stock}</span>;
+const SizeStock = (product) => {
+  return (
+    <div>
+      <div className="max-w-md mx-auto mt-8">
+        <h2 className="text-xl font-semibold mb-4">Size Stock:</h2>
+        {product.sizeStock ? (
+          Array.isArray(product.sizeStock) ? (
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Size
+                  </th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Stock
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {product.sizeStock.map((stock, index) => (
+                  <tr key={index}>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {
+                        [
+                          "240",
+                          "250",
+                          "260",
+                          "270",
+                          "280",
+                          "290",
+                          "300",
+                          "310",
+                        ][index]
+                      }
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                      {stock}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <div>sizeStock is not an array</div>
+          )
+        ) : (
+          <div>No sizeStock data</div>
+        )}
+      </div>
+      {console.log("sizeStock:", product.sizeStock)}
+    </div>
+  );
 };
 
 export default SizeStock;
