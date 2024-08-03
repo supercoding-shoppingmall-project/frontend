@@ -2,6 +2,7 @@ import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
 import DetailDescription from "../components/detail/DetailDescription";
+import SizeStock from "../components/detail/SizeStock";
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -88,9 +89,10 @@ export default function DetailPage() {
           <ProductInfo description={product.description || []} />
           <DetailDescription />
         </div>
+        <SizeStock product={product} />
       </div>
 
-      <div>
+      {/* <div>
         <h2>Size Stock:</h2>
         {product.sizeStock ? (
           Array.isArray(product.sizeStock) ? (
@@ -136,7 +138,7 @@ export default function DetailPage() {
           <div>No sizeStock data</div>
         )}
       </div>
-      {console.log("sizeStock:", product.sizeStock)}
+      {console.log("sizeStock:", product.sizeStock)} */}
     </div>
   );
 }
