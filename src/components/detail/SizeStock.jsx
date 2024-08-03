@@ -4,9 +4,10 @@ const SizeStock = ({ product }) => {
   return (
     <div>
       <div>
-        <h2>Size Stock:</h2>
+        <h2 class="text-2xl font-semibold leading-7 text-gray-900">
+          상품 사이즈별 재고
+        </h2>
         <div className="max-w-md mx-auto mt-8">
-          {/* <h2 className="text-xl font-semibold mb-4">Size Stock:</h2> */}
           {product.sizeStock && Array.isArray(product.sizeStock) && (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

@@ -30,7 +30,7 @@ const ProductOptions = ({ SizeOption, product, userId }) => {
           <div className="flex items-center justify-between">
             <a
               href="#"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
+              className="text-2xl font-semibold leading-7 text-gray-900"
             >
               사이즈 옵션
             </a>
