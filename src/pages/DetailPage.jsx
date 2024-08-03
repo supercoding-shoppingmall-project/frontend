@@ -94,11 +94,30 @@ export default function DetailPage() {
         <h2>Size Stock:</h2>
         {product.sizeStock ? (
           Array.isArray(product.sizeStock) ? (
-            product.sizeStock.map((stock, index) => (
-              <div key={index}>
-                Size: {stock.size}, Stock: {stock}
-              </div>
-            ))
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Size
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Stock
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {product.sizeStock.map((stock, index) => (
+                  <tr key={index}>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {SizeOption}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {stock}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           ) : (
             <div>sizeStock is not an array</div>
           )
@@ -106,7 +125,6 @@ export default function DetailPage() {
           <div>No sizeStock data</div>
         )}
       </div>
-      {console.log("size:", product.size)}
       {console.log("sizeStock:", product.sizeStock)}
     </div>
   );
