@@ -50,12 +50,10 @@ export default function QuantityModal({
     console.log("전송할 productName:", productName);
     setLoading(true);
 
-    const updatedStockDtos = Object.entries(quantityData).map(
-      ([size, sizeStock]) => ({
-        size: Number(size),
-        sizeStock: sizeStock,
-      })
-    );
+		const updatedStockDtos = Object.entries(quantityData).reduce((acc, [size, sizeStock]) => {
+			acc[size] = sizeStock;
+			return acc;
+		}, {});
 
     try {
       const token = localStorage.getItem("Authorization");
