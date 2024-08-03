@@ -1,6 +1,10 @@
 import React from "react";
 
 const SizeQuantity = ({ sizes, quantities, onQuantityChange }) => {
+  if (!Array.isArray(sizes)) {
+    return <div>사이즈 데이터가 없습니다.</div>; // 오류 메시지 또는 대체 UI
+  }
+
   return (
     <>
       {sizes.map((size) => {
