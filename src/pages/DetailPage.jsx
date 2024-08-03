@@ -59,9 +59,11 @@ export default function DetailPage() {
   if (loading) {
     return <div>Loading...</div>;
   }
+
   if (error) {
     return <div>{error}</div>;
   }
+
   if (!product) {
     return <div>Product not found</div>;
   }
@@ -94,7 +96,7 @@ export default function DetailPage() {
           Array.isArray(product.sizeStock) ? (
             product.sizeStock.map((stock, index) => (
               <div key={index}>
-                Size: {stock.size}, Stock: {stock.sizeStock}
+                Size: {stock.size}, Stock: {stock.stock}
               </div>
             ))
           ) : (
