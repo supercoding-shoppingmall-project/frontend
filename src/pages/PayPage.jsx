@@ -300,7 +300,7 @@ export default function PayPage() {
   const [cvv, setCvv] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen, setIsPaymentComplete] = useState(false);
 
   const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
