@@ -21,21 +21,25 @@ export default function QuantityModal({ isClicked, setIsClicked, allData }) {
   const stockDtos = allData?.stockDtos;
 
   useEffect(() => {
+    console.log("allData in QuantityModal:", allData);
     console.log("isClicked:", isClicked);
     console.log("stockDtos:", stockDtos);
+
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
-      // stockDtos.sizeStock을 초기 quantityData로 설정
       const initialQuantityData = stockDtos.reduce(
         (acc, { size, sizeStock }) => {
-          acc[size] = sizeStock; // size에 해당하는 stock을 매핑
+          acc[size] = sizeStock;
           return acc;
         },
         {}
       );
       setQuantityData(initialQuantityData);
+    } else if (isClicked) {
+      setError("유효한 재고 데이터가 없습니다.");
+      setOpen(false);
     }
-  }, [isClicked, stockDtos]);
+  }, [isClicked, stockDtos, allData]);
 
   const quantityChangeHandle = (size, quantity) => {
     setQuantityData((prev) => {
