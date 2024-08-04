@@ -284,6 +284,7 @@
 // }
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import CartPage from "../components/cart/CartPage";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
