@@ -288,7 +288,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteCartItem } from "../utils/ApiService";
 
-export default function PayPage() {
+export default function PayPage(onRemoveItem) {
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -334,21 +334,27 @@ export default function PayPage() {
   };
 
   // 장바구니의 모든 아이템을 삭제하는 함수
-  const deleteAllCartItems = async () => {
-    if (!userInfo.id) {
+  const deleteAllCartItems = async (id) => {
+    const token = localStorage.getItem("Authorization");
+    const userId = getUserIdFromToken(token);
+
+    if (userInfo.id) {
+      try {
+        await deleteCartItem(id, userId);
+        const response = await axios.get(`/api/cart/${userId}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
+        setCart(response.data.items);
+        if (onRemoveItem) onRemoveItem(); // Trigger external handler if provided
+      } catch (error) {
+        setError("Failed to remove all Products from cart");
+        console.error("Failed to remove all Products from cart", error);
+      }
+    } else if (!userInfo.id) {
       console.error("User ID is missing.");
       return;
-    }
-
-    try {
-      // 삭제 요청
-      await Promise.all(
-        cart.map((item) => deleteCartItem(item.id, userInfo.id))
-      );
-      console.log("All items deleted successfully.");
-    } catch (error) {
-      console.error("Failed to remove items from cart", error);
-      throw error; // 에러 발생 시 throw하여 상위 함수에서 처리
     }
   };
 
