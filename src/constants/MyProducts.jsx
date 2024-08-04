@@ -92,8 +92,8 @@ export const PRODUCTS = [
 
 // 정렬 기준 데이터
 export const SORT_OPTIONS = [
-  { name: "추천순", href: "#", current: true },
-  { name: "최신순", href: "#", current: false },
-  { name: "높은 가격순", href: "#", current: false },
-  { name: "낮은 가격순", href: "#", current: false },
+  { name: "최신순", current: true },
+  { name: "오래된순", current: false },
+  { name: "높은 가격순", current: false },
+  { name: "낮은 가격순", current: false },
 ];

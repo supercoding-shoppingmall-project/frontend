@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import SortMyProducts from "../components/my-products/SortMyProducts"
 import MyProducts from "../components/my-products/MyProducts";
 
 const SellingPage = () => {
@@ -10,6 +11,7 @@ const SellingPage = () => {
           상품 등록하기
         </button>
       </Link>
+			<SortMyProducts />
       <MyProducts />
     </div>
   );
