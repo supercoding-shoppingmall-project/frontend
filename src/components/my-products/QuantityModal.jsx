@@ -21,6 +21,8 @@ export default function QuantityModal({ isClicked, setIsClicked, allData }) {
   const stockDtos = allData?.stockDtos;
 
   useEffect(() => {
+    console.log("isClicked:", isClicked);
+    console.log("stockDtos:", stockDtos);
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
       // stockDtos.sizeStock을 초기 quantityData로 설정
