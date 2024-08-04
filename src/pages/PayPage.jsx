@@ -2,38 +2,34 @@
 // import { Link, useLocation } from "react-router-dom";
 // import CartPage from "../components/cart/CartPage";
 // import axios from "axios";
+// import { deleteCartItem } from "../utils/ApiService";
 
 // export default function PayPage() {
+//   const { state } = useLocation();
 //   const [paymentMethod, setPaymentMethod] = useState("card");
 //   const [cardNumber, setCardNumber] = useState("");
 //   const [expiryDate, setExpiryDate] = useState("");
 //   const [cvv, setCvv] = useState("");
 //   const [bankName, setBankName] = useState("");
 //   const [accountNumber, setAccountNumber] = useState("");
-//   const [isModalOpen, setIsModalOpen] = useState(false);
+//   const [isModalOpen, setIsModalOpen, setIsPaymentComplete] = useState(false);
+
 //   const cart = state?.cart || [];
-
-//   const openModal = () => {
-//     setIsModalOpen(true);
-//     setIsPaymentComplete(false); // 모달이 열릴 때 결제 완료 상태를 초기화
-//   };
-//   const closeModal = () => setIsModalOpen(false);
-
-//   // const confirmHandle = () => {
-//   //   setIsPaymentComplete(true); // 결제 완료 상태로 변경
-
-//   // };
-
-//   const { state } = useLocation();
 //   const userInfo = state?.userInfo || {
 //     name: "",
 //     phone: "",
 //     address: "",
 //   };
 
+//   const openModal = () => {
+//     setIsModalOpen(true);
+//     setIsPaymentComplete(false);
+//   };
+
+//   const closeModal = () => setIsModalOpen(false);
+
 //   const submitHandle = (e) => {
 //     e.preventDefault();
-//     // Handle form submission logic, e.g., sending data to a server
 //     console.log("Form submitted with:", {
 //       cardNumber,
 //       expiryDate,
@@ -42,7 +38,6 @@
 //       accountNumber,
 //     });
 
-//     // Reset input fields
 //     setCardNumber("");
 //     setExpiryDate("");
 //     setCvv("");
@@ -54,18 +49,19 @@
 //     setPaymentMethod(method);
 //   };
 
-//   const confirmPaymentHandle = () => {
-//     cart.forEach(async (item) => {
-//       try {
-//         await axios.delete(`/api/cart/${item.id}`);
-//       } catch (error) {
-//         console.error("Failed to remove item from cart", error);
-//       }
-//     });
-//     setIsPaymentComplete(true); // Indicate that payment is complete
-//     setTimeout(() => {
-//       closeModal(); // Close the modal
-//     }, 1000); // Delay navigation to allow user to see the confirmation
+//   const confirmPaymentHandle = async (id) => {
+//     try {
+//       // 모든 장바구니 아이템 삭제를 병렬로 처리
+//       await Promise.all(
+//         cart.map((item) => deleteCartItem(item.id, userInfo.id))
+//       );
+//       setIsPaymentComplete(true);
+//       setTimeout(() => {
+//         closeModal();
+//       }, 1000);
+//     } catch (error) {
+//       console.error("Failed to remove item from cart", error);
+//     }
 //   };
 
 //   return (
@@ -286,28 +282,30 @@
 //     </div>
 //   );
 // }
-
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import CartPage from "../components/cart/CartPage";
-import axios from "axios";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
+  const navigate = useNavigate();
   const { state } = useLocation();
+
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [isModalOpen, setIsModalOpen, setIsPaymentComplete] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
 
   const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
     name: "",
     phone: "",
     address: "",
+    id: null, // userId를 null로 설정해주어야 deleteCartItem에서 사용할 수 있음
   };
 
   const openModal = () => {
@@ -338,15 +336,16 @@ export default function PayPage() {
     setPaymentMethod(method);
   };
 
-  const confirmPaymentHandle = async (id) => {
+  // 장바구니의 모든 아이템을 삭제하는 함수
+  const confirmPaymentHandle = async () => {
     try {
-      // 모든 장바구니 아이템 삭제를 병렬로 처리
       await Promise.all(
         cart.map((item) => deleteCartItem(item.id, userInfo.id))
       );
       setIsPaymentComplete(true);
       setTimeout(() => {
         closeModal();
+        navigate("/"); // 결제 완료 후 홈 페이지로 이동
       }, 1000);
     } catch (error) {
       console.error("Failed to remove item from cart", error);
@@ -547,14 +546,12 @@ export default function PayPage() {
                     결제 하시겠습니까?
                   </h2>
                   <div className="flex justify-end space-x-4">
-                    <Link to={"/"}>
-                      <button
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                        onClick={confirmPaymentHandle}
-                      >
-                        Yes
-                      </button>
-                    </Link>
+                    <button
+                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                      onClick={confirmPaymentHandle}
+                    >
+                      Yes
+                    </button>
                     <button
                       onClick={closeModal}
                       className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
