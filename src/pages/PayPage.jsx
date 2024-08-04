@@ -339,12 +339,22 @@ export default function PayPage() {
 
   const confirmPaymentHandle = async () => {
     try {
-      for (const item of cart) {
-        await axios.delete(`/api/cart/${item.id}`);
-      }
+      // 모든 삭제 요청을 동시에 처리
+      await Promise.all(
+        cart.map((item) => {
+          if (typeof axios.delete === "function") {
+            return axios.delete(`/api/cart/${item.id}`);
+          } else {
+            console.error("axios.delete is not a function");
+            throw new Error("axios.delete is not a function");
+          }
+        })
+      );
       setIsPaymentComplete(true);
+      // 모달을 닫기 전 잠시 기다리기
       setTimeout(() => {
         closeModal();
+        // 필요에 따라 페이지 리디렉션 추가
       }, 1000);
     } catch (error) {
       console.error("Failed to remove item from cart", error);
