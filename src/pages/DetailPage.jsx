@@ -2,6 +2,7 @@ import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
 import DetailDescription from "../components/detail/DetailDescription";
+import SellingEndDate from "../components/detail/SellingEndDate";
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -89,6 +90,7 @@ export default function DetailPage() {
               <DetailDescription />
             </div>
             <div className="mt-4 lg:mt-0">
+              <SellingEndDate endDates={product.endDate} />
               <ProductOptions
                 product={product}
                 SizeOption={SizeOption}
