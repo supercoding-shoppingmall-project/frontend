@@ -284,7 +284,6 @@
 // }
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import CartPage from "../components/cart/CartPage";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
@@ -334,10 +333,16 @@ export default function PayPage() {
 
   // 장바구니의 모든 아이템을 삭제하는 함수
   const deleteAllCartItems = async () => {
+    if (!userInfo.id) {
+      console.error("User ID is missing.");
+      return;
+    }
+
     try {
       await Promise.all(
         cart.map((item) => deleteCartItem(item.id, userInfo.id))
       );
+      console.log("All items deleted successfully.");
       navigate("/"); // 결제 완료 후 홈 페이지로 이동
     } catch (error) {
       console.error("Failed to remove items from cart", error);
@@ -345,8 +350,12 @@ export default function PayPage() {
   };
 
   const confirmPaymentHandle = async () => {
-    await deleteAllCartItems(); // 모든 장바구니 아이템 삭제
-    closeModal(); // 모달 닫기
+    try {
+      await deleteAllCartItems(); // 모든 장바구니 아이템 삭제
+      closeModal(); // 모달 닫기
+    } catch (error) {
+      console.error("Error during payment confirmation", error);
+    }
   };
 
   return (
@@ -530,7 +539,7 @@ export default function PayPage() {
           )}
           <div className="mt-10 flex justify-center">
             <button
-              type="submit"
+              type="button" // 변경: `submit`을 `button`으로 변경
               onClick={openModal}
               className="w-1/4 rounded-md bg-blue-600 mb-10 px-3.5 py-2.5 text-center text-lg font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
