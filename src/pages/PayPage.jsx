@@ -286,6 +286,7 @@
 import CartPage from "../components/cart/CartPage";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
