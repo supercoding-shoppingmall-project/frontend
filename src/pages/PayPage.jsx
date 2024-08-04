@@ -291,6 +291,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import CartPage from "../components/cart/CartPage";
 import axios from "axios";
+import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
   const { state } = useLocation();
@@ -337,24 +338,15 @@ export default function PayPage() {
     setPaymentMethod(method);
   };
 
-  const confirmPaymentHandle = async () => {
+  const confirmPaymentHandle = async (id) => {
     try {
-      // 모든 삭제 요청을 동시에 처리
+      // 모든 장바구니 아이템 삭제를 병렬로 처리
       await Promise.all(
-        cart.map((item) => {
-          if (typeof axios.delete === "function") {
-            return axios.delete(`/api/cart/${item.id}`);
-          } else {
-            console.error("axios.delete is not a function");
-            throw new Error("axios.delete is not a function");
-          }
-        })
+        cart.map((item) => deleteCartItem(item.id, userInfo.id))
       );
       setIsPaymentComplete(true);
-      // 모달을 닫기 전 잠시 기다리기
       setTimeout(() => {
         closeModal();
-        // 필요에 따라 페이지 리디렉션 추가
       }, 1000);
     } catch (error) {
       console.error("Failed to remove item from cart", error);
