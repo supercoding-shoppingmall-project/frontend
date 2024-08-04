@@ -348,14 +348,14 @@ export default function PayPage() {
   };
 
   // 장바구니의 모든 아이템을 삭제하는 함수
-  const deleteAllCartItems = async () => {
+  const deleteAllCartItems = async (id) => {
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
 
     if (userId && token) {
       try {
         // 1. 서버에서 모든 장바구니 아이템을 삭제하는 요청
-        await axios.delete(`/api/cart/${userId}`, {
+        await axios.delete(`/api/cart/${userId}/items/${id}`, {
           headers: {
             Authorization: token,
           },
@@ -373,10 +373,13 @@ export default function PayPage() {
     }
   };
 
-  const confirmPaymentHandle = async () => {
+  const confirmPaymentHandle = async (productId, size) => {
+    const product = cart.find(
+      (item) => item.productId === productId && item.size === size
+    );
     try {
       // 장바구니 아이템 삭제
-      await deleteAllCartItems();
+      await deleteAllCartItems(product.id);
 
       // 모달 닫기
       closeModal();
@@ -585,7 +588,10 @@ export default function PayPage() {
                   <div className="flex justify-end space-x-4">
                     <button
                       className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                      onClick={confirmPaymentHandle}
+                      onClick={confirmPaymentHandle(
+                        product.productId,
+                        product.size
+                      )}
                     >
                       Yes
                     </button>
