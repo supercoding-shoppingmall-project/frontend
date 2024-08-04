@@ -101,9 +101,7 @@ export default function MyProducts() {
                   <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
                     <div>{FormatToKRW(product.productPrice)}</div>
                     <button
-                      onClick={() =>
-                        btnClickHandle(product.productName, product.stockDtos)
-                      }
+                      onClick={btnClickHandle}
                       className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
                     >
                       재고 수량 변경
@@ -124,7 +122,7 @@ export default function MyProducts() {
       <QuantityModal
         isClicked={isClicked}
         setIsClicked={setIsClicked}
-				allData={data}
+        allData={data}
       />
     </>
   );
