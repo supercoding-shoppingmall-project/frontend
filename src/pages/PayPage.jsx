@@ -298,7 +298,6 @@ export default function PayPage() {
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isPaymentComplete, setIsPaymentComplete] = useState(false);
 
   const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
@@ -308,10 +307,7 @@ export default function PayPage() {
     id: null, // userId를 null로 설정해주어야 deleteCartItem에서 사용할 수 있음
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
-    setIsPaymentComplete(false);
-  };
+  const openModal = () => setIsModalOpen(true);
 
   const closeModal = () => setIsModalOpen(false);
 
@@ -337,19 +333,20 @@ export default function PayPage() {
   };
 
   // 장바구니의 모든 아이템을 삭제하는 함수
-  const confirmPaymentHandle = async () => {
+  const deleteAllCartItems = async () => {
     try {
       await Promise.all(
         cart.map((item) => deleteCartItem(item.id, userInfo.id))
       );
-      setIsPaymentComplete(true);
-      setTimeout(() => {
-        closeModal();
-        navigate("/"); // 결제 완료 후 홈 페이지로 이동
-      }, 1000);
+      navigate("/"); // 결제 완료 후 홈 페이지로 이동
     } catch (error) {
-      console.error("Failed to remove item from cart", error);
+      console.error("Failed to remove items from cart", error);
     }
+  };
+
+  const confirmPaymentHandle = async () => {
+    await deleteAllCartItems(); // 모든 장바구니 아이템 삭제
+    closeModal(); // 모달 닫기
   };
 
   return (
