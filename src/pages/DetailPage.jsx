@@ -1,13 +1,12 @@
 import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
-import DetailDescription from "../components/detail/DetailDescription";
 import ProductOptions from "../components/detail/ProductOptions";
-import SizeStock from "../components/detail/SizeStock";
-import { SizeOption } from "../constants/SizeOption";
+import DetailDescription from "../components/detail/DetailDescription";
 
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { SizeOption } from "../constants/SizeOption";
 
 export default function DetailPage() {
   const { id } = useParams();
@@ -96,7 +95,6 @@ export default function DetailPage() {
                 userId={userId}
                 sizeChangeHandle={sizeChangeHandle}
               />
-              <SizeStock product={product} selectedSize={selectedSize} />
             </div>
           </div>
         </div>
