@@ -4,7 +4,7 @@ import axios from "axios";
 import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
-import DetailDescription from "../components/detail/DetailDescription";
+import DetailDescription from "../constants/DetailDescription";
 import SellingEndDate from "../components/detail/SellingEndDate";
 import { SizeOption } from "../constants/SizeOption";
 
