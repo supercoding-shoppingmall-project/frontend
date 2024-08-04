@@ -1,12 +1,11 @@
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import ImageGallery from "../components/mock-data/ImageGallery";
 import ProductInfo from "../components/detail/ProductInfo";
 import ProductOptions from "../components/detail/ProductOptions";
 import DetailDescription from "../components/detail/DetailDescription";
 import SellingEndDate from "../components/detail/SellingEndDate";
-
-import axios from "axios";
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import { SizeOption } from "../constants/SizeOption";
 
 export default function DetailPage() {
@@ -21,46 +20,30 @@ export default function DetailPage() {
     const fetchProduct = async () => {
       try {
         const response = await axios.get(`/api/product/${id}`);
-        console.log("Fetched product:", response.data);
-        if (response.data) {
-          setProduct(response.data[0]);
-        }
+        setProduct(response.data[0]);
       } catch (err) {
-        console.error("Error fetching product:", err);
         setError("Failed to fetch product");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProduct();
-  }, [id]);
-
-  useEffect(() => {
-    const authHeader = localStorage.getItem("Authorization");
-    if (authHeader) {
-      try {
-        const token = authHeader.split(" ")[1];
-        console.log("Token:", token);
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        console.log("Payload:", payload);
-        const fetchedUserId = payload.userId;
-        setUserId(fetchedUserId);
-      } catch (error) {
-        console.error("Failed to parse token:", error);
+    const fetchUserId = () => {
+      const authHeader = localStorage.getItem("Authorization");
+      if (authHeader) {
+        try {
+          const token = authHeader.split(" ")[1];
+          const payload = JSON.parse(atob(token.split(".")[1]));
+          setUserId(payload.userId);
+        } catch (error) {
+          console.error("Failed to parse token:", error);
+        }
       }
-    }
-  }, []);
+    };
 
-  useEffect(() => {
-    console.log("Product state updated:", product);
-  }, [product]);
-
-  const sizeChangeHandle = (size) => {
-    setSelectedSize(size);
-  };
-
-  console.log("DetailPage rendering");
+    fetchProduct();
+    fetchUserId();
+  }, [id]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -73,8 +56,6 @@ export default function DetailPage() {
   if (!product) {
     return <div>Product not found</div>;
   }
-
-  console.log("Rendering ImageGallery with imageUrls:", product.imageUrls);
 
   return (
     <div className="bg-white">
@@ -94,7 +75,7 @@ export default function DetailPage() {
                 product={product}
                 SizeOption={SizeOption}
                 userId={userId}
-                sizeChangeHandle={sizeChangeHandle}
+                sizeChangeHandle={setSelectedSize}
               />
               <SellingEndDate endDate={product.endDate} />
             </div>
