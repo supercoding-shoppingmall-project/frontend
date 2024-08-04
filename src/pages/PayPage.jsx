@@ -288,11 +288,24 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { deleteCartItem } from "../utils/ApiService";
 
-export default function PayPage(onRemoveItem) {
+export default function PayPage() {
+  const getUserIdFromToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId;
+      } catch (error) {
+        console.error("Token decoding error:", error);
+        return null;
+      }
+    }
+    return null;
+  };
+
   const navigate = useNavigate();
   const { state } = useLocation();
-
   const [paymentMethod, setPaymentMethod] = useState("card");
+  const [setCart] = useState([]);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -300,7 +313,6 @@ export default function PayPage(onRemoveItem) {
   const [accountNumber, setAccountNumber] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
     name: "",
     phone: "",
@@ -334,25 +346,26 @@ export default function PayPage(onRemoveItem) {
   };
 
   // 장바구니의 모든 아이템을 삭제하는 함수
-  const deleteAllCartItems = async (id) => {
+  const deleteAllCartItems = async () => {
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
 
-    if (userInfo.id) {
+    if (userId && token) {
       try {
-        await deleteCartItem(id, userId);
-        const response = await axios.get(`/api/cart/${userId}`, {
+        // 1. 서버에서 모든 장바구니 아이템을 삭제하는 요청
+        await axios.delete(`/api/cart/${userId}`, {
           headers: {
             Authorization: token,
           },
         });
-        setCart(response.data.items);
-        if (onRemoveItem) onRemoveItem(); // Trigger external handler if provided
+
+        // 2. 장바구니를 비운 후 상태를 업데이트
+        setCart([]); // 장바구니를 빈 배열로 설정
       } catch (error) {
         setError("Failed to remove all Products from cart");
         console.error("Failed to remove all Products from cart", error);
       }
-    } else if (!userInfo.id) {
+    } else {
       console.error("User ID is missing.");
       return;
     }
