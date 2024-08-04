@@ -1,5 +1,5 @@
 import React from "react";
-import { SizeOption } from "../constants/SizeOption";
+import { SizeOption } from "../../constants/SizeOption";
 
 const SizeStock = ({ product, selectedSize }) => {
   const sizeIndex = SizeOption.sizes.findIndex(
