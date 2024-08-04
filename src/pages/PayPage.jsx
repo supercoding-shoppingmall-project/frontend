@@ -340,7 +340,6 @@ export default function PayPage() {
 
   const confirmPaymentHandle = async () => {
     await clearCart(); // Clear the cart
-    navigate("/"); // Navigate to the home page
   };
 
   return (
@@ -537,12 +536,14 @@ export default function PayPage() {
                     결제 하시겠습니까?
                   </h2>
                   <div className="flex justify-end space-x-4">
-                    <button
-                      onClick={confirmPaymentHandle}
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                    >
-                      Yes
-                    </button>
+                    <Link to={"/"}>
+                      <button
+                        onClick={confirmPaymentHandle}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                      >
+                        Yes
+                      </button>
+                    </Link>
                     <button
                       onClick={closeModal}
                       className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
