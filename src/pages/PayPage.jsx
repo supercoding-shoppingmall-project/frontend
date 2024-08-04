@@ -665,7 +665,11 @@ export default function PayPage() {
 
   const confirmPaymentHandle = async () => {
     await clearCart(); // Clear the cart
-    navigate("/"); // Navigate to the home page
+    setIsPaymentComplete(true); // Indicate that payment is complete
+    setTimeout(() => {
+      navigate("/"); // Navigate to the home page after clearing the cart
+      closeModal(); // Close the modal
+    }, 1000); // Delay navigation to allow user to see the confirmation
   };
 
   return (
@@ -850,7 +854,7 @@ export default function PayPage() {
 
           <div className="mt-6 flex justify-center gap-x-6">
             <button
-              type="submit"
+              type="button"
               className="inline-block rounded-md px-3.5 py-1.5 text-sm font-semibold ring-1 ring-gray-900 hover:ring-gray-900"
               onClick={openModal}
             >
