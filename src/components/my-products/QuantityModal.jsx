@@ -21,19 +21,17 @@ export default function QuantityModal({
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [quantityData, setQuantityData] = useState({});
+  const [initialQuantityData, setInitialQuantityData] = useState({});
 
   useEffect(() => {
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
-      // stockDtos.sizeStock을 초기 quantityData로 설정
-      const initialQuantityData = stockDtos.reduce(
-        (acc, { size, sizeStock }) => {
-          acc[size] = sizeStock; // size에 해당하는 stock을 매핑
-          return acc;
-        },
-        {}
-      );
-      setQuantityData(initialQuantityData);
+      const initialData = stockDtos.reduce((acc, { size, sizeStock }) => {
+        acc[size] = sizeStock;
+        return acc;
+      }, {});
+      setQuantityData(initialData);
+      setInitialQuantityData(initialData);
     }
   }, [isClicked, stockDtos]);
 
@@ -50,35 +48,48 @@ export default function QuantityModal({
     console.log("전송할 productName:", productName);
     setLoading(true);
 
-    const updatedStockDtos = Object.entries(quantityData).map(
-      ([size, sizeStock]) => ({
+    // 변경된 항목만 추출
+    const updatedStockDtos = Object.entries(quantityData)
+      .filter(([size, quantity]) => initialQuantityData[size] !== quantity) // 변경된 항목 필터링
+      .map(([size, sizeStock]) => ({
         size: size,
         sizeStock: Number(sizeStock),
-      })
-    );
+      }));
+
+    if (updatedStockDtos.length === 0) {
+      alert("변경된 데이터가 없습니다.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const token = localStorage.getItem("Authorization");
-      console.log("전송할 재고수량객체:", updatedStockDtos);
 
-      const response = await axios.put(
-        `/api/sell/update/${productName}`,
-        updatedStockDtos,
-        {
-          headers: {
-            Authorization: token,
-          },
+      // 변경된 항목을 개별적으로 요청
+      for (const stock of updatedStockDtos) {
+        const response = await axios.put(
+          `/api/sell/update/${productName}`,
+          stock,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log(`재고 ${stock.size}가 성공적으로 업데이트되었습니다.`);
+        } else {
+          setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
+          return;
         }
-      );
-
-      if (response.status === 200) {
-        setOpen(false);
-        setIsClicked(false);
-        setQuantityData({});
-        alert("재고 수량이 변경되었습니다.");
-      } else {
-        setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
       }
+
+      setOpen(false);
+      setIsClicked(false);
+      setQuantityData({});
+      setInitialQuantityData({}); // 초기 데이터 초기화
+      alert("모든 변경된 재고 수량이 업데이트되었습니다.");
     } catch (error) {
       if (error.response) {
         switch (error.response.status) {
