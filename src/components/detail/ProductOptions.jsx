@@ -4,6 +4,7 @@ import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
 import AddToCartButton from "./AddToCartButton";
+import SizeStock from "./SizeStock";
 
 const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
@@ -25,7 +26,6 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
       <p className="text-3xl tracking-tight text-gray-900">
         {FormatToKRW(productPrice)}
       </p>
-
       <form className="mt-10">
         <div className="mt-10">
           <div className="flex items-center justify-between">
@@ -58,7 +58,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
                     )
                   }
                 >
-                  <span>{size.name}</span>
+                  <span>{size.name}</span> {/* 사이즈 이름 표시 */}
                   {size.inStock ? (
                     <span
                       aria-hidden="true"
@@ -90,7 +90,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
             </RadioGroup>
           </fieldset>
         </div>
-
+        <SizeStock product={product} selectedSize={selectedSize} />{" "}
         <div className="flex items-center justify-between mt-6"></div>
         <div className="mt-2 flex items-center space-x-2">
           <span className="text-sm font-medium text-gray-900">구매 수량</span>
@@ -102,7 +102,6 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
             min="1"
           />
         </div>
-
         <AddToCartButton
           productId={product.id}
           selectedSize={selectedSize}
@@ -110,7 +109,6 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
           userId={userId}
         />
       </form>
-
       {showAlert && <Alert />}
     </div>
   );
