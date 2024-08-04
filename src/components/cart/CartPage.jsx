@@ -327,6 +327,23 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }
   };
 
+  const payClickHandle = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      const userId = getUserIdFromToken(token);
+
+      const response = await axios.get(`/api/mypage/${userId}`, {
+        headers: {
+          Authorization: token,
+        },
+      });
+
+      navigate("/pay", { state: { userInfo: response.data } });
+    } catch (error) {
+      console.error("Failed to fetch user info:", error);
+    }
+  };
+
   const calculateTotalPrice = () => {
     return cart.reduce((total, product) => {
       const price = parseFloat(product.price) || 0;
@@ -443,6 +460,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
             <Link to={"/pay"}>
               <button
                 type="button"
+                onClick={payClickHandle}
                 className="flex items-center justify-center rounded-md border border-transparent bg-green-300 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-green-400"
               >
                 구매하기
