@@ -11,16 +11,14 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 import SizeQuantity from "../add-product/SizeQuantity";
 import axios from "axios";
 
-export default function QuantityModal({
-  isClicked,
-  setIsClicked,
-  productName,
-  stockDtos,
-}) {
+export default function QuantityModal({ isClicked, setIsClicked, allData }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [quantityData, setQuantityData] = useState({});
+
+  const productName = allData?.productName;
+  const stockDtos = allData?.stockDtos;
 
   useEffect(() => {
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
@@ -50,12 +48,11 @@ export default function QuantityModal({
     console.log("전송할 productName:", productName);
     setLoading(true);
 
-    const updatedStockDtos = Object.entries(quantityData).map(
-      ([size, sizeStock]) => ({
-        size: size,
-        sizeStock: Number(sizeStock),
-      })
-    );
+    // stockDtos를 업데이트할 새로운 객체 생성
+    const updatedStockDtos = stockDtos.map((stock) => ({
+      ...stock,
+      sizeStock: Number(quantityData[stock.size]) || stock.sizeStock, // 새로 입력한 수량으로 업데이트
+    }));
 
     try {
       const token = localStorage.getItem("Authorization");

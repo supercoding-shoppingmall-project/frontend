@@ -9,13 +9,9 @@ export default function MyProducts() {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
-  const [currentProduct, setCurrentProduct] = useState(null);
-  const [currentStockDtos, setCurrentStockDtos] = useState("");
 
-  const btnClickHandle = (productName, stockDtos) => {
+  const btnClickHandle = () => {
     setIsClicked(true);
-    setCurrentProduct(productName);
-    setCurrentStockDtos(stockDtos);
   };
 
   const getEmailFromToken = (token) => {
@@ -128,8 +124,7 @@ export default function MyProducts() {
       <QuantityModal
         isClicked={isClicked}
         setIsClicked={setIsClicked}
-        productName={currentProduct}
-        stockDtos={currentStockDtos}
+				allData={data}
       />
     </>
   );
