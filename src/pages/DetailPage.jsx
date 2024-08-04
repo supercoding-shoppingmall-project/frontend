@@ -90,7 +90,7 @@ export default function DetailPage() {
               <DetailDescription />
             </div>
             <div className="mt-4 lg:mt-0">
-              <SellingEndDate endDates={product.endDate} />
+              <SellingEndDate endDate={product.endDate} />
               <ProductOptions
                 product={product}
                 SizeOption={SizeOption}
