@@ -16,6 +16,7 @@ export default function QuantityModal({
   setIsClicked,
   productName,
   stockDtos,
+  refreshProducts,
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
@@ -38,22 +39,20 @@ export default function QuantityModal({
   const quantityChangeHandle = (size, quantity) => {
     setQuantityData((prev) => {
       const newData = { ...prev, [size]: quantity };
-      console.log("현재 재고 수량 데이터:", newData);
       return newData;
     });
   };
 
   const submitHandle = async (event) => {
     event.preventDefault();
-    console.log("전송할 productName:", productName);
     setLoading(true);
 
     // 변경된 항목만 추출
     const updatedStockDtos = Object.entries(quantityData)
       .filter(([size, quantity]) => initialQuantityData[size] !== quantity) // 변경된 항목 필터링
-      .map(([size, sizeStock]) => ({
+      .map(([size, quantity]) => ({
         size: size,
-        sizeStock: Number(sizeStock),
+        sizeStock: Number(quantity),
       }));
 
     if (updatedStockDtos.length === 0) {
@@ -89,7 +88,7 @@ export default function QuantityModal({
       setIsClicked(false);
       setQuantityData({});
       setInitialQuantityData({}); // 초기 데이터 초기화
-      alert("모든 변경된 재고 수량이 업데이트되었습니다.");
+      refreshProducts();
     } catch (error) {
       if (error.response) {
         switch (error.response.status) {
