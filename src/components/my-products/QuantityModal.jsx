@@ -11,35 +11,31 @@ import { PencilIcon } from "@heroicons/react/24/outline";
 import SizeQuantity from "../add-product/SizeQuantity";
 import axios from "axios";
 
-export default function QuantityModal({ isClicked, setIsClicked, allData }) {
+export default function QuantityModal({
+  isClicked,
+  setIsClicked,
+  productName,
+  stockDtos,
+}) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [quantityData, setQuantityData] = useState({});
 
-  const productName = allData?.productName;
-  const stockDtos = allData?.stockDtos;
-
   useEffect(() => {
-    console.log("allData in QuantityModal:", allData);
-    console.log("isClicked:", isClicked);
-    console.log("stockDtos:", stockDtos);
-
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
+      // stockDtos.sizeStock을 초기 quantityData로 설정
       const initialQuantityData = stockDtos.reduce(
         (acc, { size, sizeStock }) => {
-          acc[size] = sizeStock;
+          acc[size] = sizeStock; // size에 해당하는 stock을 매핑
           return acc;
         },
         {}
       );
       setQuantityData(initialQuantityData);
-    } else if (isClicked) {
-      setError("유효한 재고 데이터가 없습니다.");
-      setOpen(false);
     }
-  }, [isClicked, stockDtos, allData]);
+  }, [isClicked, stockDtos]);
 
   const quantityChangeHandle = (size, quantity) => {
     setQuantityData((prev) => {
@@ -54,11 +50,12 @@ export default function QuantityModal({ isClicked, setIsClicked, allData }) {
     console.log("전송할 productName:", productName);
     setLoading(true);
 
-    // stockDtos를 업데이트할 새로운 객체 생성
-    const updatedStockDtos = stockDtos.map((stock) => ({
-      ...stock,
-      sizeStock: Number(quantityData[stock.size]) || stock.sizeStock, // 새로 입력한 수량으로 업데이트
-    }));
+    const updatedStockDtos = Object.entries(quantityData).map(
+      ([size, sizeStock]) => ({
+        size: size,
+        sizeStock: Number(sizeStock),
+      })
+    );
 
     try {
       const token = localStorage.getItem("Authorization");
