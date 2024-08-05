@@ -27,7 +27,7 @@ const DetailDescription = () => {
   ];
 
   return (
-    <div className="max-w-md mx-auto">
+    <div>
       <div className="px-4 sm:px-0">
         <h3 className="text-2xl font-semibold leading-7 text-gray-900">
           추가 정보
