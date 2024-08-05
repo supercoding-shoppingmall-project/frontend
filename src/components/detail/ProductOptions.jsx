@@ -27,7 +27,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
         {FormatToKRW(productPrice)}
       </p>
       <form className="mt-10">
-        <div className="mt-10">
+        <div className="mt-10 space-y-4">
           <div className="flex items-center justify-between">
             <a
               href="#"
@@ -37,7 +37,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
             </a>
           </div>
 
-          <fieldset aria-label="Choose a size" className="mt-4">
+          <fieldset aria-label="Choose a size">
             <RadioGroup
               value={selectedSize}
               onChange={setSelectedSize}
@@ -58,7 +58,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
                     )
                   }
                 >
-                  <span>{size.name}</span> {/* 사이즈 이름 표시 */}
+                  <span>{size.name}</span>
                   {size.inStock ? (
                     <span
                       aria-hidden="true"
@@ -89,21 +89,23 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
               ))}
             </RadioGroup>
           </fieldset>
+
+          <div className="flex items-center justify-between">
+            <span className="text-2xl font-semibold leading-7 text-gray-900">
+              구매 수량
+            </span>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+              className="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              min="1"
+            />
+          </div>
+
+          <SizeStock product={product} selectedSize={selectedSize} />
         </div>
-        <SizeStock product={product} selectedSize={selectedSize} />{" "}
-        <div className="flex items-center justify-between mt-6"></div>
-        <div className="mt-2 flex items-center space-x-2">
-          <span className="text-2xl font-semibold leading-7 text-gray-900">
-            구매 수량
-          </span>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
-            className="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            min="1"
-          />
-        </div>
+
         <AddToCartButton
           productId={product.id}
           selectedSize={selectedSize}

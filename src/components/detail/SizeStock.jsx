@@ -12,7 +12,7 @@ const SizeStock = ({ product, selectedSize }) => {
         <h2 className="text-2xl font-semibold leading-7 text-gray-900">
           구매 가능한 수량
         </h2>
-        <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+        <div className="max-w-md mx-auto mt-8">
           {product.sizeStock && Array.isArray(product.sizeStock) && (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
