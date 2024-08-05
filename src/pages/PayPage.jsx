@@ -5,6 +5,7 @@ import axios from "axios";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
+  // 토큰에서 사용자 ID를 추출하는 함수
   const getUserIdFromToken = (token) => {
     if (token) {
       try {
@@ -22,7 +23,7 @@ export default function PayPage() {
   const { state } = useLocation();
   const [error, setError] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [setCart, cart] = useState([]);
+  const [cart, setCart] = useState([]); // 상태 초기화 수정
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -63,14 +64,16 @@ export default function PayPage() {
   };
 
   // 장바구니의 모든 아이템을 삭제하는 함수
-  const deleteAllCartItems = async (id) => {
+  const deleteAllCartItems = async () => {
+    // id 매개변수 제거
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
 
     if (userId && token) {
       try {
         // 1. 서버에서 모든 장바구니 아이템을 삭제하는 요청
-        await axios.delete(`/api/cart/${userId}/items/${id}`, {
+        await axios.delete(`/api/cart/${userId}`, {
+          // URL 수정
           headers: {
             Authorization: token,
           },
@@ -88,13 +91,14 @@ export default function PayPage() {
     }
   };
 
-  const confirmPaymentHandle = async (productId, size) => {
+  const confirmPaymentHandle = (productId, size) => async () => {
+    // 즉시 실행 방지
     const product = cart.find(
       (item) => item.productId === productId && item.size === size
     );
     try {
       // 장바구니 아이템 삭제
-      await deleteAllCartItems(product.id);
+      await deleteAllCartItems();
 
       // 모달 닫기
       closeModal();
@@ -302,24 +306,23 @@ export default function PayPage() {
                   </h2>
                   <div className="flex justify-end space-x-4">
                     {cart.map((product) => (
-                      <>
-                        <button
-                          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                          onClick={confirmPaymentHandle(
-                            product.productId,
-                            product.size
-                          )}
-                        >
-                          Yes
-                        </button>
-                        <button
-                          onClick={closeModal}
-                          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
-                        >
-                          No
-                        </button>
-                      </>
+                      <button
+                        key={product.productId} // key 추가
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                        onClick={confirmPaymentHandle(
+                          product.productId,
+                          product.size
+                        )} // 함수 호출을 클로저로 변경
+                      >
+                        Yes
+                      </button>
                     ))}
+                    <button
+                      onClick={closeModal}
+                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                    >
+                      No
+                    </button>
                   </div>
                 </div>
               </div>
