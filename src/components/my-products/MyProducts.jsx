@@ -90,18 +90,26 @@ export default function MyProducts({ sortOption }) {
 
   const sortProducts = (products) => {
     switch (sortOption) {
-      case "최신순":
+      case "최신 등록순":
         return [...products].sort(
-          (a, b) => new Date(b.date) - new Date(a.date)
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
-      case "오래된순":
+      case "오래된 등록순":
         return [...products].sort(
-          (a, b) => new Date(a.date) - new Date(b.date)
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        );
+      case "판매마감 임박순":
+        return [...products].sort(
+          (a, b) => new Date(a.endtime) - new Date(b.endtime)
+        );
+      case "판매마감 여유순":
+        return [...products].sort(
+          (a, b) => new Date(b.endtime) - new Date(a.endtime)
         );
       case "높은 가격순":
-        return [...products].sort((a, b) => b.price - a.price);
+        return [...products].sort((a, b) => b.productPrice - a.productPrice);
       case "낮은 가격순":
-        return [...products].sort((a, b) => a.price - b.price);
+        return [...products].sort((a, b) => a.productPrice - b.productPrice);
       default:
         return products; // 기본 정렬
     }
