@@ -293,22 +293,25 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }
   }, []);
 
-  const quantityChangeHandle = async (productId, delta) => {
+  const quantityChangeHandle = async (productId, size, delta) => {
     if (!userId) {
       setError("User ID is not available");
       return;
     }
 
     const product = cart.find(
-      (item) => item.productId === productId && item.size
+      (item) => item.productId === productId && item.size === size
     );
+
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
 
       try {
-        await axios.post(
+        await axios.put(
           `/api/cart/${userId}`,
           {
+            productId: productId,
+            size: size,
             quantity: newQuantity,
           },
           {
@@ -320,7 +323,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
 
         setCart(
           cart.map((item) =>
-            item.productId === productId && item.size
+            item.productId === productId && item.size === size
               ? { ...item, quantity: newQuantity }
               : item
           )
@@ -329,6 +332,8 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
         console.error("Failed to update item quantity", error);
         setError("Failed to update item quantity");
       }
+    } else {
+      setError("Product not found in cart");
     }
   };
 
@@ -360,13 +365,13 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }, 0);
   };
 
-  const removeHandle = async (id) => {
+  const removeHandle = async (productId, size) => {
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
 
     if (userId && token) {
       try {
-        await deleteCartItem(id, userId);
+        await deleteCartItem(productId, size, userId);
         const response = await axios.get(`/api/cart/${userId}`, {
           headers: {
             Authorization: token,
@@ -417,7 +422,11 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          quantityChangeHandle(product.productId, -1);
+                          quantityChangeHandle(
+                            product.productId,
+                            product.size,
+                            -1
+                          );
                         }}
                         className="text-gray-500 hover:text-gray-700"
                       >
@@ -427,7 +436,11 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          quantityChangeHandle(product.productId, 1);
+                          quantityChangeHandle(
+                            product.productId,
+                            product.size,
+                            1
+                          );
                         }}
                         className="text-gray-500 hover:text-gray-700"
                       >
@@ -437,7 +450,9 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                     <div className="flex">
                       <button
                         type="button"
-                        onClick={() => removeHandle(product.id)}
+                        onClick={() =>
+                          removeHandle(product.productId, product.size)
+                        }
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Remove
