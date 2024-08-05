@@ -3,6 +3,7 @@ import { SIZES } from "../constants/AddProducts";
 import AddProductForm from "../components/add-product/AddProductForm";
 import AddProductModal from "../components/add-product/AddProductModal";
 import axios from "axios";
+import { getEmailFromToken } from "../utils/EmailToken";
 
 const ProductAddPage = () => {
   const [images, setImages] = useState([]);
@@ -12,19 +13,6 @@ const ProductAddPage = () => {
   const [errors, setErrors] = useState(null);
   const [email, setEmail] = useState(null);
   const [token, setToken] = useState(null);
-
-  const getEmailFromToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.email;
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-        return null;
-      }
-    }
-    return null;
-  };
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
