@@ -116,15 +116,15 @@ export default function MyProducts({ sortOption }) {
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-7xl">
           <ProductsList
             products={sortData.filter(
-              (product) => new Data(product.endtime) > new Date()
+              (product) => new Date(product.endtime) > new Date()
             )}
-						title="판매 중"
+            title="판매 중"
           />
           <ProductsList
             products={sortData.filter(
-              (product) => new Data(product.endtime) <= new Date()
+              (product) => new Date(product.endtime) <= new Date()
             )}
-						title="판매 종료"
+            title="판매 종료"
           />
         </div>
       </div>
