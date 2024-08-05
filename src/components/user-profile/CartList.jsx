@@ -10,7 +10,9 @@ const CartList = () => {
         <div className="sm:w-2/3 sm:ml-10 w-full h-full flex flex-col border border-solid border-gray-200 p-6">
           장바구니 목록
         </div>
-        <CartPage />
+        <div>
+          <CartPage />
+        </div>
       </div>
     </>
   );
