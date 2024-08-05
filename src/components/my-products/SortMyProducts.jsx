@@ -6,7 +6,7 @@ import { SORT_OPTIONS } from "../../constants/MyProducts";
 import ClassNames from "../../utils/ClassNames";
 import { useState } from "react";
 
-export default function SortMyProducts() {
+export default function SortMyProducts({ onSortChange }) {
   const [options, setOptions] = useState(SORT_OPTIONS);
 
   const optionClickHandle = (selected) => {
@@ -16,6 +16,7 @@ export default function SortMyProducts() {
         current: option.name === selected.name,
       }))
     );
+    onSortChange(selected.name);
   };
 
   return (

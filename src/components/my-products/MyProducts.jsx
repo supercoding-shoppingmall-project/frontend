@@ -5,7 +5,7 @@ import QuantityModal from "./QuantityModal";
 import FormatToKRW from "../../utils/FormatToKRW";
 import axios from "axios";
 
-export default function MyProducts() {
+export default function MyProducts({ sortOption }) {
   const [isClicked, setIsClicked] = useState(false);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -88,6 +88,27 @@ export default function MyProducts() {
     return <div>데이터가 존재하지 않습니다.</div>;
   }
 
+  const sortProducts = (products) => {
+    switch (sortOption) {
+      case "최신순":
+        return [...products].sort(
+          (a, b) => new Date(b.date) - new Date(a.date)
+        );
+      case "오래된순":
+        return [...products].sort(
+          (a, b) => new Date(a.date) - new Date(b.date)
+        );
+      case "높은 가격순":
+        return [...products].sort((a, b) => b.price - a.price);
+      case "낮은 가격순":
+        return [...products].sort((a, b) => a.price - b.price);
+      default:
+        return products; // 기본 정렬
+    }
+  };
+
+  const sortData = sortProducts(data);
+
   return (
     <>
       <div className="bg-white">
@@ -95,8 +116,8 @@ export default function MyProducts() {
           <h2 className="sr-only">Products</h2>
 
           <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
-            {data && data.length > 0 ? (
-              data.map((product, index) => (
+            {sortData && sortData.length > 0 ? (
+              sortData.map((product, index) => (
                 <div
                   key={index}
                   className="group p-3 border border-solid border-slate-300 rounded"
