@@ -3,7 +3,7 @@ import FormatToKRW from "../../utils/FormatToKRW";
 import { Link } from "react-router-dom";
 
 const ProductGrid = ({ products, currentPage, itemsPerPage }) => {
-  const [sortOption, setSortOption] = useState("default");
+  const [sortOption, setSortOption] = useState("createdAt-desc");
 
   const sortChangeHandle = (event) => {
     setSortOption(event.target.value);
@@ -36,8 +36,8 @@ const ProductGrid = ({ products, currentPage, itemsPerPage }) => {
             <option value="default">상품 정렬</option>
             <option value="price-asc">낮은 가격순</option>
             <option value="price-desc">높은 가격순</option>
-            <option value="createdAt-asc">등록 날짜순 (오름차순)</option>
-            <option value="createdAt-desc">등록 날짜순 (내림차순)</option>
+            <option value="createdAt-asc">최신순</option>
+            <option value="createdAt-desc">오래된 순</option>
           </select>
         </div>
         <h2>Products</h2>
