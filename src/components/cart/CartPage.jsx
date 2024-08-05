@@ -306,7 +306,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
       const newQuantity = Math.max(1, product.quantity + delta);
 
       try {
-        await axios.put(
+        await axios.post(
           `/api/cart/${userId}`,
           {
             size: size,
