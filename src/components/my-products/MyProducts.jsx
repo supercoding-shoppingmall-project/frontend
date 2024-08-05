@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import QuantityModal from "./QuantityModal";
 import FormatToKRW from "../../utils/FormatToKRW";
+import ProductsList from "./ProductsList";
 import axios from "axios";
 
 export default function MyProducts({ sortOption }) {
@@ -113,40 +114,18 @@ export default function MyProducts({ sortOption }) {
     <>
       <div className="bg-white">
         <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-7xl">
-          <h2 className="sr-only">Products</h2>
-
-          <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
-            {sortData && sortData.length > 0 ? (
-              sortData.map((product, index) => (
-                <div
-                  key={index}
-                  className="group p-3 border border-solid border-slate-300 rounded"
-                >
-                  <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                    <h3 className="text-lg font-bold text-gray-900">
-                      {product.productName}
-                    </h3>
-                    <div>{product.endtime}</div>
-                  </div>
-                  <div className="mt-1 text-sm font-medium text-gray-700 flex justify-between items-center">
-                    <div>{FormatToKRW(product.productPrice)}</div>
-                    <button
-                      onClick={() =>
-                        btnClickHandle(product.productName, product.stockDtos)
-                      }
-                      className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
-                    >
-                      재고 수량 변경
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center text-gray-500">
-                판매 물품이 없습니다.
-              </div>
+          <ProductsList
+            products={sortData.filter(
+              (product) => new Data(product.endtime) > new Date()
             )}
-          </div>
+						title="판매 중"
+          />
+          <ProductsList
+            products={sortData.filter(
+              (product) => new Data(product.endtime) <= new Date()
+            )}
+						title="판매 종료"
+          />
         </div>
       </div>
 
