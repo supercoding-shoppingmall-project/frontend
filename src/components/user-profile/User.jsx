@@ -24,13 +24,7 @@ const User = () => {
 
         setProfileImageUrl(response.data.profileImageUrl); // 프로필 이미지 URL 설정
       } catch (error) {
-        if (error.response) {
-          console.error("Error response:", error.response.data);
-          console.error("Response status:", error.response.status);
-          console.error("Response headers:", error.response.headers);
-        } else {
-          console.error("Error message:", error.message);
-        }
+        console.error("Error message:", error.message);
       }
     };
 
