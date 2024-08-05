@@ -2,15 +2,15 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <footer className="bg-green-500 text-white content-end">
+    <footer className="bg-green-500 text-white content-end mt-20">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-wrap justify-between items-center">
           <div className="w-full lg:w-1/3 mb-6 lg:mb-0">
-            <h5 className="text-lg font-semibold mb-4">About Us</h5>
+            <h5 className="text-lg font-semibold mb-4">Source</h5>
             <p className="text-sm text-white-400">
-              We are a company dedicated to providing the best online shopping
-              experience. Our products are sourced from top brands and we strive
-              to offer the best prices and service.
+              모든 상품의 가격 및 이미지의 출처는 다음과 같습니다.
+              <br />
+              https://www.nike.com/kr/ (한국 나이키 웹사이트)
             </p>
           </div>
 
