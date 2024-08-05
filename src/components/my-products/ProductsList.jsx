@@ -1,6 +1,7 @@
 import React from "react";
+import FormatToKRW from "../../utils/FormatToKRW";
 
-const ProductsList = ({ products, title }) => {
+const ProductsList = ({ products, title, btnClickHandle }) => {
   return (
     <>
       <h2 className="mt-10 text-lg font-semibold">{title}</h2>

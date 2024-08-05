@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import QuantityModal from "./QuantityModal";
-import FormatToKRW from "../../utils/FormatToKRW";
 import ProductsList from "./ProductsList";
 import axios from "axios";
 
@@ -119,12 +118,14 @@ export default function MyProducts({ sortOption }) {
               (product) => new Date(product.endtime) > new Date()
             )}
             title="판매 중"
+            btnClickHandle={btnClickHandle}
           />
           <ProductsList
             products={sortData.filter(
               (product) => new Date(product.endtime) <= new Date()
             )}
             title="판매 종료"
+            btnClickHandle={btnClickHandle}
           />
         </div>
       </div>
