@@ -4,7 +4,7 @@ import FormatToKRW from "../../utils/FormatToKRW";
 const ProductsList = ({ products, title, btnClickHandle }) => {
   return (
     <>
-      <h2 className="mt-10 text-lg font-semibold">{title}</h2>
+      <h2 className="mb-10 text-2xl font-semibold leading-7 text-gray-900 text-white bg-indigo-600 rounded-md p-3">{title}</h2>
 
       <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
         {products && products.length > 0 ? (
@@ -25,7 +25,7 @@ const ProductsList = ({ products, title, btnClickHandle }) => {
                   onClick={() =>
                     btnClickHandle(product.productName, product.stockDtos)
                   }
-                  className="text-center bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex justify-around rounded"
+                  className="text-center border border-solid border-indigo-600 px-3 py-2 text-sm font-semibold text-indigo-600 shadow-sm flex justify-around rounded hover:bg-indigo-600 hover:text-white"
                 >
                   재고 수량 변경
                 </button>

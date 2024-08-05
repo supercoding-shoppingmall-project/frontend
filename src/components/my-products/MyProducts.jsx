@@ -112,7 +112,7 @@ export default function MyProducts({ sortOption }) {
   return (
     <>
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-7xl">
+        <div className="mx-auto max-w-2xl pb-16 sm:pb-24 lg:max-w-7xl">
           <ProductsList
             products={sortData.filter(
               (product) => new Date(product.endtime) > new Date()
@@ -126,6 +126,7 @@ export default function MyProducts({ sortOption }) {
             )}
             title="판매 종료"
             btnClickHandle={btnClickHandle}
+            className="mt-20"
           />
         </div>
       </div>
