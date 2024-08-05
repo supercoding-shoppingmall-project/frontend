@@ -16,29 +16,32 @@ import UserProfile from "./components/user-profile/UserProfile";
 import CartList from "./components/user-profile/CartList";
 import PurchaseList from "./components/user-profile/PurchaseList";
 import CartPage from "./components/cart/CartPage";
-
 import CategoryPage from "./pages/CategoryPage";
 
 function App() {
   return (
     <CartProvider>
       <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/detail/:id" element={<DetailPage />} />
-          <Route path="/category/:number" element={<CategoryPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/userprofile" element={<UserProfile />} />
-          <Route path="/cartpage" element={<CartPage />} />
-          <Route path="/sell" element={<SellingPage />} />
-          <Route path="/sell/add" element={<ProductAddPage />} />
-          <Route path="/pay" element={<PayPage />} />
-          <Route path="/cartlist" element={<CartList />} />
-          <Route path="/purchaselist" element={<PurchaseList />} />
-        </Routes>
-        <Footer />
+        <div className="flex flex-col min-h-screen">
+          <Header />
+          <main className="flex-grow">
+            <Routes>
+              <Route path="/" element={<MainPage />} />
+              <Route path="/detail/:id" element={<DetailPage />} />
+              <Route path="/category/:number" element={<CategoryPage />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/userprofile" element={<UserProfile />} />
+              <Route path="/cartpage" element={<CartPage />} />
+              <Route path="/sell" element={<SellingPage />} />
+              <Route path="/sell/add" element={<ProductAddPage />} />
+              <Route path="/pay" element={<PayPage />} />
+              <Route path="/cartlist" element={<CartList />} />
+              <Route path="/purchaselist" element={<PurchaseList />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
       </BrowserRouter>
     </CartProvider>
   );
