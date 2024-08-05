@@ -17,7 +17,7 @@ const AddPeriod = () => {
             id="endtime"
             name="endtime"
             type="date"
-            min={today}
+            // min={today}
             autoComplete="endtime"
             className="block w-full flex-1 border-0 bg-transparent p-2 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6 focus-visible:outline-none h-10"
             //required

@@ -1,37 +1,35 @@
 import { useState } from "react";
-import CartPage from "../components/cart/CartPage";
 import { Link, useLocation } from "react-router-dom";
+import CartPage from "../components/cart/CartPage";
 import axios from "axios";
+import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
+  const { state } = useLocation();
   const [paymentMethod, setPaymentMethod] = useState("card");
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const openModal = () => {
-    setIsModalOpen(true);
-    setIsPaymentComplete(false); // 모달이 열릴 때 결제 완료 상태를 초기화
-  };
-  const closeModal = () => setIsModalOpen(false);
+  const [isModalOpen, setIsModalOpen, setIsPaymentComplete] = useState(false);
 
-  // const confirmHandle = () => {
-  //   setIsPaymentComplete(true); // 결제 완료 상태로 변경
-
-  // };
-
-  const { state } = useLocation();
+  const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
     name: "",
     phone: "",
     address: "",
   };
 
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsPaymentComplete(false);
+  };
+
+  const closeModal = () => setIsModalOpen(false);
+
   const submitHandle = (e) => {
     e.preventDefault();
-    // Handle form submission logic, e.g., sending data to a server
     console.log("Form submitted with:", {
       cardNumber,
       expiryDate,
@@ -40,7 +38,6 @@ export default function PayPage() {
       accountNumber,
     });
 
-    // Reset input fields
     setCardNumber("");
     setExpiryDate("");
     setCvv("");

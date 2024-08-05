@@ -16,77 +16,104 @@ export default function QuantityModal({
   setIsClicked,
   productName,
   stockDtos,
+  refreshProducts,
 }) {
   const [open, setOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [quantityData, setQuantityData] = useState({});
+  const [initialQuantityData, setInitialQuantityData] = useState({});
 
   useEffect(() => {
     if (isClicked && stockDtos && Array.isArray(stockDtos)) {
       setOpen(true);
-      // stockDtos.sizeStock을 초기 quantityData로 설정
-      const initialQuantityData = stockDtos.reduce(
-        (acc, { size, sizeStock }) => {
-          acc[size] = sizeStock; // size에 해당하는 stock을 매핑
-          return acc;
-        },
-        {}
-      );
-      setQuantityData(initialQuantityData);
+      const initialData = stockDtos.reduce((acc, { size, sizeStock }) => {
+        acc[size] = sizeStock;
+        return acc;
+      }, {});
+      setQuantityData(initialData);
+      setInitialQuantityData(initialData);
     }
   }, [isClicked, stockDtos]);
 
   const quantityChangeHandle = (size, quantity) => {
-    setQuantityData((prev) => ({ ...prev, [size]: quantity }));
-    console.log("현재 재고 수량 데이터:", {
-      ...quantityData,
-      [size]: quantity,
+    setQuantityData((prev) => {
+      const newData = { ...prev, [size]: quantity };
+      return newData;
     });
   };
 
   const submitHandle = async (event) => {
-    event.preventDefault(); // 기본 폼 제출 방지
-    console.log("전송할 productName:", productName); // productName 로그 추가
+    event.preventDefault();
+    setLoading(true);
+
+    // 변경된 항목만 추출
+    const updatedStockDtos = Object.entries(quantityData)
+      .filter(([size, quantity]) => initialQuantityData[size] !== quantity) // 변경된 항목 필터링
+      .map(([size, quantity]) => ({
+        size: size,
+        sizeStock: Number(quantity),
+      }));
+
+    if (updatedStockDtos.length === 0) {
+      alert("변경된 데이터가 없습니다.");
+      setLoading(false);
+      return;
+    }
+
     try {
       const token = localStorage.getItem("Authorization");
-      const response = await axios.put(
-        `/api/sell/update/${productName}`,
-        quantityData,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      // 성공적으로 업데이트된 후 모달 닫기
-      if (response.status === 200) {
-        setOpen(false);
-        setIsClicked(false);
-        alert("재고 수량이 변경되었습니다.");
-      } else {
-        // 상태 코드가 200이 아닐 경우 에러 처리
-        setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
-      }
-    } catch (error) {
-      // 에러 타입에 따라 세분화된 에러 메시지 제공
-      if (error.response) {
-        // 서버가 응답했지만 상태 코드가 2xx가 아닌 경우
-        if (error.response.status === 404) {
-          setError("해당 제품을 찾을 수 없습니다.");
-        } else if (error.response.status === 400) {
-          setError("잘못된 요청입니다. 입력 값을 확인해 주세요.");
-        } else if (error.response.status === 401) {
-          setError("인증 오류가 발생했습니다. 다시 로그인 해주세요.");
+
+      // 변경된 항목을 개별적으로 요청
+      for (const stock of updatedStockDtos) {
+        const response = await axios.put(
+          `/api/sell/update/${productName}`,
+          stock,
+          {
+            headers: {
+              Authorization: token,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          console.log(`재고 ${stock.size}가 성공적으로 업데이트되었습니다.`);
         } else {
           setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
+          return;
+        }
+      }
+
+      setOpen(false);
+      setIsClicked(false);
+      setQuantityData({});
+      setInitialQuantityData({}); // 초기 데이터 초기화
+      refreshProducts();
+    } catch (error) {
+      if (error.response) {
+        switch (error.response.status) {
+          case 404:
+            setError("해당 제품을 찾을 수 없습니다.");
+            break;
+          case 400:
+            setError("잘못된 요청입니다. 입력 값을 확인해 주세요.");
+            break;
+          case 401:
+            setError("인증 오류가 발생했습니다. 다시 로그인 해주세요.");
+            break;
+          case 403:
+            setError("이 작업을 수행할 권한이 없습니다.");
+            break;
+          default:
+            setError("서버에서 오류가 발생했습니다. 다시 시도해 주세요.");
         }
       } else if (error.request) {
-        // 요청이 이루어졌지만 응답이 없는 경우
         setError("서버에 연결할 수 없습니다. 인터넷 연결을 확인해 주세요.");
       } else {
-        // 오류를 발생시킨 요청 설정
         setError("오류가 발생했습니다. 다시 시도해 주세요.");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -130,7 +157,6 @@ export default function QuantityModal({
             </section>
             <section className="bg-white px-4 pb-4 pt-5 sm:p-6">
               <form onSubmit={submitHandle}>
-                {/* 사이즈별 재고 변경 */}
                 <fieldset aria-label="Choose a size">
                   <div className="mb-6 grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-4 lg:grid-cols-4">
                     <SizeQuantity
@@ -160,7 +186,8 @@ export default function QuantityModal({
                   </button>
                 </div>
               </form>
-              {error && <div className="text-red-500">{error}</div>}
+              {error && <div>{error}</div>}
+              {loading && <div>로딩 중...</div>}
             </section>
           </DialogPanel>
         </div>

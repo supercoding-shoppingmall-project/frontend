@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import SortMyProducts from "../components/my-products/SortMyProducts";
 import MyProducts from "../components/my-products/MyProducts";
 
 const SellingPage = () => {
+  const [sortOption, setSortOption] = useState("최신순");
+
+  const sortChangeHandle = (selectedOption) => {
+    setSortOption(selectedOption);
+  };
+
   return (
     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
       <Link to="/sell/add">
@@ -10,7 +17,8 @@ const SellingPage = () => {
           상품 등록하기
         </button>
       </Link>
-      <MyProducts />
+      <SortMyProducts onSortChange={sortChangeHandle} />
+      <MyProducts sortOption={sortOption} />
     </div>
   );
 };
