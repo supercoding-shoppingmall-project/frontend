@@ -112,7 +112,7 @@ export default function MyProducts({ sortOption }) {
   return (
     <>
       <div className="bg-white">
-        <div className="mx-auto max-w-2xl pb-16 sm:pb-24 lg:max-w-7xl">
+        <div className="mx-auto max-w-2xl lg:max-w-7xl">
           <ProductsList
             products={sortData.filter(
               (product) => new Date(product.endtime) > new Date()

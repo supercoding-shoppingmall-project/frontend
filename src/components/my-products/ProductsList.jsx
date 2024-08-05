@@ -6,7 +6,7 @@ const ProductsList = ({ products, title, btnClickHandle }) => {
     <>
       <h2 className="mb-10 text-2xl font-semibold leading-7 text-gray-900 text-white bg-indigo-600 rounded-md p-3">{title}</h2>
 
-      <div className="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
+      <div className="mb-24 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 xl:gap-x-8">
         {products && products.length > 0 ? (
           products.map((product, index) => (
             <div
