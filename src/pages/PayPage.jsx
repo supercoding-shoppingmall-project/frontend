@@ -1,44 +1,30 @@
-import CartPage from "../components/cart/CartPage";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import CartPage from "../components/cart/CartPage";
 import axios from "axios";
 import { deleteCartItem } from "../utils/ApiService";
 
 export default function PayPage() {
-  // 토큰에서 사용자 ID를 추출하는 함수
-  const getUserIdFromToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId;
-      } catch (error) {
-        console.error("Token decoding error:", error);
-        return null;
-      }
-    }
-    return null;
-  };
-
-  const navigate = useNavigate();
   const { state } = useLocation();
-  const [error, setError] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [cart, setCart] = useState([]); // 상태 초기화 수정
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
   const [bankName, setBankName] = useState("");
   const [accountNumber, setAccountNumber] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen, setIsPaymentComplete] = useState(false);
 
+  const cart = state?.cart || [];
   const userInfo = state?.userInfo || {
     name: "",
     phone: "",
     address: "",
-    id: null, // userId를 null로 설정해주어야 deleteCartItem에서 사용할 수 있음
   };
 
-  const openModal = () => setIsModalOpen(true);
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsPaymentComplete(false);
+  };
 
   const closeModal = () => setIsModalOpen(false);
 
@@ -61,54 +47,6 @@ export default function PayPage() {
 
   const paymentMethodChangeHandle = (method) => {
     setPaymentMethod(method);
-  };
-
-  // 장바구니의 모든 아이템을 삭제하는 함수
-  const deleteAllCartItems = async () => {
-    // id 매개변수 제거
-    const token = localStorage.getItem("Authorization");
-    const userId = getUserIdFromToken(token);
-
-    if (userId && token) {
-      try {
-        // 1. 서버에서 모든 장바구니 아이템을 삭제하는 요청
-        await axios.delete(`/api/cart/${userId}`, {
-          // URL 수정
-          headers: {
-            Authorization: token,
-          },
-        });
-
-        // 2. 장바구니를 비운 후 상태를 업데이트
-        setCart([]); // 장바구니를 빈 배열로 설정
-      } catch (error) {
-        setError("Failed to remove all Products from cart");
-        console.error("Failed to remove all Products from cart", error);
-      }
-    } else {
-      console.error("User ID is missing.");
-      return;
-    }
-  };
-
-  const confirmPaymentHandle = (productId, size) => async () => {
-    // 즉시 실행 방지
-    const product = cart.find(
-      (item) => item.productId === productId && item.size === size
-    );
-    try {
-      // 장바구니 아이템 삭제
-      await deleteAllCartItems();
-
-      // 모달 닫기
-      closeModal();
-
-      // 홈 페이지로 이동
-      navigate("/");
-    } catch (error) {
-      console.error("Error during payment confirmation", error);
-      // 필요 시 에러 핸들링 추가
-    }
   };
 
   return (
@@ -292,7 +230,7 @@ export default function PayPage() {
           )}
           <div className="mt-10 flex justify-center">
             <button
-              type="button"
+              type="submit"
               onClick={openModal}
               className="w-1/4 rounded-md bg-blue-600 mb-10 px-3.5 py-2.5 text-center text-lg font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >
@@ -305,18 +243,11 @@ export default function PayPage() {
                     결제 하시겠습니까?
                   </h2>
                   <div className="flex justify-end space-x-4">
-                    {cart.map((product) => (
-                      <button
-                        key={product.productId} // key 추가
-                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                        onClick={confirmPaymentHandle(
-                          product.productId,
-                          product.size
-                        )} // 함수 호출을 클로저로 변경
-                      >
+                    <Link to={"/"}>
+                      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500">
                         Yes
                       </button>
-                    ))}
+                    </Link>
                     <button
                       onClick={closeModal}
                       className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
