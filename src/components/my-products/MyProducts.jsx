@@ -90,14 +90,6 @@ export default function MyProducts({ sortOption }) {
 
   const sortProducts = (products) => {
     switch (sortOption) {
-      case "최신 등록순":
-        return [...products].sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-        );
-      case "오래된 등록순":
-        return [...products].sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        );
       case "판매마감 임박순":
         return [...products].sort(
           (a, b) => new Date(a.endtime) - new Date(b.endtime)
