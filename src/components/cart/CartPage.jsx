@@ -4,7 +4,6 @@ import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link, useNavigate } from "react-router-dom";
 import { deleteCartItem } from "../../utils/ApiService";
-
 const getUserIdFromToken = (token) => {
   if (token) {
     try {
@@ -17,37 +16,38 @@ const getUserIdFromToken = (token) => {
   }
   return null;
 };
-
 export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
   const [cart, setCart] = useState([]);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
     if (token) {
-      const payload = token.split(".")[1];
-      const decodedPayload = JSON.parse(atob(payload));
-      setUserId(decodedPayload.userId);
-
-      axios
-        .get(`/api/cart/${decodedPayload.userId}`, {
-          headers: {
-            Authorization: token,
-          },
-        })
-        .then((response) => {
-          setCart(response.data.items);
-        })
-        .catch((error) => {
-          setError("Failed to fetch cart data");
-          console.error("Failed to fetch cart data", error);
-        })
-        .finally(() => {
-          setLoading(false);
-        });
+      const userId = getUserIdFromToken(token);
+      if (userId) {
+        setUserId(userId);
+        axios
+          .get(`/api/cart/${userId}`, {
+            headers: {
+              Authorization: token,
+            },
+          })
+          .then((response) => {
+            setCart(response.data.items);
+          })
+          .catch((error) => {
+            setError("Failed to fetch cart data");
+            console.error("Failed to fetch cart data", error);
+          })
+          .finally(() => {
+            setLoading(false);
+          });
+      } else {
+        setError("Invalid token");
+        setLoading(false);
+      }
     } else {
       setError("No authorization token found");
       setLoading(false);
@@ -55,12 +55,16 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
   }, []);
 
   const quantityChangeHandle = async (productId, size, delta) => {
+    if (!userId) {
+      setError("User ID is not available");
+      return;
+    }
+
     const product = cart.find(
       (item) => item.productId === productId && item.size === size
     );
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
-
       try {
         await axios.put(
           `/api/cart/${userId}`,
@@ -74,7 +78,6 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
             },
           }
         );
-
         setCart(
           cart.map((item) =>
             item.productId === productId && item.size === size
@@ -88,35 +91,35 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
       }
     }
   };
-
   const payClickHandle = async () => {
     try {
       const token = localStorage.getItem("Authorization");
       const userId = getUserIdFromToken(token);
 
-      const response = await axios.get(`/api/mypage/${userId}`, {
-        headers: {
-          Authorization: token,
-        },
-      });
+      if (userId) {
+        const response = await axios.get(`/api/mypage/${userId}`, {
+          headers: {
+            Authorization: token,
+          },
+        });
 
-      navigate("/pay", { state: { userInfo: response.data } });
+        navigate("/pay", { state: { userInfo: response.data } });
+      } else {
+        setError("Invalid token");
+      }
     } catch (error) {
       console.error("Failed to fetch user info:", error);
     }
   };
-
   const calculateTotalPrice = () => {
     return cart.reduce((total, product) => {
       const price = parseFloat(product.price) || 0;
       return total + price * (product.quantity || 1);
     }, 0);
   };
-
   const removeHandle = async (id) => {
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
-
     if (userId && token) {
       try {
         await deleteCartItem(id, userId);
@@ -131,12 +134,13 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
         setError("Failed to remove item from cart");
         console.error("Failed to remove item from cart", error);
       }
+    } else {
+      setError("Invalid token");
     }
   };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-6 text-center">장바구니</h2>
@@ -211,7 +215,6 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
           )}
         </ul>
       </div>
-
       <div className="border-t border-gray-200 py-6">
         <div className="flex justify-between text-base font-medium text-gray-900">
           <p>총 가격</p>
