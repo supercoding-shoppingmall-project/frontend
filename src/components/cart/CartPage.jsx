@@ -302,16 +302,14 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     const product = cart.find(
       (item) => item.productId === productId && item.size === size
     );
-
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
 
       try {
-        await axios.put(
+        await axios.post(
           `/api/cart/${userId}`,
           {
-            productId: productId,
-            size: size,
+            size: product.size,
             quantity: newQuantity,
           },
           {
@@ -332,8 +330,6 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
         console.error("Failed to update item quantity", error);
         setError("Failed to update item quantity");
       }
-    } else {
-      setError("Product not found in cart");
     }
   };
 
@@ -365,13 +361,13 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }, 0);
   };
 
-  const removeHandle = async (productId, size) => {
+  const removeHandle = async (id) => {
     const token = localStorage.getItem("Authorization");
     const userId = getUserIdFromToken(token);
 
     if (userId && token) {
       try {
-        await deleteCartItem(productId, size, userId);
+        await deleteCartItem(id, userId);
         const response = await axios.get(`/api/cart/${userId}`, {
           headers: {
             Authorization: token,
@@ -450,9 +446,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                     <div className="flex">
                       <button
                         type="button"
-                        onClick={() =>
-                          removeHandle(product.productId, product.size)
-                        }
+                        onClick={() => removeHandle(product.id)}
                         className="font-medium text-indigo-600 hover:text-indigo-500"
                       >
                         Remove
