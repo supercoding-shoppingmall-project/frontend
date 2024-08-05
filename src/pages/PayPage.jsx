@@ -586,21 +586,25 @@ export default function PayPage() {
                     결제 하시겠습니까?
                   </h2>
                   <div className="flex justify-end space-x-4">
-                    <button
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                      onClick={confirmPaymentHandle(
-                        product.productId,
-                        product.size
-                      )}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      onClick={closeModal}
-                      className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
-                    >
-                      No
-                    </button>
+                    {cart.map((product) => (
+                      <>
+                        <button
+                          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                          onClick={confirmPaymentHandle(
+                            product.productId,
+                            product.size
+                          )}
+                        >
+                          Yes
+                        </button>
+                        <button
+                          onClick={closeModal}
+                          className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
+                        >
+                          No
+                        </button>
+                      </>
+                    ))}
                   </div>
                 </div>
               </div>
