@@ -239,6 +239,7 @@
 //   );
 // }
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link, useNavigate } from "react-router-dom";
