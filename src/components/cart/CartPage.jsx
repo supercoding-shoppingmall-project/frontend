@@ -309,7 +309,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
         await axios.post(
           `/api/cart/${userId}`,
           {
-            size: size,
+            size: product.size,
             quantity: newQuantity,
           },
           {
