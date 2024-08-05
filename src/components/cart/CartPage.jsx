@@ -293,14 +293,14 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }
   }, []);
 
-  const quantityChangeHandle = async (productId, size, delta) => {
+  const quantityChangeHandle = async (productId, delta) => {
     if (!userId) {
       setError("User ID is not available");
       return;
     }
 
     const product = cart.find(
-      (item) => item.productId === productId && item.size === size
+      (item) => item.productId === productId && item.size
     );
     if (product) {
       const newQuantity = Math.max(1, product.quantity + delta);
@@ -309,7 +309,6 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
         await axios.post(
           `/api/cart/${userId}`,
           {
-            size: product.size,
             quantity: newQuantity,
           },
           {
@@ -321,7 +320,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
 
         setCart(
           cart.map((item) =>
-            item.productId === productId && item.size === size
+            item.productId === productId && item.size
               ? { ...item, quantity: newQuantity }
               : item
           )
@@ -418,11 +417,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          quantityChangeHandle(
-                            product.productId,
-                            product.size,
-                            -1
-                          );
+                          quantityChangeHandle(product.productId, -1);
                         }}
                         className="text-gray-500 hover:text-gray-700"
                       >
@@ -432,11 +427,7 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
                       <button
                         onClick={(e) => {
                           e.preventDefault();
-                          quantityChangeHandle(
-                            product.productId,
-                            product.size,
-                            1
-                          );
+                          quantityChangeHandle(product.productId, 1);
                         }}
                         className="text-gray-500 hover:text-gray-700"
                       >
