@@ -307,7 +307,7 @@ export default function PayPage() {
   const { state } = useLocation();
   const [error, setError] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("card");
-  const [setCart] = useState([]);
+  const [setCart, cart] = useState([]);
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
