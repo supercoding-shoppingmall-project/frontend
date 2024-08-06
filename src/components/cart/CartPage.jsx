@@ -3,7 +3,7 @@ import axios from "axios";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/outline";
 import FormatToKRW from "../../utils/FormatToKRW";
 import { Link, useNavigate } from "react-router-dom";
-import { deleteCartItem } from "../../utils/ApiService"; // 유지하되 사용하지 않음
+import { deleteCartItem } from "../../utils/ApiService";
 
 const getUserIdFromToken = (token) => {
   if (token) {
@@ -57,19 +57,47 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
     }
   }, []);
 
-  const quantityChangeHandle = (productId, size, delta) => {
+  const quantityChangeHandle = async (productId, size, delta) => {
     if (!userId) {
       setError("User ID is not available");
       return;
     }
 
-    setCart((prevCart) => {
-      return prevCart.map((item) =>
+    // Update client-side state
+    setCart((prevCart) =>
+      prevCart.map((item) =>
         item.productId === productId && item.size === size
           ? { ...item, quantity: Math.max(1, item.quantity + delta) }
           : item
+      )
+    );
+
+    // Update server-side data
+    try {
+      const token = localStorage.getItem("Authorization");
+      await axios.post(
+        "/api/cart/update",
+        {
+          userId,
+          productId,
+          size,
+          quantity: Math.max(
+            1,
+            cart.find(
+              (item) => item.productId === productId && item.size === size
+            )?.quantity + delta
+          ),
+        },
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
-    });
+    } catch (error) {
+      setError("Failed to update cart data");
+      console.error("Failed to update cart data", error);
+    }
   };
 
   const payClickHandle = async () => {
@@ -78,13 +106,25 @@ export default function CartPage({ showPurchaseButton = true, onRemoveItem }) {
       const userId = getUserIdFromToken(token);
 
       if (userId) {
-        const response = await axios.get(`/api/mypage/${userId}`, {
-          headers: {
-            Authorization: token,
+        const [userInfoResponse, cartResponse] = await Promise.all([
+          axios.get(`/api/mypage/${userId}`, {
+            headers: {
+              Authorization: token,
+            },
+          }),
+          axios.get(`/api/cart/${userId}`, {
+            headers: {
+              Authorization: token,
+            },
+          }),
+        ]);
+
+        navigate("/pay", {
+          state: {
+            userInfo: userInfoResponse.data,
+            cart: cartResponse.data.items,
           },
         });
-
-        navigate("/pay", { state: { userInfo: response.data } });
       } else {
         setError("Invalid token");
       }
