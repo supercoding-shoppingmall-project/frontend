@@ -59,11 +59,11 @@ const User = () => {
     }
   };
 
-  const getUserEmailFromToken = (token) => {
+  const getUserIdToken = (token) => {
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId; // 유저 아이디 반환
+        return payload.userId; // userId를 반환
       } catch (error) {
         console.error("토큰 디코딩 오류:", error);
         return null;
@@ -94,19 +94,6 @@ const User = () => {
       console.error("Failed to fetch user info:", error);
       navigate("/login");
     }
-  };
-
-  const getUserIdToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId; // userId를 반환
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-        return null;
-      }
-    }
-    return null;
   };
 
   return (
