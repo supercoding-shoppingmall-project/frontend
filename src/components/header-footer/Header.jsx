@@ -206,12 +206,12 @@ export default function Header() {
                   aria-hidden="true"
                   className="h-10 w-10 text-gray-300"
                 />
-                <div
-                  className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900cursor-pointer"
-                  onClick={logoutHandle}
-                >
-                  로그아웃
-                </div>
+              </div>
+              <div
+                className="relative ml-2 mt-1 mr-2 text-sm font-semibold leading-6 text-gray-900cursor-pointer"
+                onClick={logoutHandle}
+              >
+                로그아웃
               </div>
             </>
           ) : (
