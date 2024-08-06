@@ -38,6 +38,25 @@ export default function Header() {
     return null; // 이메일이 없을 경우 null 반환
   };
 
+  const logoutHandle = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      await axios.post(
+        "/api/user/logout",
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      localStorage.removeItem("Authorization");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
   // 장바구니 아이콘 클릭 핸들러
   const cartClickHandle = async () => {
     const token = localStorage.getItem("Authorization"); // 토큰 가져오기
@@ -181,12 +200,20 @@ export default function Header() {
           </button>
 
           {isLoggedIn ? (
-            <div onClick={userIconClickHandle} className="cursor-pointer">
-              <UserCircleIcon
-                aria-hidden="true"
-                className="h-10 w-10 text-gray-300"
-              />
-            </div>
+            <>
+              <div onClick={userIconClickHandle} className="cursor-pointer">
+                <UserCircleIcon
+                  aria-hidden="true"
+                  className="h-10 w-10 text-gray-300"
+                />
+              </div>
+              <div
+                className="font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200 cursor-pointer"
+                onClick={logoutHandle}
+              >
+                Log Out <span aria-hidden="true">&rarr;</span>
+              </div>
+            </>
           ) : (
             <Link
               to="/login"
