@@ -208,10 +208,10 @@ export default function Header() {
                 />
               </div>
               <div
-                className="font-light text-gray-700 py-1.5 px-1 border-b border-solid border-gray-200 cursor-pointer"
+                className="relative ml-2 mt-1 mr-3 text-sm font-semibold leading-6 text-gray-900cursor-pointer"
                 onClick={logoutHandle}
               >
-                Log Out <span aria-hidden="true">&rarr;</span>
+                로그아웃
               </div>
             </>
           ) : (
