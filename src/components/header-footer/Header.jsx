@@ -18,6 +18,14 @@ export default function Header() {
     }
   };
 
+  const cartIconClickHandle = () => {
+    if (isLoggedIn) {
+      navigate("/cartpage");
+    } else {
+      navigate("/login");
+    }
+  };
+
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
     if (token) {
@@ -64,7 +72,6 @@ export default function Header() {
 
     if (!userId || !token) {
       console.error("User ID 또는 token이 없습니다.");
-      // navigate("/login"); // 로그인 페이지로 이동
       return;
     }
 
@@ -174,7 +181,7 @@ export default function Header() {
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
           <Link to={"/CartPage"}>
-            <div onClick={cartClickHandle}>
+            <div onClick={(cartClickHandle, cartIconClickHandle)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
