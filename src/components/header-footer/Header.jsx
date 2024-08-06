@@ -208,7 +208,7 @@ export default function Header() {
                 />
               </div>
               <div
-                className="relative ml-2 mt-1 mr-2 text-sm font-semibold leading-6 text-gray-900cursor-pointer"
+                className="relative ml-2 mt-3 mr-2 text-sm font-semibold leading-6 text-gray-900 cursor-pointer"
                 onClick={logoutHandle}
               >
                 로그아웃
