@@ -1,37 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
-import AddToCartButton from "./AddToCartButton";
-import SizeStock from "./SizeStock";
 
-const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
+const ProductOptions = ({ SizeOption, product, addToCart }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
   const [showAlert, setShowAlert] = useState(false);
   const [quantity, setQuantity] = useState(1);
 
-  useEffect(() => {
-    console.log("ProductOptions rendering with product:", product);
-    sizeChangeHandle(selectedSize);
-  }, [selectedSize]);
-
-  const productPrice = Number(product.price);
-  if (isNaN(productPrice)) {
-    console.error("Price is not a number:", product.price);
-  }
+  const addToCartHandle = () => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      href: product.href,
+      size: selectedSize.name,
+      price: product.price,
+      quantity,
+      imageSrc: product.imageSrc,
+      imageAlt: product.imageAlt,
+    });
+    setShowAlert(true);
+    // 2초 후에 showAlert를 false로 설정
+    setTimeout(() => setShowAlert(false), 2000);
+  };
 
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
-        {FormatToKRW(productPrice)}
+        {FormatToKRW(product.price)}
       </p>
+
       <form className="mt-10">
         <div className="mt-10">
           <div className="flex items-center justify-between">
             <a
               href="#"
-              className="text-2xl font-semibold leading-7 text-gray-900"
+              className="text-sm font-medium text-indigo-600 hover:text-indigo-500"
             >
               사이즈 옵션
             </a>
@@ -46,7 +51,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
               {SizeOption.sizes.map((size) => (
                 <Radio
                   key={size.name}
-                  value={size.name}
+                  value={size}
                   disabled={!size.inStock}
                   className={({ checked }) =>
                     ClassNames(
@@ -58,7 +63,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
                     )
                   }
                 >
-                  <span>{size.name}</span> {/* 사이즈 이름 표시 */}
+                  <span>{size.name}</span>
                   {size.inStock ? (
                     <span
                       aria-hidden="true"
@@ -90,12 +95,10 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
             </RadioGroup>
           </fieldset>
         </div>
-        <SizeStock product={product} selectedSize={selectedSize} />{" "}
+
         <div className="flex items-center justify-between mt-6"></div>
         <div className="mt-2 flex items-center space-x-2">
-          <span className="text-2xl font-semibold leading-7 text-gray-900">
-            구매 수량
-          </span>
+          <span className="text-sm font-medium text-gray-900">구매 수량</span>
           <input
             type="number"
             value={quantity}
@@ -104,14 +107,16 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
             min="1"
           />
         </div>
-        <AddToCartButton
-          productId={product.id}
-          selectedSize={selectedSize}
-          quantity={quantity}
-          userId={userId}
-        />
+
+        <button
+          type="button"
+          onClick={addToCartHandle}
+          className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+        >
+          장바구니에 담기
+        </button>
       </form>
-      {showAlert && <Alert />}
+      {showAlert && <Alert onClose={() => setShowAlert(false)} />}
     </div>
   );
 };
