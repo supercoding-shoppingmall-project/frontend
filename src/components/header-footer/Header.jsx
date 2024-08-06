@@ -12,16 +12,17 @@ export default function Header() {
 
   const checkLoginStatus = async () => {
     const token = localStorage.getItem("Authorization");
+    console.log("Checking login status, token:", token);
     if (token) {
       try {
-        // 간단한 요청으로 토큰 유효성 검사
         await axios.get("/api/user/validate-token", {
           headers: { Authorization: token },
         });
         setIsLoggedIn(true);
       } catch (error) {
+        console.error("Token validation failed:", error);
         setIsLoggedIn(false);
-        localStorage.removeItem("Authorization"); // 토큰 만료 시 삭제
+        localStorage.removeItem("Authorization");
       }
     } else {
       setIsLoggedIn(false);
@@ -96,7 +97,7 @@ export default function Header() {
       );
       localStorage.removeItem("Authorization");
       setIsLoggedIn(false); // 상태 업데이트
-      window.location.href = "/";
+      navigate("/");
     } catch (error) {
       console.error("Logout failed:", error);
     }
