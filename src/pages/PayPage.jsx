@@ -313,14 +313,46 @@ export default function PayPage() {
 
   const createOrder = async () => {
     try {
-      console.log("Sending data:", { cart, userInfo });
-      const response = await axios.post("/api/orders/create-from-cart", {
-        cart,
-        userInfo,
-      });
+      // Determine the payment method and construct the data accordingly
+      const paymentData = {
+        userId: userInfo.userId,
+        name: userInfo.name,
+        phone: userInfo.phone,
+        shippingAddress: userInfo.address,
+        paymentMethod: paymentMethod.toUpperCase(), // Convert to uppercase
+      };
+
+      // Add payment-specific details
+      if (paymentMethod === "card") {
+        Object.assign(paymentData, {
+          cardNumber,
+          cardExpiry: expiryDate,
+          cardCvv: cvv,
+        });
+      } else if (paymentMethod === "bank") {
+        Object.assign(paymentData, {
+          bankName,
+          accountNumber,
+        });
+      }
+
+      // Add cart items to the request
+      const requestData = {
+        ...paymentData,
+        cart, // Assuming `cart` contains items to be included in the order
+      };
+
+      console.log("Sending data:", requestData);
+
+      // Make the API request
+      const response = await axios.post(
+        "/api/orders/create-from-cart",
+        requestData
+      );
       console.log("Order created successfully:", response.data);
+
+      // Handle successful payment
       setIsPaymentComplete(true);
-      // 여기서 추가적인 처리를 할 수 있음 (예: 장바구니 비우기 등)
     } catch (error) {
       console.error(
         "Failed to create order:",
