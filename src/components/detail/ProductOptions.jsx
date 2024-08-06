@@ -3,6 +3,7 @@ import { RadioGroup, Radio } from "@headlessui/react";
 import Alert from "./Alert";
 import ClassNames from "../../utils/ClassNames";
 import FormatToKRW from "../../utils/FormatToKRW";
+import SizeStock from "./SizeStock";
 
 const ProductOptions = ({ SizeOption, product, addToCart }) => {
   const [selectedSize, setSelectedSize] = useState(SizeOption.sizes[0]);
@@ -95,7 +96,6 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
             </RadioGroup>
           </fieldset>
         </div>
-
         <div className="flex items-center justify-between mt-6"></div>
         <div className="mt-2 flex items-center space-x-2">
           <span className="text-sm font-medium text-gray-900">구매 수량</span>
@@ -107,14 +107,27 @@ const ProductOptions = ({ SizeOption, product, addToCart }) => {
             min="1"
           />
         </div>
-
-        <button
-          type="button"
-          onClick={addToCartHandle}
-          className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-        >
-          장바구니에 담기
-        </button>
+        <SizeStock product={product} selectedSize={selectedSize} />{" "}
+        <div className="flex items-center justify-between mt-6"></div>
+        <div className="mt-2 flex items-center space-x-2">
+          <span className="text-2xl font-semibold leading-7 text-gray-900">
+            구매 수량
+          </span>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value, 10))}
+            className="w-20 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            min="1"
+          />
+          <button
+            type="button"
+            onClick={addToCartHandle}
+            className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            장바구니에 담기
+          </button>
+        </div>
       </form>
       {showAlert && <Alert onClose={() => setShowAlert(false)} />}
     </div>
