@@ -313,14 +313,19 @@ export default function PayPage() {
 
   const createOrder = async () => {
     try {
+      console.log("Sending data:", { cart, userInfo });
       const response = await axios.post("/api/orders/create-from-cart", {
         cart,
         userInfo,
       });
       console.log("Order created successfully:", response.data);
       setIsPaymentComplete(true);
+      // 여기서 추가적인 처리를 할 수 있음 (예: 장바구니 비우기 등)
     } catch (error) {
-      console.error("Failed to create order:", error);
+      console.error(
+        "Failed to create order:",
+        error.response ? error.response.data : error.message
+      );
     } finally {
       closeModal();
     }
