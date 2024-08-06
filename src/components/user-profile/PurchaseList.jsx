@@ -5,7 +5,7 @@ import User from "./User";
 const PurchaseList = () => {
   const [orders, setOrders] = useState([]);
 
-  // 사용자의 ID를 가져오는 함수 (예: JWT 토큰에서 추출하거나 localStorage에서 가져올 수 있음)
+  // 사용자의 ID를 가져오는 함수
   const getUserId = () => {
     const token = localStorage.getItem("Authorization");
     if (token) {

@@ -44,7 +44,6 @@ export default function SignUp() {
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
     } else {
-      // API 요청
       try {
         const response = await axios.post("/api/user/signup", formData, {
           headers: {
