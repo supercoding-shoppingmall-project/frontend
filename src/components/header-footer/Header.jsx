@@ -10,32 +10,6 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const checkLoginStatus = async () => {
-    const token = localStorage.getItem("Authorization");
-    console.log("Checking login status, token:", token);
-    if (token) {
-      try {
-        await axios.get("/api/user/validate-token", {
-          headers: { Authorization: token },
-        });
-        setIsLoggedIn(true);
-      } catch (error) {
-        console.error("Token validation failed:", error);
-        setIsLoggedIn(false);
-        localStorage.removeItem("Authorization");
-      }
-    } else {
-      setIsLoggedIn(false);
-    }
-  };
-
-  useEffect(() => {
-    checkLoginStatus(); // 페이지 로드 시 로그인 상태 확인
-    const intervalId = setInterval(checkLoginStatus, 60000); // 1분마다 토큰 유효성 검사
-
-    return () => clearInterval(intervalId); // 컴포넌트 언마운트 시 인터벌 클리어
-  }, []);
-
   const sellClickHandle = () => {
     if (isLoggedIn) {
       navigate("/sell");
@@ -44,9 +18,57 @@ export default function Header() {
     }
   };
 
-  const cartClickHandle = async () => {
+  const cartIconClickHandle = () => {
+    if (isLoggedIn) {
+      navigate("/cartpage");
+    } else {
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
     const token = localStorage.getItem("Authorization");
-    const userId = getUserIdToken(token);
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const getUserIdToken = (token) => {
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1]));
+        return payload.userId; // 이메일 반환
+      } catch (error) {
+        console.error("토큰 디코딩 오류:", error);
+        return null; // 이메일이 없을 경우 null 반환
+      }
+    }
+    return null; // 이메일이 없을 경우 null 반환
+  };
+
+  const logoutHandle = async () => {
+    try {
+      const token = localStorage.getItem("Authorization");
+      await axios.post(
+        "/api/user/logout",
+        {},
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+      localStorage.removeItem("Authorization");
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
+
+  // 장바구니 아이콘 클릭 핸들러
+  const cartClickHandle = async () => {
+    const token = localStorage.getItem("Authorization"); // 토큰 가져오기
+    const userId = getUserIdToken(token); // userId 가져오기
 
     if (!userId || !token) {
       console.error("User ID 또는 token이 없습니다.");
@@ -54,13 +76,18 @@ export default function Header() {
     }
 
     try {
+      // 장바구니 데이터 가져오기
       const response = await axios.get(`/api/cart/${userId}`, {
-        headers: { Authorization: token },
+        headers: {
+          Authorization: token,
+        },
       });
+
+      // 장바구니 페이지로 이동하며 데이터 전달
       navigate("/CartPage", { state: { cartData: response.data } });
     } catch (error) {
       console.error("장바구니 데이터를 가져오는 데 실패했습니다:", error);
-      navigate("/login");
+      navigate("/login"); // 로그인 페이지로 이동
     }
   };
 
@@ -75,45 +102,19 @@ export default function Header() {
         return;
       }
 
+      // 사용자 정보 가져오기
       const response = await axios.get(`/api/mypage/${userId}`, {
-        headers: { Authorization: token },
+        headers: {
+          Authorization: token,
+        },
       });
+
+      // API 요청 성공 시 프로필 페이지로 이동
       navigate("/userprofile", { state: { userInfo: response.data } });
     } catch (error) {
       console.error("Failed to fetch user info:", error);
       navigate("/login");
     }
-  };
-
-  const logoutHandle = async () => {
-    try {
-      const token = localStorage.getItem("Authorization");
-      await axios.post(
-        "/api/user/logout",
-        {},
-        {
-          headers: { Authorization: token },
-        }
-      );
-      localStorage.removeItem("Authorization");
-      setIsLoggedIn(false); // 상태 업데이트
-      navigate("/");
-    } catch (error) {
-      console.error("Logout failed:", error);
-    }
-  };
-
-  const getUserIdToken = (token) => {
-    if (token) {
-      try {
-        const payload = JSON.parse(atob(token.split(".")[1]));
-        return payload.userId;
-      } catch (error) {
-        console.error("토큰 디코딩 오류:", error);
-        return null;
-      }
-    }
-    return null;
   };
 
   return (
@@ -179,22 +180,24 @@ export default function Header() {
           </Link>
         </PopoverGroup>
         <div className="lg:flex lg:flex-1 relative lg:justify-end">
-          <div onClick={cartClickHandle}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="mr-6 w-8 cursor-pointer"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-              />
-            </svg>
-          </div>
+          <Link to={"/CartPage"}>
+            <div onClick={(cartClickHandle, cartIconClickHandle)}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="mr-6 w-8 cursor-pointer"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+                />
+              </svg>
+            </div>
+          </Link>
 
           <button
             onClick={sellClickHandle}
