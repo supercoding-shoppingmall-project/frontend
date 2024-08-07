@@ -43,7 +43,7 @@ const AddToCartButton = ({ productId, selectedSize, quantity, userId }) => {
       >
         장바구니에 담기
       </button>
-      {showAlert && <Alert />}
+      {showAlert && <Alert onClose={() => setShowAlert(false)} />}
     </div>
   );
 };
