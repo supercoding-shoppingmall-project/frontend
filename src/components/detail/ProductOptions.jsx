@@ -111,7 +111,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
           userId={userId}
         />
       </form>
-      {showAlert && <Alert />}
+      {showAlert && <Alert onClose={() => setShowAlert(false)} />}
     </div>
   );
 };
