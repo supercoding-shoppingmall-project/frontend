@@ -46,16 +46,16 @@ export default function PayPage() {
         name: userInfo.name,
         phone: userInfo.phone,
         shippingAddress: userInfo.address,
-        paymentMethod: paymentMethod.toUpperCase(), // Convert to uppercase
+        paymentMethod: paymentMethod.toUpperCase(),
       };
 
-      if (paymentMethod === "card") {
+      if (paymentMethod === "CARD") {
         Object.assign(paymentData, {
           cardNumber,
           cardExpiry: expiryDate,
           cardCvv: cvv,
         });
-      } else if (paymentMethod === "bank") {
+      } else if (paymentMethod === "BANK_TRANSFER") {
         Object.assign(paymentData, {
           bankName,
           accountNumber,
@@ -168,9 +168,9 @@ export default function PayPage() {
             <div className="flex space-x-4">
               <button
                 type="button"
-                onClick={() => paymentMethodChangeHandle("card")}
+                onClick={() => paymentMethodChangeHandle("CARD")}
                 className={`py-2 px-4 border rounded-md ${
-                  paymentMethod === "card"
+                  paymentMethod === "CARD"
                     ? "bg-blue-500 text-white"
                     : "bg-white text-gray-700"
                 }`}
@@ -179,9 +179,9 @@ export default function PayPage() {
               </button>
               <button
                 type="button"
-                onClick={() => paymentMethodChangeHandle("bank")}
+                onClick={() => paymentMethodChangeHandle("BANK_TRANSFER")}
                 className={`py-2 px-4 border rounded-md ${
-                  paymentMethod === "bank"
+                  paymentMethod === "BANK_TRANSFER"
                     ? "bg-blue-500 text-white"
                     : "bg-white text-gray-700"
                 }`}
@@ -191,7 +191,7 @@ export default function PayPage() {
             </div>
           </div>
 
-          {paymentMethod === "card" && (
+          {paymentMethod === "CARD" && (
             <div>
               <div className="mb-4">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
@@ -235,7 +235,7 @@ export default function PayPage() {
             </div>
           )}
 
-          {paymentMethod === "bank" && (
+          {paymentMethod === "BANK_TRANSFER" && (
             <div>
               <div className="mb-4">
                 <label className="block mb-2 text-sm font-medium text-gray-700">
