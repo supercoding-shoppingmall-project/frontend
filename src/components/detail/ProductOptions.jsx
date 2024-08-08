@@ -21,6 +21,10 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
     console.error("Price is not a number:", product.price);
   }
 
+  const addToCartHandle = () => {
+    setShowAlert(true);
+  };
+
   return (
     <div className="mt-4 lg:row-span-3 lg:mt-0">
       <p className="text-3xl tracking-tight text-gray-900">
@@ -58,7 +62,7 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
                     )
                   }
                 >
-                  <span>{size.name}</span> {/* 사이즈 이름 표시 */}
+                  <span>{size.name}</span>
                   {size.inStock ? (
                     <span
                       aria-hidden="true"
@@ -109,9 +113,10 @@ const ProductOptions = ({ SizeOption, product, userId, sizeChangeHandle }) => {
           selectedSize={selectedSize}
           quantity={quantity}
           userId={userId}
+          onAddToCart={AddToCartButton}
         />
       </form>
-      {showAlert && <Alert />}
+      {showAlert && <Alert onClose={() => setShowAlert(false)} />}
     </div>
   );
 };
