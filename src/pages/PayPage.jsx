@@ -39,52 +39,52 @@ export default function PayPage() {
     setPaymentMethod(method);
   };
 
-  const createOrder = async () => {
-    try {
-      const paymentData = {
-        userId: userInfo.userId,
-        name: userInfo.name,
-        phone: userInfo.phone,
-        shippingAddress: userInfo.address,
-        paymentMethod: paymentMethod.toUpperCase(),
-      };
+  // const createOrder = async () => {
+  //   try {
+  //     const paymentData = {
+  //       userId: userInfo.userId,
+  //       name: userInfo.name,
+  //       phone: userInfo.phone,
+  //       shippingAddress: userInfo.address,
+  //       paymentMethod: paymentMethod.toUpperCase(),
+  //     };
 
-      if (paymentMethod === "CARD") {
-        Object.assign(paymentData, {
-          cardNumber,
-          cardExpiry: expiryDate,
-          cardCvv: cvv,
-        });
-      } else if (paymentMethod === "BANK_TRANSFER") {
-        Object.assign(paymentData, {
-          bankName,
-          accountNumber,
-        });
-      }
+  //     if (paymentMethod === "CARD") {
+  //       Object.assign(paymentData, {
+  //         cardNumber,
+  //         cardExpiry: expiryDate,
+  //         cardCvv: cvv,
+  //       });
+  //     } else if (paymentMethod === "BANK_TRANSFER") {
+  //       Object.assign(paymentData, {
+  //         bankName,
+  //         accountNumber,
+  //       });
+  //     }
 
-      const requestData = {
-        ...paymentData,
-        cart, // Ensure `cart` is correctly structured
-      };
+  //     const requestData = {
+  //       ...paymentData,
+  //       cart, // Ensure `cart` is correctly structured
+  //     };
 
-      console.log("Sending data:", requestData);
+  //     console.log("Sending data:", requestData);
 
-      const response = await axios.post(
-        "/api/orders/create-from-cart",
-        requestData
-      );
-      console.log("Order created successfully:", response.data);
+  //     const response = await axios.post(
+  //       "/api/orders/create-from-cart",
+  //       requestData
+  //     );
+  //     console.log("Order created successfully:", response.data);
 
-      setIsPaymentComplete(true);
-    } catch (error) {
-      console.error(
-        "Failed to create order:",
-        error.response ? error.response.data : error.message
-      );
-    } finally {
-      closeModal();
-    }
-  };
+  //     setIsPaymentComplete(true);
+  //   } catch (error) {
+  //     console.error(
+  //       "Failed to create order:",
+  //       error.response ? error.response.data : error.message
+  //     );
+  //   } finally {
+  //     closeModal();
+  //   }
+  // };
 
   return (
     <div className="isolate bg-white px-6">
@@ -279,12 +279,14 @@ export default function PayPage() {
                     결제 하시겠습니까?
                   </h2>
                   <div className="flex justify-end space-x-4">
-                    <button
-                      onClick={createOrder}
-                      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
-                    >
-                      Yes
-                    </button>
+                    <Link to={"/"}>
+                      <button
+                        onClick={closeModal}
+                        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500"
+                      >
+                        Yes
+                      </button>
+                    </Link>
                     <button
                       onClick={closeModal}
                       className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-200"
