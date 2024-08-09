@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
+import { useLocation, Link } from "react-router-dom";
 import CartPage from "../components/cart/CartPage";
 
 export default function PayPage() {
